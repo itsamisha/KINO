@@ -1,0 +1,64 @@
+:root {
+  --text: #120708;
+  --background: #fdf9fa;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+  --background-300: #d98c9f;
+}
+
+.signInContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--background);
+}
+
+.signin-form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 30%;
+  background-color: var(--background-50);
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  color: var(--text);
+}
+
+.signin-input {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--secondary);
+  font-size: large;
+  font-weight: 400;
+}
+
+.btn {
+  border:none;
+  width: 95%;
+  height: 35px;
+  outline: none;
+  color: var(---white);
+  font-size: 20px;
+  background: var(--primary);
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: var(--accent);
+}
+.reg-text:hover{
+  color: var(--primary);
+  cursor: pointer;
+}
+/* password */
+.eye{
+  position: absolute;
+  bottom: 47.8%;
+  right: 36.5%;
+}

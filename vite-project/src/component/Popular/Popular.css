@@ -1,0 +1,25 @@
+:root {
+  --text: #120708;
+  --background: #fdf9fa;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+}
+
+
+.popular{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(9rem,12rem));
+    gap: 1rem;
+    justify-content: center;
+}
+
+.popular-h1 {
+    padding: 2rem;
+    margin-top: 4rem;
+    color: var(--accent);
+}
+
+.popular-h1:hover{
+    color: var(--primary);
+}

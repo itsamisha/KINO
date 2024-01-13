@@ -1,0 +1,126 @@
+* {
+  font-family: "Quicksand", sans-serif;
+}
+
+:root {
+  --text: #120708;
+  --background: #e9e2e2;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+  --background-100: #f2d9df;
+  --background-50: #f9ecef;
+  ---white : #fff;
+}
+.navbar {
+  display: flex;
+  justify-content: space-evenly;
+  box-shadow: 0 1px 3px -2px var(--text);
+  background-color: var(--background-50)
+}
+
+.nav-logo {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+.nav-top{
+  padding: auto;
+  height: 1rem;
+  align-items: start;
+  background-color: var(--background-50);
+}
+.nav-top ul{
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  list-style: none;
+  font-size: 16px;
+  gap: 10px;
+}
+
+.nav-top li {
+  color: var(--accent);
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.nav-top li:hover{
+  color:var(--text);
+  text-underline-position: below;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.nav-menu {
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 50px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.nav-menu li {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav-menu li:hover {
+  color: var(--secondary)
+}
+
+.nav-login-cart {
+  display: flex;
+  align-items: center;
+  gap: 45px;
+}
+
+.nav-login-cart button {
+    border:none;
+  width: 95px;
+  height: 35px;
+  outline: none;
+  border-radius: 65px;
+  color: var(---white);
+  font-size: 20px;
+  background: var(--primary);
+}
+
+.nav-login-cart button:hover {
+  font-size: 20px;
+  background: var(--accent);
+  cursor: pointer;
+  
+}
+
+.nav-cart-count {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -35px;
+  margin-left: -53px;
+  border-radius: 15px;
+  font-size: 14px;
+  background-color: var(--primary);
+  color: var(---white);
+}
+
+.selected {
+  background-color: #fff;
+}
+.line:hover{
+    color: var(--primary)
+}

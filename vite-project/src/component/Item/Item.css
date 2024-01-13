@@ -1,0 +1,58 @@
+:root {
+  --text: #120708;
+  --background: #fdf9fa;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+  --background-200: #e6b3bf;
+  --background-100: #f2d9df;
+  --primary-700: #86131b;
+  --primary-800: #590d12;
+
+  font-family: 'Playfair Display', serif;
+  font-family: 'Poppins', sans-serif;
+}
+.item {
+  padding: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px #6c6c6c;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  cursor: pointer;
+  transition: transform 200mx ease-in;
+}
+
+.image{
+  height: 11rem;
+  width: 11rem;
+  object-fit: cover;
+}
+
+.name{
+  padding: 0 0.75rem;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: bold;
+}
+
+.price{
+  font-family: 'Nunito Sans', sans-serif;
+  padding: 0 0.75rem;
+  color: var(--primary);
+}
+
+
+.desc{
+  font-family: 'Nunito Sans', sans-serif;
+  padding: 0 0.75rem;
+
+}
+
+.item:hover{
+  transform: scale(1.03);
+  box-shadow: 0 1px 3px var(--accent);
+  .name{
+    color: var(--primary-700);
+  }
+}
+

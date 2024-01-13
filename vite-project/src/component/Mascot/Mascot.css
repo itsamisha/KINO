@@ -1,0 +1,24 @@
+:root {
+  --text: #120708;
+  --background: #fdf9fa;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+}
+
+.mascot {
+  display: flex;
+  height: 1.5rem;
+}
+
+.mascot-left {
+  width: 50%;
+  height: 45%;
+  background: linear-gradient(to right, var(--secondary), var(--accent));
+}
+
+.mascot-right {
+  width: 50%;
+  height: 45%;
+  background: linear-gradient(to right, var(--accent), var(--primary));
+}

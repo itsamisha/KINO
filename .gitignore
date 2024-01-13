@@ -1,0 +1,47 @@
+# Node.js
+node_modules/
+
+# Dependency directories
+pnpify/
+pnpm-lock.yaml
+*.env
+
+# Testing
+coverage/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Build files
+dist/
+build/
+out/
+
+# Logs
+*.log
+logs/
+log.txt
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Directory for storing debug logs
+debug/
+
+# Environment variables
+.env
+
+# npm
+*.tgz
+
+# Yarn
+yarn-error.log
+yarn.lock
+
+# Optional: OS-specific files
+.DS_Store
+Thumbs.db
