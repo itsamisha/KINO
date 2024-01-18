@@ -67,7 +67,7 @@ router.post("/register", async (req,res) => {
 //Fetch popular products
 router.get("/popular", async(req,res)=>{
     try {
-        const products = await pool.query("SELECT * FROM product ORDER BY product_id DESC LIMIT 250")
+        const products = await pool.query("SELECT * FROM product ORDER BY purchase_count DESC LIMIT 50")
         res.status(200).send(products.rows)
     } catch (error) {
         console.log(error.message)
