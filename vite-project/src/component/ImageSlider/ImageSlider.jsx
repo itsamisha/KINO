@@ -73,7 +73,6 @@ const ImageSlider = ({urls}) => {
   }
 
   const goToSlide = (urlIndex) => {
-
     setIndex(urlIndex)
   }
 

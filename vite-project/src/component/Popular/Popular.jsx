@@ -10,6 +10,7 @@ const Popular =  () => {
     try {
       const response = await fetch("http://localhost:5000/popular")
       const data = await response.json()
+      console.log(data)
       setProducts(data) 
     } catch (error) {
       console.log(error.message)
@@ -25,7 +26,7 @@ const Popular =  () => {
          <h1 className='popular-h1'>POPULAR</h1>
         <div className='popular'>
         {products.map((item)=>{
-            return <Item key={item.id} id={item.id} name={item.name} price={Math.round(item.price)} photo={item.photo_url} description = {item.description}/>
+            return <Item key ={item.product_id} id={item.product_id} name={item.name} price={Math.round(item.price)} photo={item.photo_url} description = {item.description}/>
         })}
     </div>
     </>

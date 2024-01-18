@@ -7,6 +7,7 @@ import Registration from "./pages/Registration";
 import CustomerDashboard from './pages/CustomerDashboard';
 import ChangePassword from './pages/ChangePassword';
 import { AuthProvider } from './context/AuthContext';
+import Product from './pages/Product';
 
 
 
@@ -22,6 +23,9 @@ function App() {
           <Route path="/register" element={<Registration />} />
           <Route path="customer" element={<CustomerDashboard />} />
           <Route path="/customer/change_password" element={<ChangePassword/>} />
+          <Route path="/product" element={<Product/>}>
+            <Route path=':productId' element={<Product/>}/>
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

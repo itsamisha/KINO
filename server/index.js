@@ -5,6 +5,8 @@ const cors = require('cors')
 const homeRoutes = require('./routes/home.js')
 const customerRoutes = require('./routes/customer.js')
 
+
+
 app.use(express.json())
 app.use(cors())
 

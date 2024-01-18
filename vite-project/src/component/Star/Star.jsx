@@ -20,7 +20,7 @@ import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 export default function Star({ rating }) {
   const wrapper = {
     display: "inline-flex",
-    padding: "0 0.75rem",
+    padding: "0",
   };
 
   const renderStars = () => {

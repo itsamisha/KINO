@@ -1,21 +1,24 @@
 const router = require('express').Router()
-const { query } = require('express');
 const pool = require('../database')
 const axios = require('axios');
+const bcrpyt = require('bcrypt')
+
 
 //signIn
 router.post("/signin",async(req,res)=>
 {try {
     const { email, password } = req.body;
-
+    
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
     if (result.rows.length === 0) {
       return res.json({ success: false, message: 'Invalid email or password' });
     }
-
+    
     const userInfo = result.rows[0];
-    if (password !== userInfo.password) {
+
+    const isMatch = await bcrpyt.compare(password,userInfo.password)
+    if (!isMatch) {
         return res.json({ success: false, message: 'Invalid email or password' });
       }
 
@@ -40,6 +43,7 @@ router.post("/register", async (req,res) => {
     try {
         const {email,password, name, phoneNumber, userType } = req.body;
 
+        const hash = await bcrpyt.hash(password,10)
         const user = await pool.query("SELECT * FROM users WHERE email = $1 ", [email])
 
         if(user.rows.length === 1){
@@ -49,7 +53,7 @@ router.post("/register", async (req,res) => {
         else{
             const newUser = await pool.query(
                 "INSERT INTO users (email, password, name, phone_number, user_type, registration_date) VALUES ($1, $2, $3, $4, $5, CURRENT_DATE) RETURNING *",
-                [email, password, name, phoneNumber, userType]
+                [email, hash, name, phoneNumber, userType]
             );
             res.status(200).send({ success: true, data: newUser.rows });
         }
@@ -63,7 +67,7 @@ router.post("/register", async (req,res) => {
 //Fetch popular products
 router.get("/popular", async(req,res)=>{
     try {
-        const products = await pool.query("SELECT * FROM product ORDER BY purchase_count DESC")
+        const products = await pool.query("SELECT * FROM product ORDER BY product_id DESC LIMIT 250")
         res.status(200).send(products.rows)
     } catch (error) {
         console.log(error.message)
@@ -82,65 +86,29 @@ router.get("/new-arrival", async(req,res) =>{
     }
 })
 
-//setting images 
-// router.get("/photos", async (req, res) => {
-//     try {
-//         const products = await pool.query("SELECT * FROM product");
-
-//         // Fetch Unsplash photos for each product
-//         const productsWithPhotos = await Promise.all(products.rows.map(async (product) => {
-//             const unsplashResponse = await axios.get('https://api.unsplash.com/photos?', {
-//                 params: {
-//                     query: product.name, 
-//                     client_id: 'QARjXzyZmHpJwHJrc61TbUpz6D3ghMa_nk2wcjxU33U',
-//                 },
-//             });
-//             console.log(product.name)
-
-            
-          
-            
-//                 // await pool.query("UPDATE product SET photo_url = $1 WHERE product_id = $2",['https://images.unsplash.com/photo-1574158622682-e40e69881006?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',product.product_id])
-//                 const data = JSON.parse(unsplashResponse)
-//                 const randomIndex = Math.floor(Math.random() * data.results.length);
-
-//                 const randomPhotoUrl = data.results[randomIndex].urls.regular;
-//                 console.log(randomPhotoUrl)
-                
-           
-//         }));
-
-//         res.status(200).send(productsWithPhotos);
-//     } catch (error) {
-//         console.log(error.message);
-//         res.status(400).send(error.message);
-//     }
-// });
-let randomPhotoUrl;
 router.get("/photos", async (req, res) => {
     try {
-        const products = await pool.query("SELECT * FROM product WHERE product_id < 3");
+        const products = await pool.query("SELECT * FROM product");
 
         // Fetch Unsplash photos for each product
         const productsWithPhotos = await Promise.all(products.rows.map(async (product) => {
             try {
-                const unsplashResponse = await axios.get('https://api.unsplash.com/photos/', {
+                
+                const unsplashResponse = await axios.get('https://api.unsplash.com/search/photos?', {
                     params: {
-                        query: 'cats',
+                        query: `${product.name}`,
                         // client_id: 'QARjXzyZmHpJwHJrc61TbUpz6D3ghMa_nk2wcjxU33U',
-                        client_id: 'GjsMBVfSCqxwVL05d9vPtatujrcKnHhxgyu0oUy5I8Y'
+                        // client_id: 'GjsMBVfSCqxwVL05d9vPtatujrcKnHhxgyu0oUy5I8Y'
+                        client_id: 'IOK4GGRXvtyG32o5Ze-qOZoFq_HH7a_UMs70TqvJD48'
                     },
                 });
                 console.log(product.name)
-                // Assuming unsplashResponse.data is already in JSON format
-                const data = unsplashResponse.data;
-                // console.log(data)
-                
-                randomPhotoUrl= data[0].urls.regular;
+                console.log(`Unsplash API URL: https://api.unsplash.com/photos/?query=${product.name}&client_id=GjsMBVfSCqxwVL05d9vPtatujrcKnHhxgyu0oUy5I8Y`);
+
+                const randomPhotoUrl= unsplashResponse.data.results[0].urls.regular;
 
                 console.log(randomPhotoUrl);
 
-                // Update the product with the photo URL
                 await pool.query("UPDATE product SET photo_url = $1 WHERE product_id = $2", [randomPhotoUrl, product.product_id]);
                 
             } catch (error) {
@@ -155,4 +123,7 @@ router.get("/photos", async (req, res) => {
     }
 });
 
+  
+
 module.exports = router
+

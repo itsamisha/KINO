@@ -25,28 +25,20 @@
 
 .image{
   height: 11rem;
-  width: 11rem;
+  width: 10.7rem;
   object-fit: cover;
 }
 
 .name{
-  padding: 0 0.75rem;
   font-family: 'Nunito Sans', sans-serif;
   font-weight: bold;
 }
 
 .price{
   font-family: 'Nunito Sans', sans-serif;
-  padding: 0 0.75rem;
   color: var(--primary);
 }
 
-
-.desc{
-  font-family: 'Nunito Sans', sans-serif;
-  padding: 0 0.75rem;
-
-}
 
 .item:hover{
   transform: scale(1.03);
