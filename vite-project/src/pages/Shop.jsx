@@ -5,8 +5,8 @@ import Navbar from "../component/Navbar/Navbar"
 import ImageSlider from '../component/ImageSlider/ImageSlider'
 
 const containerStyles = {
-    width: "1200px",
-    height: "420px",
+    width: "75rem",
+    height: "30.5rem",
     margin : "0 auto",
 };
 
@@ -24,7 +24,8 @@ function Shop(){
         <div style={containerStyles}>
           <ImageSlider urls={urls}/>
         </div>
-        <Popular/>
+        <Popular param='popular' title='Popular'/>
+        <Popular param='new-arrival' title='New Arrivals'/>
         {/* <NewArrivals/> */}
     </div>
 }

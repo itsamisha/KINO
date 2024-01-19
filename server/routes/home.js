@@ -67,7 +67,7 @@ router.post("/register", async (req,res) => {
 //Fetch popular products
 router.get("/popular", async(req,res)=>{
     try {
-        const products = await pool.query("SELECT * FROM product ORDER BY purchase_count DESC LIMIT 50")
+        const products = await pool.query("SELECT * FROM product ORDER BY purchase_count DESC LIMIT 18")
         res.status(200).send(products.rows)
     } catch (error) {
         console.log(error.message)
@@ -78,13 +78,28 @@ router.get("/popular", async(req,res)=>{
 //Fetch New Arrivals
 router.get("/new-arrival", async(req,res) =>{
     try {
-        const products = await pool.query("SELECT * FROM product ORDER BY product_id DESC LIMIT 10")
+        const products = await pool.query("SELECT * FROM product WHERE name like '%anga%' ORDER BY product_id  DESC LIMIT 18")
         res.status(200).send(products.rows)
     } catch (error) {
         console.log(error.message)
         res.status(400).send(error.message)
     }
 })
+//Fetch Specific product
+router.get("/:product_id", async (req, res) => {
+    try {
+      const { product_id } = req.params;
+      const products = await pool.query(
+        "SELECT * FROM product WHERE product_id = $1",
+        [product_id]
+      );
+      res.status(200).send(products.rows[0]);
+    } catch (error) {
+      console.log(error.message);
+      res.status(400).send(error.message);
+    }
+  });
+
 
 router.get("/photos", async (req, res) => {
     try {

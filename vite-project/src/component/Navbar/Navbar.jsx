@@ -37,7 +37,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="nav-logo">
         <Link to="/">
-          <img src={logo} alt="" />
+          <img className="logo-img" src={logo} alt="" />
         </Link>
       </div>
 
@@ -49,12 +49,12 @@ const Navbar = () => {
         <Searchbar />
         <li className={isLoggedIn ? "username" : ""}>
         {isLoggedIn? ( <Link
-            style={{ textDecoration: "none", color: "#000000" }}
+            style={{ textDecoration: "none", color: "#000000" , width: "min-width"}}
             to="/customer"
           >
             <b className="line">{authUser.name}</b>
           </Link>) : (<Link
-            style={{ textDecoration: "none", color: "#000000" }}
+            style={{ textDecoration: "none", color: "#000000", width: "min-width" }}
             to="/signin"
           >
             <b className="line">{authUser.name}</b>
@@ -78,7 +78,7 @@ const Navbar = () => {
             </Link>
           )}
           <Link to="/cart">
-            <img src={cartIcon} alt="" />
+            <img className="cart-img" src={cartIcon} alt="" />
           </Link>
           <div className="nav-cart-count">0</div>
         </div>

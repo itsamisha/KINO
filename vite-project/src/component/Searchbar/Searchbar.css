@@ -14,16 +14,13 @@
 }
 
 .search-bar-container {
-  margin-bottom: -10px;
-  width: 650px;
-  height: 35px;
+  width: 40em;
   display: flex;
   justify-content: center;
-  padding: 10px;
 }
 
 .search-bar {
-  width: 95%;
+  width: 85%;
   display: flex;
   align-items: flex-start;
   border-radius: 5px;
@@ -63,7 +60,7 @@
 }
 
 .search-button img {
-  width: 20px;
-  height: 20px;
+  width: 1rem;
+  height: 1rem;
   filter: invert(1);
 }
