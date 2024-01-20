@@ -23,6 +23,11 @@
   transition: transform 200mx ease-in;
 }
 
+.heart{
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .image{
   height: 11rem;
   width: 10.7rem;

@@ -19,11 +19,16 @@ const Item = (props) => {
       <Link style={{textDecoration : 'none',color:'#000000'}} to={`/product/${props.id}` }>
       {(props.photo===null || props.photo===undefined)? <img src={image} className="item__image" alt=""/> : <img src={props.photo} className="image"alt=""/>}
       <br/><br/>
+      </Link>
+      <div className="heart">
+      <Heart/>
+      </div>
+      <Link style={{textDecoration : 'none',color:'#000000'}} to={`/product/${props.id}` }>
       <div className='name'>{truncateString(props.name,7)}</div>
         <div className="price">৳{props.price}
       </div>
+       <Star rating={0} size={1}/>
       </Link>
-       <Star rating={0}/>
     </div>
   )
 }

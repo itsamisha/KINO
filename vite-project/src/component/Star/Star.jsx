@@ -1,23 +1,7 @@
-// import {FaStar} from "react-icons/fa"
-
-// export default function Star({rating}) {
-
-//     const wrapper = {
-//         display :'inline-flex',
-//         padding: '0 0.75rem'
-//     }
-//     return (
-//         <div style={wrapper}>
-//         {[...Array(5)].map((star,index) => {
-//             return <FaStar color={(index>(rating-1))? "#b6b2ac" : "#FDCC0D"}/>
-//         })}
-//         </div>
-//     );
-// }
 
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
-export default function Star({ rating }) {
+export default function Star({ rating ,size}) {
   const wrapper = {
     display: "inline-flex",
     padding: "0",
@@ -27,25 +11,28 @@ export default function Star({ rating }) {
     const stars = [];
     const floorRating = Math.floor(rating);
 
-    // Render fully filled stars
+    const starStyle = {
+      fontSize: `${size}rem`, 
+      color: "#ffd700",
+    };
+  
     for (let i = 0; i < floorRating; i++) {
-      stars.push(<FaStar key={i} color="#FDCC0D" />);
+      stars.push(<FaStar key={i} style={starStyle} />);
     }
-
-    // Render partially filled star for fractional part
+  
     const decimalPart = rating - floorRating;
     if (decimalPart > 0) {
-      stars.push(<FaStarHalfAlt key="half" color="#FDCC0D" />);
+      stars.push(<FaStarHalfAlt key="half" style={starStyle} />);
     }
 
-    // Render empty stars for remaining space
     const remainingStars = 5 - stars.length;
     for (let i = 0; i < remainingStars; i++) {
-      stars.push(<FaStar key={i + floorRating} color="#b6b2ac" />);
+      stars.push(<FaStar key={i + floorRating} style={{ fontSize: `${size}rem`, color: "#b6b2ac" }} />);
     }
-
+  
     return stars;
   };
+  
 
   return <div style={wrapper}>{renderStars()}</div>;
 }

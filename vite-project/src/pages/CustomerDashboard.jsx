@@ -9,7 +9,7 @@ function CustomerDashboard() {
   const navigate = useNavigate()
   const { isLoggedIn, authUser, setAuthUser } = useAuth();
   if (!isLoggedIn) {
-    navigate("/signin")
+    return <SignIn/>
   }
 
     function handleChangePassword() {
