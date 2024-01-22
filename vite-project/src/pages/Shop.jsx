@@ -3,6 +3,7 @@ import Popular from "../component/Popular/Popular"
 import NewArrivals from "../component/NewArrivals/NewArrivals"
 import Navbar from "../component/Navbar/Navbar"
 import ImageSlider from '../component/ImageSlider/ImageSlider'
+import Footer from "../component/Footer/Footer"
 
 const containerStyles = {
     width: "75rem",
@@ -27,6 +28,7 @@ function Shop(){
         <Popular param='popular' title='Popular'/>
         <Popular param='new-arrival' title='New Arrivals'/>
         {/* <NewArrivals/> */}
+        <Footer/>
     </div>
 }
 

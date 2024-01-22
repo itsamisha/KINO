@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import ProductDisplay from "../component/ProductDisplay/ProductDisplay";
 import Navbar from "../component/Navbar/Navbar";
 import Mascot from "../component/Mascot/Mascot";
+import Footer from "../component/Footer/Footer";
 
 const Product = () => {
   const [product, setProduct] = useState(null);
@@ -42,6 +43,7 @@ const Product = () => {
       <Navbar/>
       <Mascot/>
       <ProductDisplay product={product}/>
+      <Footer/>
     </div>
   );
 };

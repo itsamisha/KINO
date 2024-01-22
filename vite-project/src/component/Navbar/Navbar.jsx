@@ -5,6 +5,8 @@ import { useState } from "react";
 import Searchbar from "../Searchbar/Searchbar";
 import { Link } from "react-router-dom";
 import { useAuth } from "D:/NEW/vite-project/src/context/AuthContext.jsx";
+import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
 const Navbar = () => {
   const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
@@ -22,9 +24,9 @@ const Navbar = () => {
       preferred_payment_method: "",
     });
     setIsLoggedIn(false);
-    window.location.href = "/";
-    console.log(isLoggedIn);
+    Navigate("/")
   };
+
 
   return (
     <>

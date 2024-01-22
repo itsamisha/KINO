@@ -32,7 +32,7 @@ router.post("/signin",async(req,res)=>
       }
 
   } catch (error) {
-    console.error(error.message);
+    console.error(`Error in /signin route: ${error.message}`);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 
@@ -59,7 +59,7 @@ router.post("/register", async (req,res) => {
         }
         
     } catch (error) {
-        console.log(error.message)
+        console.error(`Error in /register route: ${error.message}`);
         res.status(500).send({success: false, error: error.message})
     }
 })
@@ -149,7 +149,7 @@ router.get("/:product_id", async (req, res) => {
       res.status(200).send(products.rows[0]);
       console.log(products.rows)
     } catch (error) {
-      console.log(error.message);
+        console.error(`Error in /popular route: ${error.message}`)
       res.status(400).send(error.message);
     }
   });

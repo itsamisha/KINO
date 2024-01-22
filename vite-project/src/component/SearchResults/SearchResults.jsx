@@ -51,8 +51,7 @@ const SearchResults = () => {
     <>
     <Navbar/>
     
-      <div className="popular-h1-container">
-      </div>
+
       <div className='popular'>
         {results.map((item) => {
           return <Item key={item.product_id} id={item.product_id} name={item.name} price={Math.round(item.price)} photo={item.photo_url} description={item.description} />
