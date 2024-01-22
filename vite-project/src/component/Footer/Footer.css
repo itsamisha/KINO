@@ -1,0 +1,146 @@
+
+ :root {
+    --text: #120708;
+    --background: #e9e2e2;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-100: #f2d9df;
+    --background-50: #f9ecef;
+    ---white : #fff;
+  } 
+ 
+  .gradient-line {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0.25rem;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+  }
+
+  
+
+.footer-social-icons {
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    flex-grow: 1; 
+}
+
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+  }
+  
+  .footer-links li {
+    margin-right: 20px;
+  }
+  
+  .footer-links a {
+    text-decoration: none;
+    color: var(--accent);
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .footer-links a:hover {
+    color: var(--primary);
+  }
+  
+  .footer-social {
+    display: flex;
+    align-items: center;
+  }
+
+  
+  .footer-info {
+    text-align: right;
+  }
+  
+  
+  .footer-social i {
+    font-size: 20px;
+    margin-right: 10px;
+    color: var(--accent);
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .footer-social i:hover {
+    color: var(--primary);
+  }
+
+  .footer-social-icons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .social-icon {
+    font-size: 22px;
+    margin-right: 10px;
+    color: var(--accent);
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .social-icon:hover {
+    color: var(--primary);
+  }
+   
+   .footer {
+    background-color: var(--background-50);
+    color: var(--text);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+  }
+  
+  .footer-top {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; 
+  }
+  
+  .footer-bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+  }
+  
+  .footer-links {
+    margin-bottom: 10px; /* Add some space between the links and the copyright info */
+  }
+  
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap; /* Ensure the list can wrap on smaller screens */
+    justify-content: center; /* Center the links */
+  }
+  
+  .footer-links li {
+    margin: 0 10px; /* Add horizontal margin */
+  }
+  
+  .footer-links a {
+    text-decoration: none;
+    color: var(--accent);
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .footer-links a:hover {
+    color: var(--primary);
+  }
+  
+  .footer-info p{
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
+    width: 100%; 
+  }
+  
