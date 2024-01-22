@@ -26,16 +26,27 @@ const ProductDisplay = (props) => {
         <div className="productdisplay-right-star">
           <Star rating ={2.5} size={1.5}/>
         </div>
-        <div className="productdisplay-right-prices">
-          <div className="productdisplay-right-price-new">
-          ৳{product.price}
+        
+          {product.new_price !== product.price?
+            (<div className="productdisplay-right-prices">
+            <div className="productdisplay-right-price-new">
+          ৳{product.new_price}
           </div>
           <div className="productdisplay-right-price-old">
           ৳{product.price}
           </div>
-        </div>
+          </div>) :
+          (<div className="productdisplay-right-prices">
+          <div className="productdisplay-right-price-new">
+          ৳{product.price}
+          </div>
+          </div>)
+}
+        <br/>
         <div className="productdisplay-right-description">
-          {product.description}
+          <b>Category: </b>{product.category_name}
+          <br/><br/>
+          <b>Seller: </b>{product.shop}
         </div>
         <br /><br />
         <button className='cart'>ADD TO CART</button>

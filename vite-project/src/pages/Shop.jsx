@@ -1,9 +1,10 @@
 import Mascot from "../component/Mascot/Mascot"
 import Popular from "../component/Popular/Popular"
-import NewArrivals from "../component/NewArrivals/NewArrivals"
 import Navbar from "../component/Navbar/Navbar"
 import ImageSlider from '../component/ImageSlider/ImageSlider'
 import Footer from "../component/Footer/Footer"
+import { useSearch } from '../context/SearchContext';
+
 
 const containerStyles = {
     width: "75rem",
@@ -19,6 +20,9 @@ const urls = [
 ]
 
 function Shop(){
+    const {updateSearchValue,updateSearchOption } = useSearch();
+    // updateSearchOption('product')
+    // updateSearchValue('')
     return <div>
         <Navbar />
         <Mascot/>

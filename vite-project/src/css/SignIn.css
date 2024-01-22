@@ -1,4 +1,4 @@
-:root {
+ :root {
   --text: #120708;
   --background: #fdf9fa;
   --primary: #e2323f;
@@ -10,29 +10,33 @@
 .signInContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   height: 100vh;
   background-color: var(--background);
+  flex: 1;
 }
 
 .woman{
-  width: 50%;
+  width: 45%;
+  margin: 0 auto;
 
 }
 .signin-form {
   display: flex;
-  align-items: start;
+  align-items: center;
   flex-direction: column;
   justify-content: center;
   width: 28%;
   background-color: var(--background-50);
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  margin: 0 auto; 
 }
 
 h1 {
-  margin-left : 7.3rem;
+  padding: 2rem;
   color: var(--text);
+  margin: 0 auto; 
 }
 
 .signin-input {
@@ -71,10 +75,16 @@ input[type="checkbox"] {
 
 .label-wrap{
   display: flex;
-  align-items:self-start;
+  align-items:start;
   justify-content: start;
 }
 
 p{
   margin-left: 5.5rem;
+} 
+
+.side-by-side {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

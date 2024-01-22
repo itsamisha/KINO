@@ -4,13 +4,13 @@ import cartIcon from "../assets/cart_icon.png";
 import { useState } from "react";
 import Searchbar from "../Searchbar/Searchbar";
 import { Link } from "react-router-dom";
-import { useAuth } from "D:/NEW/vite-project/src/context/AuthContext.jsx";
-import { useEffect } from "react";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { useSearch } from "../../context/SearchContext.jsx";
 import { Navigate } from "react-router-dom";
 
 const Navbar = () => {
   const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
-  const [menu, setMenu] = useState("");
+  const {updateSearchValue,updateSearchOption } = useSearch();
   const logOut = (e) => {
     e.preventDefault();
     setAuthUser({
@@ -24,6 +24,8 @@ const Navbar = () => {
       preferred_payment_method: "",
     });
     setIsLoggedIn(false);
+    updateSearchOption('product')
+    updateSearchValue('')
     Navigate("/")
   };
 
