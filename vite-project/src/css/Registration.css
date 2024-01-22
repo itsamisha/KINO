@@ -119,81 +119,114 @@ p button:hover {
 /* Registration.css */
 
 .reg-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #a29b07; /* Background color for the entire container */
-  }
+  display: flex;
+  align-items: center;
+  /*justify-content: center;*/
+  height: 100vh;
+  width: 80vh;
+  font-family: Arial, sans-serif;
+  background-color: var(--background, #fdf9fa);
+  color: var(--text, #120708);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form {
+  text-align: center;
+  width: 100%;
+}
+
+.h1 {
+  color: var(--primary, #e2323f);
+}
+
+.pques{
+  position: absolute;
+  top: 72vh;
+  left: 200px;
+  margin-top: 200px;
+  color: black;
+}
+.signinbutton{
+  background-color: var(--secondary, #f4828a);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
   
-  .form-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 35%;
-    margin-top: 20px; /* Add margin to create space from the top */
-  }
+  position: absolute;
+  top: 98vh;
+  left: 365px;
+  width: 20%;
+}
+.regbutton{
+  background-color: var(--secondary, #f4828a);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
   
-  .form {
-    background-color: #f4eb1a; /* Form background color */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
+  width: 30%;
+}
+
+
+.label {
+  display: block;
+  margin-top: 10px;
+}
+
+.reg-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: large;
+  font-weight: 400;
   
-  h1 {
-    color: black;
-  }
   
-  .reg-label {
-    margin-bottom: 8px;
-    color: black;
-  }
+}
+
+/* button {
+  background-color: var(--secondary, #f4828a);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
   
-  label {
-    display: block;
-    margin-bottom: 10px;
-    color: black;
-  }
-  
-  .reg-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid black;
-    border-radius: 4px;
-    font-size: large;
-    font-weight: 400;
-  }
-  
-  button {
-    background-color: black;
-    color: #f4eb1a; /* Text color for the button */
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #333;
-  }
-  
-  p {
-    margin-top: 20px;
-    color: black;
-  }
-  
-  p button {
-    color: #a29b07; /* Sign In button color */
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  
-  p button:hover {
-    text-decoration: none;
-  }
-  
+} */
+
+button:hover {
+  background-color: var(--accent, #fc4e59);
+}
+
+.member-btn {
+  margin-top: 20px;
+  background-color: transparent;
+  border: none;
+  color: var(--primary, #e2323f);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.member-btn:hover {
+  color: var(--accent, #fc4e59);
+}
+.eye{
+  position: absolute;
+  bottom: 45%;
+  right: 1%;
+}
+.confirmeye{
+  position: absolute;
+  bottom: 31.5%;
+  right: 1%;
+}
+

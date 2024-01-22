@@ -7,6 +7,7 @@ const customerRoutes = require('./routes/customer.js')
 
 
 
+
 app.use(express.json())
 app.use(cors())
 

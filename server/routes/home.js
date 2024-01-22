@@ -63,6 +63,59 @@ router.post("/register", async (req,res) => {
         res.status(500).send({success: false, error: error.message})
     }
 })
+// //getting categories
+// app.get('/categories', async (req, res) => {
+//     try {
+//       const categoriesQuery = 'SELECT * FROM category ORDER BY category_name;';
+//       const categoriesResult = await pool.query(categoriesQuery);
+//       res.json({ categories: categoriesResult.rows });
+//     } catch (error) {
+//       console.error('Error fetching categories:', error.message);
+//       res.status(500).json({ error: 'Internal Server Error' });
+//     }
+//   });
+  
+//search
+router.get('/search', async (req, res) => {
+    try {
+        const { search, option } = req.query;
+
+        // Validate query parameters
+        if (!search || !option) {
+            return res.status(400).json({ error: 'Both search and option parameters are required' });
+        }
+
+        let searchQuery;
+        switch (option) {
+            case 'product':
+                searchQuery = `SELECT * FROM product WHERE LOWER(name) LIKE LOWER($1) ORDER BY purchase_count DESC;`;
+                break;
+            case 'category':
+                // Adjust this query based on your actual schema
+                searchQuery = `SELECT * FROM product p JOIN category c
+                ON (p.product_id=c.product_id)  
+                WHERE LOWER(category_name) LIKE LOWER($1) 
+                ORDER BY purchase_count DESC;`;
+                break;
+            case 'seller':
+                searchQuery = `SELECT * FROM product JOIN users
+                 ON users.user_id = product.user_id 
+                WHERE LOWER(users.name) LIKE LOWER($1) 
+                ORDER BY purchase_count DESC;`;
+                break;
+            default:
+                return res.status(400).json({ error: 'Invalid search option' });
+        }
+
+        const searchResults = await pool.query(searchQuery, [`%${search}%`]);
+        res.status(200).json({ success: true, results: searchResults.rows });
+    } catch (error) {
+        console.error(`Error in search route: ${error.message}`);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
+
+  
 
 //Fetch popular products
 router.get("/popular", async(req,res)=>{
