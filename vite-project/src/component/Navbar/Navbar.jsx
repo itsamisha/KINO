@@ -6,7 +6,7 @@ import Searchbar from "../Searchbar/Searchbar";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useSearch } from "../../context/SearchContext.jsx";
-import { useAuth } from "D:/NEW/KINO/vite-project/src/context/AuthContext.jsx";
+
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 

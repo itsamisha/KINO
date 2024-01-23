@@ -80,126 +80,110 @@ router.get('/category', async (req, res) => {
   });
   
 //search
+
+
+  
 // router.get('/search', async (req, res) => {
 //     try {
 //         const { search, option, category, minPrice, maxPrice } = req.query;
 
-//         // Validate query parameters
 //         if (!search || !option) {
 //             return res.status(400).json({ error: 'Both search and option parameters are required' });
 //         }
 
 //         let searchQuery;
-//         let queryParams;
+//         let queryParams = [`%${search}%`];
 //         switch (option) {
 //             case 'product':
-//                 searchQuery = `SELECT * FROM product WHERE LOWER(name) LIKE LOWER($1) ORDER BY purchase_count DESC;`;
-//                 queryParams = [`%${search}%`];
+//                 searchQuery = `SELECT DISTINCT p.* FROM product  p JOIN category c ON (p.product_id=c.product_id)  WHERE LOWER(name) LIKE LOWER($1)`;
+//                 if (category) {
+//                     searchQuery += ` AND LOWER(category_name) LIKE LOWER($${queryParams.length + 1})`;
+//                     queryParams.push(`%${category}%`);
+//                 }
 //                 break;
 //             case 'category':
-                
-//                 searchQuery = `SELECT * FROM product p JOIN category c
-//                 ON (p.product_id=c.product_id)  
-//                 WHERE LOWER(category_name) LIKE LOWER($1) 
-//                 ORDER BY purchase_count DESC;`;
-
-//                 queryParams = [`%${search}%`];
-                
-//                 // If category parameter is provided, filter by category
+//                 searchQuery = `SELECT DISTINCT p.* FROM product p JOIN category c ON (p.product_id=c.product_id)  
+//                                WHERE LOWER(category_name) LIKE LOWER($1)`;
 //                 if (category) {
-//                     searchQuery += ` AND LOWER(category_name) LIKE LOWER($2)`;
+//                     searchQuery += ` AND LOWER(category_name) LIKE LOWER($${queryParams.length + 1})`;
 //                     queryParams.push(`%${category}%`);
 //                 }
 //                 break;
 //             case 'seller':
-//                 searchQuery = `SELECT * FROM product JOIN users
-//                  ON users.user_id = product.user_id 
-//                 WHERE LOWER(users.name) LIKE LOWER($1) 
-//                 ORDER BY purchase_count DESC;`;
-//                 queryParams = [`%${search}%`]
+//                 searchQuery = `SELECT DISTINCT p.* FROM product  p JOIN category c ON (p.product_id=c.product_id) JOIN users ON users.user_id = product.user_id 
+//                                WHERE LOWER(users.name) LIKE LOWER($1)`;
+//                                if (category) {
+//                     searchQuery += ` AND LOWER(category_name) LIKE LOWER($${queryParams.length + 1})`;
+//                     queryParams.push(`%${category}%`);
+//                 }
+//                 if (category) {
+//                     searchQuery += ` AND LOWER(category_name) LIKE LOWER($${queryParams.length + 1})`;
+//                     queryParams.push(`%${category}%`);
+//                 }
 //                 break;
 //             default:
 //                 return res.status(400).json({ error: 'Invalid search option' });
 //         }
+
 //         if (minPrice) {
 //             searchQuery += ` AND price >= $${queryParams.length + 1}`;
 //             queryParams.push(minPrice);
 //         }
-
 //         if (maxPrice) {
 //             searchQuery += ` AND price <= $${queryParams.length + 1}`;
 //             queryParams.push(maxPrice);
 //         }
 
-//         const searchResults = await pool.query(searchQuery, [`%${search}%`]);
+//         searchQuery += ` ORDER BY purchase_count DESC;`;
+
+//         const searchResults = await pool.query(searchQuery, queryParams);
 //         res.status(200).json({ success: true, results: searchResults.rows });
 //     } catch (error) {
 //         console.error(`Error in search route: ${error.message}`);
 //         res.status(500).json({ success: false, error: 'Internal Server Error' });
 //     }
 // });
-
-  
-router.get('/search', async (req, res) => {
+router.get("/search", async (req, res) => {
     try {
-        const { search, option, category, minPrice, maxPrice } = req.query;
-
-        if (!search || !option) {
-            return res.status(400).json({ error: 'Both search and option parameters are required' });
-        }
-
-        let searchQuery;
-        let queryParams = [`%${search}%`];
-        switch (option) {
-            case 'product':
-                searchQuery = `SELECT DISTINCT p.* FROM product  p JOIN category c ON (p.product_id=c.product_id)  WHERE LOWER(name) LIKE LOWER($1)`;
-                if (category) {
-                    searchQuery += ` AND LOWER(category_name) LIKE LOWER($${queryParams.length + 1})`;
-                    queryParams.push(`%${category}%`);
-                }
-                break;
-            case 'category':
-                searchQuery = `SELECT DISTINCT p.* FROM product p JOIN category c ON (p.product_id=c.product_id)  
-                               WHERE LOWER(category_name) LIKE LOWER($1)`;
-                if (category) {
-                    searchQuery += ` AND LOWER(category_name) LIKE LOWER($${queryParams.length + 1})`;
-                    queryParams.push(`%${category}%`);
-                }
-                break;
-            case 'seller':
-                searchQuery = `SELECT DISTINCT p.* FROM product  p JOIN category c ON (p.product_id=c.product_id) JOIN users ON users.user_id = product.user_id 
-                               WHERE LOWER(users.name) LIKE LOWER($1)`;
-                               if (category) {
-                    searchQuery += ` AND LOWER(category_name) LIKE LOWER($${queryParams.length + 1})`;
-                    queryParams.push(`%${category}%`);
-                }
-                if (category) {
-                    searchQuery += ` AND LOWER(category_name) LIKE LOWER($${queryParams.length + 1})`;
-                    queryParams.push(`%${category}%`);
-                }
-                break;
-            default:
-                return res.status(400).json({ error: 'Invalid search option' });
-        }
-
-        if (minPrice) {
-            searchQuery += ` AND price >= $${queryParams.length + 1}`;
-            queryParams.push(minPrice);
-        }
-        if (maxPrice) {
-            searchQuery += ` AND price <= $${queryParams.length + 1}`;
-            queryParams.push(maxPrice);
-        }
-
-        searchQuery += ` ORDER BY purchase_count DESC;`;
-
-        const searchResults = await pool.query(searchQuery, queryParams);
-        res.status(200).json({ success: true, results: searchResults.rows });
+      const { search, option } = req.query;
+  
+      // Validate query parameters
+      if (!search || !option) {
+        return res
+          .status(400)
+          .json({ error: "Both search and option parameters are required" });
+      }
+  
+      let searchQuery;
+      switch (option) {
+        case "product":
+          searchQuery = `SELECT * FROM product WHERE LOWER(name) LIKE LOWER($1) ORDER BY purchase_count DESC;`;
+          break;
+        case "category":
+          // Adjust this query based on your actual schema
+          searchQuery = `SELECT * FROM product p JOIN category c
+                  ON (p.product_id=c.product_id)  
+                  WHERE LOWER(category_name) LIKE LOWER($1) 
+                  ORDER BY purchase_count DESC;`;
+          break;
+        case "seller":
+          searchQuery = `SELECT 	P.* FROM product P JOIN users U
+          ON U.user_id = P.user_id 
+         WHERE LOWER(U.name) LIKE LOWER($1) 
+         ORDER BY purchase_count DESC;`;
+          break;
+        default:
+          return res.status(400).json({ error: "Invalid search option" });
+      }
+  
+      const searchResults = await pool.query(searchQuery, [`%${search}%`]);
+      res.status(200).json({ success: true, results: searchResults.rows });
     } catch (error) {
-        console.error(`Error in search route: ${error.message}`);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+      console.error(`Error in search route: ${error.message}`);
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
-});
+  });
+
 
 //Fetch popular products
 router.get("/popular", async(req,res)=>{
