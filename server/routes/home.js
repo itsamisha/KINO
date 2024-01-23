@@ -166,7 +166,7 @@ router.get("/search", async (req, res) => {
       case "seller":
         searchQuery = `SELECT 	P.* FROM product P JOIN users U
         ON U.user_id = P.user_id 
-       WHERE LOWER(U.name) LIKE LOWER($1) 
+       WHERE LOWER(U.name) LIKE LOWER($1) AND U.user_type='seller'
        ORDER BY purchase_count DESC;`;
         break;
       default:
@@ -197,6 +197,16 @@ router.get("/popular", async(req,res)=>{
 router.get("/new-arrival", async(req,res) =>{
     try {
         const products = await pool.query("SELECT * FROM product ORDER BY product_id  DESC LIMIT 12")
+        res.status(200).send(products.rows)
+    } catch (error) {
+        console.log(error.message)
+        res.status(400).send(error.message)
+    }
+})
+//Fetch discount products
+router.get("/discount-product", async(req,res) =>{
+    try {
+        const products = await pool.query("SELECT DISTINCT* FROM product p join discount d on(p.product_id=d.product_id) ORDER BY discount_percentage  DESC LIMIT 12")
         res.status(200).send(products.rows)
     } catch (error) {
         console.log(error.message)
