@@ -11,6 +11,14 @@ import Product from "./pages/Product";
 import SearchResults from "./component/SearchResults/SearchResults";
 import { SearchProvider } from "./context/SearchContext";
 
+import Searchbar from './component/Searchbar/Searchbar';
+
+import FilterMenu from './component/Filter/FilterMenu';
+
+
+
+
+
 function App() {
   return (
     <AuthProvider>
@@ -26,6 +34,7 @@ function App() {
               path="/customer/change_password"
               element={<ChangePassword />}
             />
+           
             <Route path="/search-results" element={<SearchResults />} />
             <Route path="/product" element={<Product />}>
               <Route path=":productId" element={<Product />} />
@@ -33,6 +42,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </SearchProvider>
+      
     </AuthProvider>
   );
 }
