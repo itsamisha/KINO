@@ -208,13 +208,24 @@ router.get("/:product_id", async (req, res) => {
     try {
       const { product_id } = req.params;
       const products = await pool.query(
-        "SELECT p.* FROM product p WHERE p.product_id = $1",
+        `SELECT P.*,U.name Shop,
+        C.category_name, 
+        ROUND((P.price-(COALESCE(D.discount_percentage,0)*P.price)),2) new_price 
+        FROM product P JOIN users U ON U.user_id = P.user_id AND product_id=$1
+        LEFT JOIN category C ON C.product_id = P.product_id 
+        LEFT JOIN discount D ON D.product_id = P.product_id;`,
         [product_id]
       );
-      res.status(200).send(products.rows[0]);
-      console.log(products.rows)
+  
+      const categoryNames = products.rows.map((product) => product.category_name);
+      const categoriesString = categoryNames.join(", ");
+      products.rows[0].category_name = categoriesString
+      if(!categoriesString){
+        products.rows[0].category_name = '---';}
+      console.log(products.rows[0]);
+      res.status(200).send(products.rows[0])
     } catch (error) {
-        console.error(`Error in /popular route: ${error.message}`)
+      console.error(`Error in /popular route: ${error.message}`);
       res.status(400).send(error.message);
     }
   });
