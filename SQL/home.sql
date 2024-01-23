@@ -36,3 +36,11 @@ SELECT P.*, U.name AS Shop,
 --change pass
 SELECT * FROM users WHERE user_id = $1;
 UPDATE users SET password = $1 WHERE user_id = $2;
+--adding table for cart and wishlist to show products
+ WITH pro_table AS 
+ (SELECT P.* 
+FROM product P
+JOIN category c WHERE (P.product_id=c.product_id)
+JOIN discount d WHERE(d.product_id=p.product_id))
+
+
