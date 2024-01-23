@@ -9,87 +9,108 @@ import { useSearch } from "../../context/SearchContext.jsx";
 
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
+import Loading from "../Loading/Loading";
 
 const Navbar = () => {
   const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
-  const {updateSearchValue,updateSearchOption } = useSearch();
-  const logOut = (e) => {
-    e.preventDefault();
-    setAuthUser({
-      user_id: "",
-      email: "",
-      password: "",
-      name: "Guest",
-      phone_number: "",
-      user_type: "",
-      registration_date: "",
-      preferred_payment_method: "",
-    });
-    setIsLoggedIn(false);
-    updateSearchOption('product')
-    updateSearchValue('')
-    Navigate("/")
-  };
+  const { updateSearchValue, updateSearchOption } = useSearch();
+  const [loggingOut, setLoggingOut] = useState(false); 
 
+  const logOut = async (e) => {
+    e.preventDefault();
+
+    try {
+      setAuthUser({
+        user_id: "",
+        email: "",
+        password: "",
+        name: "Guest",
+        phone_number: "",
+        user_type: "",
+        registration_date: "",
+        preferred_payment_method: "",
+      });
+      setIsLoggedIn(false);
+      setLoggingOut(true);
+      updateSearchOption("product");
+      updateSearchValue("");
+      Navigate("/change");
+    } catch (error) {
+      console.error("Error during sign-out:", error);
+    } finally {
+      setLoggingOut(false); // Set loggingOut to false after sign-out logic is complete
+    }
+  };
 
   return (
     <>
-    <div className="nav-top">
+      <div className="nav-top">
         <ul>
-            <li>Become a seller</li>
-            <li>Gift Cards</li>
+          <li>Become a seller</li>
+          <li>Gift Cards</li>
         </ul>
-    </div>
-    <div className="navbar">
-      <div className="nav-logo">
-        <Link to="/">
-          <img className="logo-img" src={logo} alt="" />
-        </Link>
       </div>
-
-      <ul className="nav-menu">
-        {/* <li onClick={()=>{setMenu("shop")}} className={menu === "shop"?'selected':''}><Link style={{textDecoration : 'none',color:'#000000'}} to="/">Home</Link></li>
-                <li onClick={()=>{setMenu("electronics")}} className={menu === "electronics"?'selected':''}><Link style={{textDecoration : 'none',color:'#000000'}} to="/electronics">Electronics</Link></li>
-                <li onClick={()=>{setMenu("fashion")}} className={menu === "fashion"?'selected':''}><Link style={{textDecoration : 'none',color:'#000000'}} to="/fashion">Fashion</Link></li>
-                <li onClick={()=>{setMenu("lifestyle")}} className={menu === "lifestyle"?'selected':''}><Link style={{textDecoration : 'none',color:'#000000'}} to="/lifestyle">Lifestyle</Link></li> */}
-        <Searchbar />
-        <li className={isLoggedIn ? "username" : ""}>
-        {isLoggedIn? ( <Link
-            style={{ textDecoration: "none", color: "#000000" , width: "min-width"}}
-            to="/customer"
-          >
-            <b className="line">{authUser.name}</b>
-          </Link>) : (<Link
-            style={{ textDecoration: "none", color: "#000000", width: "min-width" }}
-            to="/signin"
-          >
-            <b className="line">{authUser.name}</b>
-          </Link>) }
-          
-        </li>
-        <div className="nav-login-cart">
-          {isLoggedIn ? (
-            <Link to="/signin">
-              <button
-                onClick={(e) => {
-                  logOut(e);
-                }}
-              >
-                Sign Out
-              </button>
-            </Link>
-          ) : (
-            <Link to="/signin">
-              <button>Sign In</button>
-            </Link>
-          )}
-          <Link to="/cart">
-            <img className="cart-img" src={cartIcon} alt="" />
+      <div className="navbar">
+        <div className="nav-logo">
+          <Link to="/">
+            <img className="logo-img" src={logo} alt="" />
           </Link>
-          <div className="nav-cart-count">0</div>
         </div>
-      </ul>
-    </div>
+
+        <ul className="nav-menu">
+          <Searchbar />
+          <li className={isLoggedIn ? "username" : ""}>
+            {isLoggedIn ? (
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "#000000",
+                  width: "min-width",
+                }}
+                to="/customer"
+              >
+                <b className="line">{authUser.name}</b>
+              </Link>
+            ) : (
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "#000000",
+                  width: "min-width",
+                }}
+                to="/signin"
+              >
+                <b className="line">{authUser.name}</b>
+              </Link>
+            )}
+          </li>
+          <div className="nav-login-cart">
+            {isLoggedIn ? (
+              <Link to="/">
+                {loggingOut ? (
+                  <Loading /> 
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      logOut(e);
+                    }}
+                  >
+                    Sign Out
+                  </button>
+                )}
+              </Link>
+            ) : (
+              <Link to="/signin">
+                <button>Sign In</button>
+              </Link>
+            )}
+            <Link to="/cart">
+              <img className="cart-img" src={cartIcon} alt="" />
+            </Link>
+            <div className="nav-cart-count">0</div>
+          </div>
+        </ul>
+      </div>
     </>
   );
 };

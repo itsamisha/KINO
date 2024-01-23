@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import '../css/Product.css'
 import ProductDisplay from "../component/ProductDisplay/ProductDisplay";
 import Navbar from "../component/Navbar/Navbar";
 import Mascot from "../component/Mascot/Mascot";
-import Footer from "../component/Footer/Footer";
+import DescriptionBox from "../component/DescriptionBox/DescriptionBox";
 
 const Product = () => {
   const [product, setProduct] = useState(null);
@@ -24,29 +25,36 @@ const Product = () => {
 
   useEffect(() => {
     getProduct();
-  }, []); 
+  }, []);
 
   if (loading) {
     return <h1></h1>;
   }
-  if (!product ) {
-    return <h1
-    style={{ 
-      color: 'red', 
-      fontWeight: 'bold',
-      alignContent: 'center'
-    }}>Product not found</h1>; 
+  if (!product) {
+    return (
+      <h1
+        style={{
+          color: "red",
+          fontWeight: "bold",
+          alignContent: "center",
+        }}
+      >
+        Product not found
+      </h1>
+    );
   }
 
-  return (
-    <div>
-      <Navbar/>
-      <Mascot/>
-      <ProductDisplay product={product}/>
-      <Footer/>
+return (
+  <div>
+    <Navbar />
+    <Mascot />
+    <div className="product-grid">
+      <ProductDisplay product={product} />
+      <DescriptionBox description={product.description}/>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default Product;
-

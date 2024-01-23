@@ -31,8 +31,6 @@ function Shop(){
         </div>
         <Popular param='popular' title='Popular'/>
         <Popular param='new-arrival' title='New Arrivals'/>
-        {/* <NewArrivals/> */}
-        <Footer/>
     </div>
 }
 

@@ -4,6 +4,7 @@ import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import Registration from "./pages/Registration";
+import Footer from "./component/Footer/Footer";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import ChangePassword from "./pages/ChangePassword";
 import { AuthProvider } from "./context/AuthContext";
@@ -40,6 +41,7 @@ function App() {
               <Route path=":productId" element={<Product />} />
             </Route>
           </Routes>
+          <Footer/>
         </BrowserRouter>
       </SearchProvider>
       

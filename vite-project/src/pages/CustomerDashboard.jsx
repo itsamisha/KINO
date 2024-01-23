@@ -3,13 +3,14 @@ import Navbar from "../component/Navbar/Navbar";
 import { useAuth } from "../context/AuthContext";
 import '../css/CustomerDashboard.css'
 import { useNavigate } from "react-router-dom";
+import SignIn from "./SignIn";
 
 
 function CustomerDashboard() {
   const navigate = useNavigate()
-  const { isLoggedIn, authUser, setAuthUser } = useAuth();
+  const { isLoggedIn, authUser} = useAuth();
   if (!isLoggedIn) {
-    return <SignIn/>
+    navigate("/")
   }
 
     function handleChangePassword() {

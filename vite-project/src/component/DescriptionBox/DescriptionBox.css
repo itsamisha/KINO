@@ -1,0 +1,53 @@
+:root {
+  --text: #120708;
+  --background: #fdf9fa;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+  --background-50: #f9ecef;
+  --background-50: #f9ecef;
+--background-100: #f2d9df;
+--background-200: #e6b3bf;
+--background-300: #d98c9f;
+--background-400: #cc667f;
+--background-500: #bf4060;
+--background-600: #99334c;
+--background-700: #732639;
+--background-800: #4d1926;
+--background-900: #260d13;
+--background-950: #13060a;
+}
+
+
+.descriptionbox {
+  border: 1px solid #ddd;
+  margin: auto; 
+  width: 75%; 
+  box-sizing: border-box; 
+  color: var(--text);
+}
+
+.descriptionbox-header {
+  cursor: pointer;
+  padding: 8px;
+  background-color: var(--background-100);
+  display: flex;
+  align-items: center;
+  color: var(--background-900);
+  font-size: 18px;
+  font-weight: bold;
+}
+.descriptionbox-header:hover{
+  color: var(--background-700);
+}
+
+.descriptionbox-title {
+  margin-left: 8px;
+}
+
+.descriptionbox-content {
+  padding: 8px;
+  display: block;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}

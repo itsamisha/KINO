@@ -51,7 +51,6 @@ const ProductDisplay = (props) => {
         <br /><br />
         <button className='cart'>ADD TO CART</button>
       </div>
-
     </div>
 
   )

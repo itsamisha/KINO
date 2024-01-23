@@ -6,6 +6,7 @@ const ProductPhoto = ({url}) => {
     position: "relative"
   }
   const slideStyles = {
+    marginLeft: "1rem",
     width: "100%",
     height: "100%",
     backgroundPosition: 'center',

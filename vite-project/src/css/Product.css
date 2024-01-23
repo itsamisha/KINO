@@ -1,0 +1,14 @@
+.product-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    justify-items: center; /* Optional: Center components horizontally */
+  }
+  
+  .product-grid {
+    display: grid;
+    grid-template-rows: repeat(2); /* Two columns of equal width */
+    gap: 16px; /* Adjust as needed */
+  }
+  
+  /* Add additional styling as needed */
+  
