@@ -21,7 +21,7 @@ const DiscountProduct=()=>{
   return (
     <>
     <div className='discount-product'>
-      <h1>DISCOUNT UWU</h1>
+      <h1>ON SALE</h1>
       <div className="discount-product-item">
         {products.map((item)=>{
             return <Item key={item.id} id={item.id} name={item.name} price={Math.round(item.price)} description = {item.description}/>

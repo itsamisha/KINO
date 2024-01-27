@@ -31,7 +31,7 @@ function Shop(){
         </div>
         <Popular param='popular' title='Popular'/>
         <Popular param='new-arrival' title='New Arrivals'/>
-        <Popular param='discount-product' title='Discount UwU'/>
+        <Popular param='discount-product' title='On Sale'/>
     </div>
 }
 
