@@ -1,4 +1,3 @@
-
 const router = require('express').Router()
 const pool = require('../database')
 
@@ -16,7 +15,194 @@ router.get("/:user_id", async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   })
- 
+
+ //Update Profile Info
+  router.put("/update", async (req, res) => {
+    try {
+      const { id, name, email, phone_number, preferred_payment_method } = req.body;
+      const update = await pool.query(`UPDATE users SET
+      name = $1,
+      email = $2,
+      phone_number = $3,
+      preferred_payment_method = $4
+      WHERE user_id = $5
+      RETURNING *`, [name, email, phone_number, preferred_payment_method,id]);
+      res.status(200).json(update.rows[0])
+      console.log(update.rows[0])
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+  //Get Order History
+  router.get("/:user_id/orders", async (req, res) => {
+    try {
+      const { user_id } = req.params;
+      const customer = await pool.query(`SELECT P.product_id,P.name,P.photo_url,
+      OI.quantity,OI.order_item_id, O.order_date
+      FROM users U LEFT JOIN orders O 
+      ON U.user_id = O.user_id AND U.user_id = $1
+      JOIN order_items OI 
+      ON OI.order_id = O.order_id
+      JOIN product P
+      ON P.product_id = OI.product_id
+      GROUP BY O.order_date, P.product_id, OI.quantity`, [user_id]);
+
+      if (customer.rows.length === 1) {
+        res.json(customer.rows);
+      } else {
+        res.status(404).json({ message: 'Customer not found' });
+      }
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
+  
+  //Delete Order History
+  router.delete("/remove-order", async (req, res) => {
+    try {
+      const {order_items_id} = req.body
+        await pool.query(`
+            DELETE FROM order_items
+            WHERE order_item_id = $1;
+        `, [order_items_id]);
+        res.json({ message: 'Order deleted successfully' });
+    } catch (error) {
+        console.error(`Error deleting wishlist: ${error.message}`);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
+  //Get Wishlist 
+  router.get("/:user_id/wishlist", async (req, res) => {
+    try {
+      const { user_id } = req.params;
+      const customer = await pool.query(`SELECT P.product_id,P.name, P.photo_url, WI.wishlist_item_id
+      FROM users U LEFT JOIN wishlist W 
+      ON U.user_id = W.user_id AND U.user_id = $1
+      JOIN wishlist_items WI 
+      ON WI.wishlist_id = W.wishlist_id
+      JOIN product P 
+      ON P.product_id = WI.product_id;`, [user_id]);
+      
+      if (customer.rows.length !== 0) {
+        res.json(customer.rows);
+      } else {
+        res.status(404).json({ message: 'Customer not found or wishlist empty' });
+      }
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
+
+  //Add to wishlist
+  router.post("/add-to-wishlist", async (req,res) => {
+    try {
+        let wishlist_id 
+        const {user_id,product_id} = req.body
+        const oldWishlist = await pool.query(`SELECT *
+        FROM wishlist
+        WHERE user_id = $1;`, [user_id])
+        if(oldWishlist.rows.length === 0){
+            const wishlist = await pool.query(`INSERT INTO wishlist (user_id) 
+            VALUES ($1) RETURNING *`,[user_id])
+            wishlist_id = wishlist.rows[0].wishlist_id
+        }
+
+        else{
+           wishlist_id = oldWishlist.rows[0].wishlist_id
+           const wishlist_item = await pool.query(`INSERT INTO wishlist_items 
+           (wishlist_id,product_id) VALUES ($1,$2) RETURNING *`,[wishlist_id,product_id])
+           res.json({data: wishlist_item.rows})
+        }
+        
+    } catch (error) {
+        console.error(`Error in /customer/add-to-wishlist route: ${error.message}`);
+        res.status(500).send({success: false, error: error.message})
+    }
+  })
+
+  //Delete from wishlist
+  router.delete("/remove-from-wishlist", async (req, res) => {
+      try {
+        const {wishlist_item_id} = req.body
+          await pool.query(`
+              DELETE FROM wishlist_items
+              WHERE wishlist_item_id = $1;
+          `, [wishlist_item_id]);
+          res.json({ message: 'Wishlist deleted successfully' });
+      } catch (error) {
+          console.error(`Error deleting wishlist: ${error.message}`);
+          res.status(500).json({ error: 'Internal Server Error' });
+      }
+  })
+  
+
+  //To be reviewed products
+  router.get("/:user_id/to-be-reviewed", async (req,res) => {
+    try {
+      const {user_id} = req.params;
+      const products = await pool.query(`SELECT P.product_id, P."name", P.photo_url, O.order_date, R.rating
+      FROM orders O LEFT JOIN review R
+      ON O.user_id = R.user_id
+      AND O.user_id = $1
+      AND R.rating IS NULL
+      JOIN product P
+      ON R.product_id = P.product_id;`,[user_id])
+
+      if(products.rows.length===0){
+        res.json({message:'No products left to be reviewed'})
+      }
+      else{
+        res.json(products.rows)
+      }
+    } catch (error) {
+      console.error(`Error /customer/to-be-reviewed: ${error.message}`);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
+
+  //Add Review
+  //TODO: pick from here
+  router.post("/add-review", async (req,res) => {
+    try {
+        
+    } catch (error) {
+        console.error(`Error in /customer/add-to-wishlist route: ${error.message}`);
+        res.status(500).send({success: false, error: error.message})
+    }
+  })
+
+  //Previous reviews
+  router.get("/:user_id/reviews", async (req,res) => {
+    try {
+      const {user_id} = req.params;
+      const products = await pool.query(`SELECT P.product_id AS p_id, P."name", P.photo_url, O.order_date, R.*, S."name" AS shop
+      FROM orders O LEFT JOIN review R
+      ON O.user_id = R.user_id
+      AND O.user_id = 1
+      AND R.rating IS NULL
+      JOIN product P
+      ON R.product_id = P.product_id
+      JOIN users S 
+      ON S.user_id = P.user_id`,[user_id])
+
+      if(products.rows.length===0){
+        res.json({message:'No products left to be reviewed'})
+      }
+      else{
+        res.json(products.rows)
+      }
+    } catch (error) {
+      console.error(`Error /customer/to-be-reviewed: ${error.message}`);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
+
+  
   router.put("/change_password", async (req, res) => {
     try {
       
@@ -37,6 +223,6 @@ router.get("/:user_id", async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-  
+
 
 module.exports = router

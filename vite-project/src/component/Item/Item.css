@@ -44,6 +44,18 @@
   color: var(--primary);
 }
 
+.disc_pct{
+  font-family: 'Nunito Sans', sans-serif;
+  color: rgb(104, 99, 99);
+  font-size: small;
+}
+
+.new-price-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: min-content;
+}
 
 .item:hover{
   transform: scale(1.03);

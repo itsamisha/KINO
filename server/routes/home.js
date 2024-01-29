@@ -147,15 +147,14 @@ router.get("/search", async (req, res) => {
     let searchQuery;
     switch (option) {
       case "product":
-        searchQuery = `SELECT * FROM product WHERE LOWER(name) LIKE LOWER($1) ORDER BY purchase_count DESC;`;
+        searchQuery = `SELECT P.*, ROUND((D.discount_percentage*100),0) AS discount_pct,
+        ROUND(P.price*(1-D.discount_percentage),2) AS new_price
+        FROM product P LEFT JOIN discount D
+        ON P.product_id = D.product_id
+        WHERE LOWER(P.name) LIKE LOWER($1)
+        ORDER BY P.purchase_count DESC`;
         break;
-      case "category":
-        // Adjust this query based on your actual schema
-        searchQuery = `SELECT * FROM product p JOIN category c
-                ON (p.product_id=c.product_id)  
-                WHERE LOWER(category_name) LIKE LOWER($1) 
-                ORDER BY purchase_count DESC;`;
-        break;
+        
       case "seller":
         searchQuery = `SELECT 	P.* FROM product P JOIN users U
         ON U.user_id = P.user_id 
@@ -178,7 +177,12 @@ router.get("/search", async (req, res) => {
 //Fetch popular products
 router.get("/popular", async(req,res)=>{
     try {
-        const products = await pool.query("SELECT * FROM product ORDER BY purchase_count DESC LIMIT 12")
+        const products = await pool.query(`SELECT P.*, ROUND((D.discount_percentage*100),0) AS discount_pct,
+        ROUND(P.price*(1-D.discount_percentage),2) AS new_price
+        FROM product P LEFT JOIN discount D
+        ON P.product_id = D.product_id
+        ORDER BY P.purchase_count DESC
+        LIMIT 12`)
         res.status(200).send(products.rows)
     } catch (error) {
         console.log(error.message)
@@ -189,7 +193,13 @@ router.get("/popular", async(req,res)=>{
 //Fetch New Arrivals
 router.get("/new-arrival", async(req,res) =>{
     try {
-        const products = await pool.query("SELECT * FROM product ORDER BY product_id  DESC LIMIT 12")
+        const products = await pool.query(`
+        SELECT P.*, ROUND((D.discount_percentage*100),0) AS discount_pct,
+        ROUND(P.price*(1-D.discount_percentage),2) AS new_price
+        FROM product P LEFT JOIN discount D
+        ON P.product_id = D.product_id
+        ORDER BY P.product_id DESC
+        LIMIT 12`)
         res.status(200).send(products.rows)
     } catch (error) {
         console.log(error.message)
@@ -199,7 +209,12 @@ router.get("/new-arrival", async(req,res) =>{
 //Fetch discount products
 router.get("/discount-product", async(req,res) =>{
     try {
-        const products = await pool.query("SELECT DISTINCT* FROM product p join discount d on(p.product_id=d.product_id) ORDER BY discount_percentage  DESC LIMIT 12")
+        const products = await pool.query(`SELECT P.*, ROUND((D.discount_percentage*100),0) AS discount_pct,
+        ROUND(P.price*(1-D.discount_percentage),2) AS new_price
+        FROM product P JOIN discount D
+        ON P.product_id = D.product_id
+        ORDER BY D.discount_percentage DESC
+        LIMIT 12`)
         res.status(200).send(products.rows)
     } catch (error) {
         console.log(error.message)

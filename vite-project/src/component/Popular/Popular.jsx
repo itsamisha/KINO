@@ -40,7 +40,7 @@ const Popular = ({ title, param }) => {
       </div>
       <div className='popular'>
         {displayedProducts.map((item) => {
-          return <Item key={item.product_id} id={item.product_id} name={item.name} price={Math.round(item.price)} photo={item.photo_url} description={item.description} />
+          return <Item key={item.product_id} id={item.product_id} name={item.name} price={item.price} photo={item.photo_url} description={item.description} new_price ={item.new_price} discount_pct ={item.discount_pct} />
         })}
       </div>
       <button onClick={handleToggleShowMore} className="show-more-button">
