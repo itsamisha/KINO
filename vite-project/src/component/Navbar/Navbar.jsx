@@ -111,6 +111,7 @@ const Navbar = () => {
           </div>
         </ul>
       </div>
+      <div className="gradient-line"></div>
     </>
   );
 };

@@ -10,6 +10,7 @@ const containerStyles = {
     width: "75rem",
     height: "30.5rem",
     margin : "0 auto",
+    marginTop : "3rem"
 };
 
 const urls = [
@@ -21,11 +22,8 @@ const urls = [
 
 function Shop(){
     const {updateSearchValue,updateSearchOption } = useSearch();
-    // updateSearchOption('product')
-    // updateSearchValue('')
     return <div>
         <Navbar />
-        <Mascot/>
         <div style={containerStyles}>
           <ImageSlider urls={urls}/>
         </div>

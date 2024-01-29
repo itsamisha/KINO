@@ -1,24 +1,72 @@
+:root {
+  --text: #120708;
+  --background: #fdf9fa;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+
+  --background-50: #f9ecef;
+  --background-100: #f2d9df;
+  --background-700: #732639;
+  --background-900: #260d13;
+}
+
+
 .filter-menu {
-    width: 250px;
-    padding: 20px;
-    border-right: 1px solid #ddd;
-    height: 100%;
-  }
+  display: flex;
+  flex-direction: start;
+  width: 100%;
+  padding-top: 20px;
+  border-bottom: 1px solid #ddd;
+  margin-left: auto;
+  height: 5vh;
+}
+
+.filter{
+  cursor: pointer;
+  width: 100%;
+  background-color: var(--background-50);
+  display: flex;
+  align-items: center;
+  color: var(--background-900);
+  font-size: 18px;
+  font-weight: bold;
+}
+.filter {
+  color: var(--background-700);
+}
+
+.filter-section{
+  display: flex;
+  flex-direction: start;
+  justify-content: center;
+}
+
+/*bhong chong*/
+.price-range{
+  display: flex;
+  justify-content:flex-start;
   
-  .filter-section {
-    margin-bottom: 20px;
-  }
-  
-  .filter-section h3 {
-    margin-bottom: 10px;
-  }
-  
-  .filter-section select,
-  .filter-section input[type="range"] {
-    width: 100%;
-    padding: 8px 10px;
-    margin-top: 5px;
-  }
-  
-  /* Additional styling can be added as needed */
-  
+}
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-right: 20px; 
+}
+
+.filter-section h4 {
+  margin-bottom: 10px;
+}
+
+.filter-section select,
+.filter-section input {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+.filter-section p {
+  margin-top: 10px;
+}

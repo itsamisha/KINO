@@ -47,7 +47,6 @@ const Product = () => {
 return (
   <div>
     <Navbar />
-    <Mascot />
     <div className="product-grid">
       <ProductDisplay product={product} />
       <DescriptionBox description={product.description}/>

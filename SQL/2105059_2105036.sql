@@ -1,9 +1,3 @@
-//Attributes for the seller
-ALTER TABLE users
-ADD loaction VARCHAR(255),
-ADD bank_account_number VARCHAR(50),
-ADD revenue INT;
-
 CREATE TABLE users(
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(100) NOT NULL,
@@ -13,9 +7,9 @@ CREATE TABLE users(
     user_type VARCHAR(8) NOT NULL,
     registration_date DATE NOT NULL,
     preferred_payment_method VARCHAR(9),
-    loaction VARCHAR(255),
+    location VARCHAR(255),
     bank_account_number VARCHAR(50), 
-    revenue INT
+    revenue INT CHECK (revenue>=0)
 );
 
 CREATE TABLE Product (
@@ -27,6 +21,7 @@ CREATE TABLE Product (
   photo_url TEXT,
   user_id INT REFERENCES users(user_id) ON DELETE CASCADE
 );
+
 CREATE TABLE category (
     category_id SERIAL PRIMARY KEY,
     category_name VARCHAR(255) NOT NULL,
@@ -45,7 +40,7 @@ CREATE TABLE cart_items (
     cart_item_id SERIAL PRIMARY KEY,
     cart_id INT,
     product_id INT,
-    quantity INT,
+    quantity INT NOT NULL CHECK (quantity>0),
     FOREIGN KEY (cart_id) REFERENCES cart(cart_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES product(product_id) 
 );
@@ -69,8 +64,8 @@ CREATE TABLE review (
     product_id INT,
     review_text TEXT,
     reply_text TEXT,
-    rating INT CHECK (rating >= 1 AND rating <= 5),
-    created_at TIMESTAMP,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    created_at TIMESTAMP NOT NULL,
     PRIMARY KEY (user_id, product_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES product(product_id)
@@ -80,7 +75,7 @@ CREATE TABLE orders (
     order_id SERIAL PRIMARY KEY,
     user_id INT,
     cart_id INT,
-    order_date TIMESTAMP,
+    order_date TIMESTAMP NOT NULL,
     estimated_delivery_date TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (cart_id) REFERENCES cart(cart_id)
@@ -97,9 +92,9 @@ CREATE TABLE order_items (
 CREATE TABLE payment (
     payment_id SERIAL PRIMARY KEY,
     order_id INT,
-    payment_method VARCHAR(50),
-    payment_date TIMESTAMP,
-    phone_number VARCHAR(20),
+    payment_method VARCHAR(50) NOT NULL,
+    payment_date TIMESTAMP NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
     card_number VARCHAR(16),
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE
 );

@@ -4,27 +4,21 @@
   --primary: #e2323f;
   --secondary: #f4828a;
   --accent: #fc4e59;
-  --background-50: #f9ecef;
-  --background-50: #f9ecef;
---background-100: #f2d9df;
---background-200: #e6b3bf;
---background-300: #d98c9f;
---background-400: #cc667f;
---background-500: #bf4060;
---background-600: #99334c;
---background-700: #732639;
---background-800: #4d1926;
---background-900: #260d13;
---background-950: #13060a;
-}
 
+  --background-50: #f9ecef;
+  --background-100: #f2d9df;
+  --background-700: #732639;
+  --background-900: #260d13;
+}
 
 .descriptionbox {
   border: 1px solid #ddd;
-  margin: auto; 
-  width: 75%; 
-  box-sizing: border-box; 
+  margin: 0 auto;
+  width: 75.5%;
+  box-sizing: border-box;
   color: var(--text);
+  overflow: hidden;
+  transition: 0.5s ease;
 }
 
 .descriptionbox-header {
@@ -37,7 +31,7 @@
   font-size: 18px;
   font-weight: bold;
 }
-.descriptionbox-header:hover{
+.descriptionbox-header:hover {
   color: var(--background-700);
 }
 
@@ -46,6 +40,7 @@
 }
 
 .descriptionbox-content {
+  
   padding: 8px;
   display: block;
   overflow: hidden;

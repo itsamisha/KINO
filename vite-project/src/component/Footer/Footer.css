@@ -1,4 +1,6 @@
-
+* {
+  font-family: "Quicksand", sans-serif;
+}
  :root {
     --text: #120708;
     --background: #e9e2e2;
@@ -10,13 +12,13 @@
     ---white : #fff;
   } 
  
-  .gradient-line {
+  .gradient-line-footer {
     top: 0;
     left: 0;
     width: 100%;
     height: 0.25rem;
     background: linear-gradient(to right, var(--primary), var(--secondary));
-    margin-top: 3rem;
+    margin-top: 3rem
   }
 
   
@@ -112,7 +114,7 @@
   }
   
   .footer-links {
-    margin-bottom: 10px; /* Add some space between the links and the copyright info */
+    margin-bottom: 10px; 
   }
   
   .footer-links ul {
@@ -120,12 +122,12 @@
     padding: 0;
     margin: 0;
     display: flex;
-    flex-wrap: wrap; /* Ensure the list can wrap on smaller screens */
-    justify-content: center; /* Center the links */
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .footer-links li {
-    margin: 0 10px; /* Add horizontal margin */
+    margin: 0 10px; 
   }
   
   .footer-links a {

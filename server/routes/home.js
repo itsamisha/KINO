@@ -98,14 +98,7 @@ router.get('/category', async (req, res) => {
 //                     queryParams.push(`%${category}%`);
 //                 }
 //                 break;
-//             case 'category':
-//                 searchQuery = `SELECT DISTINCT p.* FROM product p JOIN category c ON (p.product_id=c.product_id)  
-//                                WHERE LOWER(category_name) LIKE LOWER($1)`;
-//                 if (category) {
-//                     searchQuery += ` AND LOWER(category_name) LIKE LOWER($${queryParams.length + 1})`;
-//                     queryParams.push(`%${category}%`);
-//                 }
-//                 break;
+
 //             case 'seller':
 //                 searchQuery = `SELECT DISTINCT p.* FROM product  p JOIN category c ON (p.product_id=c.product_id) JOIN users ON users.user_id = product.user_id 
 //                                WHERE LOWER(users.name) LIKE LOWER($1)`;

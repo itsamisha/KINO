@@ -52,7 +52,7 @@ import "./Footer.css"; // Make sure to link your CSS file
 const Footer = () => {
   return (
     <div>
-      <div className="gradient-line"></div>
+      <div className="gradient-line-footer"></div>
       <footer className="footer">
         <div className="footer-top">
           <div className="footer-social-icons">

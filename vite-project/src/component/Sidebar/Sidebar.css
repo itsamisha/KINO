@@ -1,0 +1,92 @@
+:root {
+  --text: #120708;
+  --background: #fdf9fa;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+  --background-50: #f9ecef;
+  --background-100: #f2d9df;
+  --background-200: #e6b3bf;
+}
+
+.sidebar {
+  height: 55vh;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: var(--background-100);
+  overflow-x: hidden;
+  transition: width 0.5s ease-in-out, margin-left 0.5s ease-in-out;
+  padding-top: 60px;
+  margin-top: 20vh;
+  border: 1px solid var(--background-200);
+}
+
+.sidebar.open {
+  position: fixed;
+  width: 250px;
+  height: 55vh;
+  margin-top: 20vh;
+  border: 2px solid var(--background-200);
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 35px;
+  text-decoration: none;
+  font-size: 20px;
+  color: var(--text);
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  font-size: 35px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--background);
+  padding: 10px 15px;
+  font-weight: bold;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: var(--accent);
+}
+
+.main {
+  transition: width 0.5s ease-in-out, margin-left 0.5s ease-in-out;
+  padding: 16px;
+}
+
+.main.open {
+  margin-left: 250px;
+}
+
+.closebtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--text);
+  padding: 10px 15px;
+  font-weight: bold;
+  border: none;
+}
+.closebtn:hover {
+  background-color: transparent;
+  color: var(--primary);
+}
