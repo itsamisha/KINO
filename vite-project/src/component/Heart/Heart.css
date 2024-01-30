@@ -1,0 +1,21 @@
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.25);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fillHeart {
+    0% {
+      background-size: 0 100%; /* Start with no fill */
+    }
+    100% {
+      background-size: 100% 100%; /* Fully filled */
+    }
+  }
+  

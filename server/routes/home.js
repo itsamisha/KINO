@@ -152,6 +152,7 @@ router.get("/search", async (req, res) => {
         FROM product P LEFT JOIN discount D
         ON P.product_id = D.product_id
         WHERE LOWER(P.name) LIKE LOWER($1)
+        AND P.stock_quantity > 0
         ORDER BY P.purchase_count DESC`;
         break;
         
@@ -159,6 +160,7 @@ router.get("/search", async (req, res) => {
         searchQuery = `SELECT 	P.* FROM product P JOIN users U
         ON U.user_id = P.user_id 
        WHERE LOWER(U.name) LIKE LOWER($1) AND U.user_type='seller'
+       AND P.stock_quantity > 0
        ORDER BY purchase_count DESC;`;
         break;
       default:
@@ -181,6 +183,7 @@ router.get("/popular", async(req,res)=>{
         ROUND(P.price*(1-D.discount_percentage),2) AS new_price
         FROM product P LEFT JOIN discount D
         ON P.product_id = D.product_id
+        AND P.stock_quantity > 0
         ORDER BY P.purchase_count DESC
         LIMIT 12`)
         res.status(200).send(products.rows)
@@ -198,6 +201,7 @@ router.get("/new-arrival", async(req,res) =>{
         ROUND(P.price*(1-D.discount_percentage),2) AS new_price
         FROM product P LEFT JOIN discount D
         ON P.product_id = D.product_id
+        AND P.stock_quantity > 0
         ORDER BY P.product_id DESC
         LIMIT 12`)
         res.status(200).send(products.rows)
@@ -213,6 +217,7 @@ router.get("/discount-product", async(req,res) =>{
         ROUND(P.price*(1-D.discount_percentage),2) AS new_price
         FROM product P JOIN discount D
         ON P.product_id = D.product_id
+        AND P.stock_quantity > 0
         ORDER BY D.discount_percentage DESC
         LIMIT 12`)
         res.status(200).send(products.rows)
@@ -221,6 +226,32 @@ router.get("/discount-product", async(req,res) =>{
         res.status(400).send(error.message)
     }
 })
+
+//Fetch Similar Products
+router.get("/similar-products/:product_id", async(req,res) =>{
+  try {
+      const {product_id} = req.params
+      const products = await pool.query(`SELECT P.*,
+      ROUND(P.price*(1-D.discount_percentage),2) as new_price,
+      ROUND(D.discount_percentage*100,0) as discount_pct
+      FROM product P LEFT JOIN product SP
+      ON P.user_id = SP.user_id
+      LEFT JOIN discount D 
+      ON D.product_id = P.product_id
+      WHERE P.user_id = (SELECT user_id FROM product
+      WHERE product_id= $1)
+      AND P.product_id <> $1
+      AND P.stock_quantity > 0
+      GROUP BY P.product_id, D.discount_percentage
+      ORDER BY RANDOM()
+      LIMIT 12;`,[product_id])
+      res.status(200).send(products.rows)
+  } catch (error) {
+      console.log(error.message)
+      res.status(400).send(error.message)
+  }
+})
+
 //Fetch Specific product
 router.get("/:product_id", async (req, res) => {
   try {
@@ -249,6 +280,8 @@ router.get("/:product_id", async (req, res) => {
     res.status(400).send(error.message);
   }
 });
+
+
 
 
 

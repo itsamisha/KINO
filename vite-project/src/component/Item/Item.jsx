@@ -13,13 +13,12 @@ const Item = (props) => {
     }
     return truncatedString;
   }
+  const handleClick = () => {
+    window.location.href =  `/product/${props.id}`// This line will force a full page refresh
+  };
 
   return (
-    <div className="item">
-      <Link
-        style={{ textDecoration: "none", color: "#000000" }}
-        to={`/product/${props.id}`}
-      >
+    <div className="item" onClick={handleClick}>
         {props.photo === null || props.photo === undefined ? (
           <img src={image} className="item__image" alt="" />
         ) : (
@@ -27,14 +26,6 @@ const Item = (props) => {
         )}
         <br />
         <br />
-      </Link>
-      <div className="heart">
-        <Heart />
-      </div>
-      <Link
-        style={{ textDecoration: "none", color: "#000000" }}
-        to={`/product/${props.id}`}
-      >
         <div className="name">{truncateString(props.name, 7)}</div>
         {props.new_price !== null ? (
           <div className="new-price-container">
@@ -45,7 +36,6 @@ const Item = (props) => {
           <div className="price">৳{props.price}</div>
         )}
         <Star rating={0} size={1} />
-      </Link>
     </div>
   );
 };

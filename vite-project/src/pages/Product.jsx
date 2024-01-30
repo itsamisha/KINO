@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import '../css/Product.css'
 import ProductDisplay from "../component/ProductDisplay/ProductDisplay";
 import Navbar from "../component/Navbar/Navbar";
-import Mascot from "../component/Mascot/Mascot";
+import Popular from "../component/Popular/Popular";
 import DescriptionBox from "../component/DescriptionBox/DescriptionBox";
 
 const Product = () => {
@@ -50,6 +50,8 @@ return (
     <div className="product-grid">
       <ProductDisplay product={product} />
       <DescriptionBox description={product.description}/>
+      <br /><br />
+      <Popular param={`similar-products/${productId}`} title='Related Picks'/>
     </div>
   </div>
 );

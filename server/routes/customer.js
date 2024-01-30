@@ -128,11 +128,17 @@ router.get("/:user_id", async (req, res) => {
   //Delete from wishlist
   router.delete("/remove-from-wishlist", async (req, res) => {
       try {
-        const {wishlist_item_id} = req.body
+        const {user_id,product_id} = req.body
           await pool.query(`
-              DELETE FROM wishlist_items
-              WHERE wishlist_item_id = $1;
-          `, [wishlist_item_id]);
+          DELETE FROM wishlist_items
+          WHERE wishlist_item_id = 
+          (SELECT WI.wishlist_item_id
+          FROM wishlist_items WI 
+          JOIN wishlist W ON WI.wishlist_id = W.wishlist_id
+          JOIN product P ON WI.product_id = P.product_id
+          WHERE W.user_id = $1
+          AND P.product_id = $2);
+          `, [user_id,product_id]);
           res.json({ message: 'Wishlist deleted successfully' });
       } catch (error) {
           console.error(`Error deleting wishlist: ${error.message}`);
@@ -140,7 +146,6 @@ router.get("/:user_id", async (req, res) => {
       }
   })
   
-
   //To be reviewed products
   router.get("/:user_id/to-be-reviewed", async (req,res) => {
     try {

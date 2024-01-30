@@ -6,7 +6,18 @@
   --accent: #fc4e59;
   --background-50: #f9ecef;
 }
+.heart{
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 35px;
+  margin-left: 2rem;
+}
 
+.name-heart-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .productdisplay {
   display: flex;

@@ -35,9 +35,10 @@ const Popular = ({ title, param }) => {
 
   return (
     <div className="container">
-      <div className="popular-h1-container">
+      {displayedProducts.length>0? <div className="popular-h1-container"> 
         <h1 className='popular-h1'>{`${title}`}</h1>
       </div>
+      : <></>}
       <div className='popular'>
         {displayedProducts.map((item) => {
           return <Item key={item.product_id} id={item.product_id} name={item.name} price={item.price} photo={item.photo_url} description={item.description} new_price ={item.new_price} discount_pct ={item.discount_pct} />
