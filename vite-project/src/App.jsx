@@ -11,14 +11,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Product from "./pages/Product";
 import SearchResults from "./component/SearchResults/SearchResults";
 import { SearchProvider } from "./context/SearchContext";
-
-import Searchbar from './component/Searchbar/Searchbar';
-
-import FilterMenu from './component/Filter/FilterMenu';
-
-
-
-
+import Wishlist from "./pages/Wishlist";
 
 function App() {
   return (
@@ -30,7 +23,8 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/register" element={<Registration />} />
-            <Route path="customer" element={<CustomerDashboard />} />
+            <Route path="/customer" element={<CustomerDashboard />} />
+            <Route path="/wishlist" element={<Wishlist/>} />
             <Route
               path="/customer/change_password"
               element={<ChangePassword />}

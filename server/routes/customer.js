@@ -34,6 +34,118 @@ router.get("/:user_id", async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
+  //Get Product Details
+  router.post("/:user_id/:product_id", async (req, res) => {
+    try {
+      const { user_id,product_id } = req.params;
+      const count = await pool.query(
+        `SELECT COUNT(*) 
+        FROM wishlist_items 
+        WHERE wishlist_id = (SELECT W.wishlist_id
+        FROM users U LEFT JOIN wishlist W
+        ON U.user_id = W.user_id 
+        WHERE U.user_id = $1) AND product_id = $2;`,
+        [user_id,product_id]
+      );
+  
+      if (!count.rows.length) {
+        res.status(404).send("Error in checking whether this product is in the wishlist");
+        return;
+      }
+  
+      res.status(200).send(count.rows[0]);
+    } catch (error) {
+      console.error(`Error in /customer/:user_id/:product_id route: ${error.message}`);
+      res.status(400).send(error.message);
+    }
+  });
+  //Get Cart Products
+  router.get("/:user_id/cart", async (req, res) => {
+    try {
+      const { user_id } = req.params;
+      const customer = await pool.query(`SELECT P."name", P.photo_url, P.price, CI.quantity 
+      FROM users U LEFT JOIN cart C
+      ON U.user_id = C.user_id
+      AND U.user_id = $1
+      JOIN cart_items CI 
+      ON CI.cart_id = C.cart_id
+      JOIN product P
+      ON CI.product_id = P.product_id;`, [user_id]);
+      
+      if (customer.rows.length !== 0) {
+        res.json(customer.rows);
+      } else {
+        res.status(404).json({ message: 'Customer not found or wishlist empty' });
+      }
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
+
+  //Add to Cart
+  router.post("/add-to-cart", async (req,res) => {
+    try {
+        let cart_id
+        const {user_id,product_id,quantity} = req.body
+        const oldCart = await pool.query(`SELECT *
+        FROM cart
+        WHERE user_id = $1;`, [user_id])
+        if(oldCart.rows.length === 0){
+            const cart = await pool.query(`INSERT INTO cart (user_id,create_date) 
+            VALUES ($1,CURRENT_DATE) RETURNING *`,[user_id])
+            cart_id = cart.rows[0].cart_id
+        }
+
+        else{
+           cart_id = oldCart.rows[0].cart_id
+           const cart_item = await pool.query(`INSERT INTO cart_items 
+           (cart_id,product_id,quantity) VALUES ($1,$2,$3) RETURNING *`,[cart_id,product_id,quantity])
+           res.json({data: cart_item.rows})
+        }
+        
+    } catch (error) {
+        console.error(`Error in /customer/add-to-cart route: ${error.message}`);
+        res.status(500).send({success: false, error: error.message})
+    }
+  })
+
+  //Update Quantity in Cart 
+  router.put("/update-cart-quantity", async (req, res) => {
+    try {
+      const { cart_id, product_id, quantity } = req.body;
+      const update = await pool.query(`UPDATE cart_items SET
+      quantity = $1
+      WHERE cart_id = $2
+      AND product_id = $3
+      RETURNING *`, [quantity,cart_id,product_id]);
+      res.status(200).json(update.rows[0])
+      console.log(update.rows[0])
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+  //Remove from Cart
+  router.delete("/delete-from-cart", async (req,res) => {
+    try {
+      const { user_id, product_id } = req.body;
+      await pool.query(`DELETE FROM cart_items 
+      WHERE cart_id = (SELECT cart_id FROM cart
+        WHERE user_id = $1)
+      AND product_id = $2`, [user_id,product_id]);
+      res.status(200).json({message : `Cart item deleted successfully`})
+    }
+    catch (error) {
+      console.error(`Error in "/customer/delete-from-cart"` + error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
+
+  //Payment and Order Confirmation
+
   
   //Get Order History
   router.get("/:user_id/orders", async (req, res) => {
@@ -114,11 +226,19 @@ router.get("/:user_id", async (req, res) => {
 
         else{
            wishlist_id = oldWishlist.rows[0].wishlist_id
-           const wishlist_item = await pool.query(`INSERT INTO wishlist_items 
-           (wishlist_id,product_id) VALUES ($1,$2) RETURNING *`,[wishlist_id,product_id])
-           res.json({data: wishlist_item.rows})
         }
-        
+        const existingItem = await pool.query(`SELECT *
+        FROM wishlist_items
+        WHERE wishlist_id = $1 AND product_id = $2;`, [wishlist_id, product_id]);
+
+        if (existingItem.rows.length > 0) {
+            res.json({ message: "Product already exists in the wishlist" });
+            return;
+        }
+
+        const insertNewItem = await pool.query(`INSERT INTO wishlist_items 
+        (wishlist_id, product_id) VALUES ($1, $2) RETURNING *;`, [wishlist_id, product_id]);
+
     } catch (error) {
         console.error(`Error in /customer/add-to-wishlist route: ${error.message}`);
         res.status(500).send({success: false, error: error.message})
@@ -139,7 +259,7 @@ router.get("/:user_id", async (req, res) => {
           WHERE W.user_id = $1
           AND P.product_id = $2);
           `, [user_id,product_id]);
-          res.json({ message: 'Wishlist deleted successfully' });
+          res.json({ message: 'Wishlist item deleted successfully' });
       } catch (error) {
           console.error(`Error deleting wishlist: ${error.message}`);
           res.status(500).json({ error: 'Internal Server Error' });
@@ -171,13 +291,31 @@ router.get("/:user_id", async (req, res) => {
   })
 
   //Add Review
-  //TODO: pick from here
   router.post("/add-review", async (req,res) => {
     try {
-        
+        const {user_id, product_id, review_text, rating} = req.body;
+        const review = await pool.query(`INSERT INTO review (user_id,product_id,review_text,rating,created_at) VALUES($1,$2,$3,$4,CURRENT_DATE) 
+        RETURNING *`,[user_id,product_id,review_text,rating])
+        res.json({ message: `Review -- user -- ${user_id} -- product_id -- ${product_id}` });
     } catch (error) {
-        console.error(`Error in /customer/add-to-wishlist route: ${error.message}`);
+        console.error(`Error in /customer/add-review route: ${error.message}`);
         res.status(500).send({success: false, error: error.message})
+    }
+  })
+
+  //Delete review
+  router.delete("/delete-review", async (req, res) => {
+    try {
+      const {user_id,product_id} = req.body
+        await pool.query(`
+        DELETE FROM review
+        WHERE user_id = $1
+        AND product_id = $2
+        `, [user_id,product_id]);
+        res.json({ message: 'Review deleted successfully' });
+    } catch (error) {
+        console.error(`Error deleting review: ${error.message}`);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
   })
 
@@ -207,7 +345,7 @@ router.get("/:user_id", async (req, res) => {
     }
   })
 
-  
+
   router.put("/change_password", async (req, res) => {
     try {
       

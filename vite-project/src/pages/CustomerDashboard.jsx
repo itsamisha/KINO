@@ -1,20 +1,19 @@
-import Mascot from "../component/Mascot/Mascot";
 import Navbar from "../component/Navbar/Navbar";
 import { useAuth } from "../context/AuthContext";
 import "../css/CustomerDashboard.css";
 import { useNavigate } from "react-router-dom";
 import { FaUserEdit } from "react-icons/fa";
-import SignIn from "./SignIn";
+import { useState} from "react";
 import Sidebar from "../component/Sidebar/Sidebar";
+import continueShopping from "../component/assets/continue-shopping.png";
+import continueShopping2 from "../component/assets/continue-shopping-2.png"
 
 function CustomerDashboard() {
   const navigate = useNavigate();
   const { isLoggedIn, authUser } = useAuth();
+  const [photo,setPhoto] = useState(continueShopping)
   if (!isLoggedIn) {
     navigate("/");
-  }
-  if (isLoggedIn) {
-    console.log(authUser.registration_date);
   }
 
   function handleChangePassword() {
@@ -29,9 +28,22 @@ function CustomerDashboard() {
     return `${day}-${month}-20${year}`;
   }
 
-  function editProfile(){
-    navigate('/customer/edit-profile')
+  function editProfile() {
+    navigate("/customer/edit-profile");
   }
+
+  function goToHome(){
+    window.location.href = '/'
+  }
+
+  function changePhotoEntry(){
+      setPhoto(continueShopping2)
+  }
+
+  function changePhotoExit(){
+   setPhoto(continueShopping)
+}
+
 
   return (
     <>
@@ -40,7 +52,7 @@ function CustomerDashboard() {
       <div className="customer-dashboard-container">
         <div className="user-info-parent">
           <h2 className="header">◧ PROFILE</h2>
-          <FaUserEdit className="edit-icon" onClick={editProfile}/>
+          <FaUserEdit className="edit-icon" onClick={editProfile} />
         </div>
 
         <div className="customer-info">
@@ -58,8 +70,11 @@ function CustomerDashboard() {
           </div>
           <div className="info-row">
             <p className="info-label">Preferred Payment Type</p>
-            <p className="info-value">{
-            authUser.preferred_payment_method? authUser.preferred_payment_method : '---'}</p>
+            <p className="info-value">
+              {authUser.preferred_payment_method
+                ? authUser.preferred_payment_method
+                : "---"}
+            </p>
           </div>
           <div className="info-row">
             <p className="info-label">Member since</p>
@@ -73,8 +88,13 @@ function CustomerDashboard() {
           >
             Change Password
           </button>
-          <br /><br />
+          <br />
+          <br />
         </div>
+      </div>
+      <div className="space"></div>
+      <div className="img-cont" onClick={goToHome}>
+          <img src={photo} alt="" onMouseEnter={changePhotoEntry} onMouseLeave={changePhotoExit} />
       </div>
     </>
   );

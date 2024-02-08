@@ -39,7 +39,7 @@
 }
 
 .customer-dashboard-container {
-  width: 45%;
+  width: 60%;
   margin: auto;
   padding: 20px;
   background-color: var(--background-50);
@@ -89,4 +89,13 @@
 
 .change-password-button:hover {
   background-color: var(--accent)
+}
+
+.img-cont{
+  margin-left: 12.5rem;
+  width: 80%;
+}
+
+.space{
+  height: 10rem;
 }

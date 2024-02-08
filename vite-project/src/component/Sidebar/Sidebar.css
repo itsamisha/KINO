@@ -24,6 +24,18 @@
   border: 1px solid var(--background-200);
 }
 
+.sidebar a {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.sidebar a:hover {
+  background-color: var(--primary);
+  color: white;
+  font-weight: 500;
+}
+
 .sidebar.open {
   position: fixed;
   width: 250px;
@@ -33,18 +45,17 @@
 }
 
 .sidebar a {
-  padding: 8px 8px 8px 35px;
+  padding: 20px 8px 8px 35px;
+  height: 35px;
+  margin: 0 auto;
   text-decoration: none;
   font-size: 20px;
-  color: var(--text);
   display: block;
   transition: 0.3s;
+  text-decoration: none;
 }
 
-.sidebar a:hover {
-  color: var(--accent);
-  text-decoration: underline;
-}
+
 
 .sidebar .closebtn {
   position: absolute;

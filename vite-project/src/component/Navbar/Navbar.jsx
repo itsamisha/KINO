@@ -6,8 +6,6 @@ import Searchbar from "../Searchbar/Searchbar";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useSearch } from "../../context/SearchContext.jsx";
-
-import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 
@@ -34,11 +32,12 @@ const Navbar = () => {
       setLoggingOut(true);
       updateSearchOption("product");
       updateSearchValue("");
-      Navigate("/change");
+
     } catch (error) {
       console.error("Error during sign-out:", error);
     } finally {
-      setLoggingOut(false); // Set loggingOut to false after sign-out logic is complete
+      setLoggingOut(false); 
+      window.location.href = '/';
     }
   };
 
