@@ -1,7 +1,7 @@
 import Navbar from "../component/Navbar/Navbar";
 import { useAuth } from "../context/AuthContext";
 import "../css/CustomerDashboard.css";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { FaUserEdit } from "react-icons/fa";
 import { useState} from "react";
 import Sidebar from "../component/Sidebar/Sidebar";
@@ -9,11 +9,13 @@ import continueShopping from "../component/assets/continue-shopping.png";
 import continueShopping2 from "../component/assets/continue-shopping-2.png"
 
 function CustomerDashboard() {
+
   const navigate = useNavigate();
   const { isLoggedIn, authUser } = useAuth();
+  console.log(isLoggedIn)
   const [photo,setPhoto] = useState(continueShopping)
   if (!isLoggedIn) {
-    navigate("/");
+    return <Navigate to="/signin"/>
   }
 
   function handleChangePassword() {

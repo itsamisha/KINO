@@ -14,7 +14,7 @@ const Item = (props) => {
     return truncatedString;
   }
   const handleClick = () => {
-    window.location.href =  `/product/${props.id}`// This line will force a full page refresh
+    window.location.href =  `/product/${props.id}`
   };
 
   return (

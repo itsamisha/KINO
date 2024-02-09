@@ -1,9 +1,9 @@
 :root {
-  --text: #120708;
-  --background: #fdf9fa;
-  --primary: #e2323f;
-  --secondary: #f4828a;
-  --accent: #fc4e59;
+  --text-color: #120708;
+  --background-color: #fdf9fa;
+  --primary-color: #e2323f;
+  --secondary-color: #f4828a;
+  --accent-color: #fc4e59;
   --background-50: #f9ecef;
   --background-100: #f2d9df;
   --background-200: #e6b3bf;
@@ -16,8 +16,8 @@
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: var(--background-100);
-  overflow-x: hidden;
+  background-image: linear-gradient(to bottom, var(--background-50), var(--background-100));
+  overflow: hidden;
   transition: width 0.5s ease-in-out, margin-left 0.5s ease-in-out;
   padding-top: 60px;
   margin-top: 20vh;
@@ -26,14 +26,13 @@
 
 .sidebar a {
   display: block;
+  color: var(--text-color);
   text-decoration: none;
-  color: var(--text);
 }
 
 .sidebar a:hover {
-  background-color: var(--primary);
+  background-color: var(--primary-color);
   color: white;
-  font-weight: 500;
 }
 
 .sidebar.open {
@@ -45,17 +44,14 @@
 }
 
 .sidebar a {
-  padding: 20px 8px 8px 35px;
-  height: 35px;
+  padding: 20px 8px 8px 25px;
+  height: 34px;
   margin: 0 auto;
-  text-decoration: none;
   font-size: 20px;
-  display: block;
   transition: 0.3s;
-  text-decoration: none;
+  display: flex;
+  align-items: center;
 }
-
-
 
 .sidebar .closebtn {
   position: absolute;
@@ -68,15 +64,15 @@
 .openbtn {
   font-size: 20px;
   cursor: pointer;
-  background-color: var(--primary);
-  color: var(--background);
+  background-color: var(--primary-color);
+  color: var(--background-color);
   padding: 10px 15px;
   font-weight: bold;
   border: none;
 }
 
 .openbtn:hover {
-  background-color: var(--accent);
+  background-color: var(--accent-color);
 }
 
 .main {
@@ -92,12 +88,14 @@
   font-size: 20px;
   cursor: pointer;
   background-color: transparent;
-  color: var(--text);
+  color: var(--text-color);
   padding: 10px 15px;
   font-weight: bold;
   border: none;
 }
+
 .closebtn:hover {
-  background-color: transparent;
-  color: var(--primary);
+  color: var(--primary-color);
+  background: transparent;
 }
+
