@@ -44,7 +44,10 @@ const Navbar = () => {
     <>
       <div className="nav-top">
         <ul>
-          <li>Become a seller</li>
+        <Link to="/sellerside">
+        <li>Become a seller</li>
+              </Link>
+          
           <li>Gift Cards</li>
         </ul>
       </div>

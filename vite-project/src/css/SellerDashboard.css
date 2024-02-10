@@ -1,0 +1,93 @@
+:root {
+    --text: #120708;
+    --background: #fdf9fa;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-50: #f9ecef;
+    --background-200: #e6b3bf;
+  
+  --text-700: #6e2b30;
+  --primary-700: #86131b;
+  }
+  
+  .user-info-parent{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: start;
+    width: 100%;}
+  
+  .header{
+    width: 97%;
+    font-size: 26px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text);
+  }
+  
+  .edit-icon{
+    width: 10%;
+    display: flex;
+    flex-grow: 1;
+    font-size: 24px;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  
+  .edit-icon:hover{
+    color:var(--primary);
+  }
+  
+  .customer-dashboard-container {
+    width: 45%;
+    margin: auto;
+    padding: 20px;
+    background-color: var(--background-50);
+    box-shadow: 0 0 0 .1em var(--background-200);
+  }
+  
+  .customer-info {
+    margin-bottom: 20px;
+  }
+  .info-row {
+    display: flex;
+    margin-bottom: 5px;
+  }
+  
+  .info-label {
+    width: 40%;
+    font-weight: bold;
+    color: var(--text);
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .info-value {
+    flex-grow: 1;
+    margin-left: 8px;
+    color: var(--text-700);
+    font-size: 18px;
+  }
+  
+  .customer-info p {
+    margin: 8px 0;
+  }
+  
+  .button-container {
+    text-align: center;
+  }
+  
+  .change-password-button {
+    background-color:var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    float: right;
+    font-size: 15px;
+  }
+  
+  .change-password-button:hover {
+    background-color: var(--accent)
+  }
+  

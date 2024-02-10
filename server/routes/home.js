@@ -22,14 +22,16 @@ router.post("/signin",async(req,res)=>
         return res.json({ success: false, message: 'Invalid email or password' });
       }
 
-    if (userInfo.user_type === 'customer') {
+    //  if (userInfo.user_type === 'customer')
+     {
         // res.json({ success: true, message: 'Sign-in successful', redirectTo: `/customer-info/${userInfo.user_id}`, userInfo});
-        res.json({ success: true, message: 'Sign-in successful', redirectTo: "/", userInfo});
+        res.json({ success: true, message: 'Sign-in successful', userInfo});
       }
 
-      else {
-        res.json({ success: true, message: 'Sign-in successful', redirectTo: `/seller-dashboard/${userInfo.user_id}`});
-      }
+      // else 
+      // {
+      //   res.json({ success: true, message: 'Sign-in successful'});
+      // }
 
   } catch (error) {
     console.error(`Error in /signin route: ${error.message}`);

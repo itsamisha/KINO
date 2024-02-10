@@ -1,11 +1,13 @@
 import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Shop from "./pages/Shop";
+ import SellerSide from "./SellerSide";
 import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import Registration from "./pages/Registration";
 import Footer from "./component/Footer/Footer";
 import CustomerDashboard from "./pages/CustomerDashboard";
+import SellerDashboard from "./pages/SellerDashboard";
 import ChangePassword from "./pages/ChangePassword";
 import { AuthProvider } from "./context/AuthContext";
 import Product from "./pages/Product";
@@ -20,6 +22,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Shop />} />
+            <Route path="/sellerside" element={<SellerSide />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/register" element={<Registration />} />
