@@ -6,14 +6,33 @@ import Searchbar from "../Searchbar/Searchbar";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useSearch } from "../../context/SearchContext.jsx";
-import { Navigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
+import { useEffect } from "react";
 
 const Navbar = () => {
   const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn,sellerLoggedIn,
     setSellerLoggedIn } = useAuth();
   const { updateSearchValue, updateSearchOption } = useSearch();
   const [loggingOut, setLoggingOut] = useState(false); 
+  const [cartItems, setCartItems] = useState(0);
+  
+  useEffect(() => {
+    async function getCartItems() {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/customer/${authUser.user_id}/cart_items`
+        );
+        const {cart_items} = await response.json();
+        setCartItems(cart_items);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+
+    if (isLoggedIn) {
+      getCartItems();
+    }
+  }, [isLoggedIn]);
 
   const logOut = async (e) => {
     e.preventDefault();
@@ -28,19 +47,26 @@ const Navbar = () => {
         user_type: "",
         registration_date: "",
         preferred_payment_method: "",
+        cart_items: 0
       });
       setIsLoggedIn(false);
-      setLoggingOut(true);
       updateSearchOption("product");
       updateSearchValue("");
-      return <Navigate to="/" />;
+      setLoggingOut(true);
+      window.location.reload();
     } catch (error) {
       console.error("Error during sign-out:", error);
-    } finally {
-      setLoggingOut(false); 
     }
     
   };
+
+  useEffect(() => {
+    if (loggingOut) {
+      const timeoutId = setTimeout(() => {
+      }, 0);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [loggingOut]);
 
   return (
     <>
@@ -110,7 +136,7 @@ const Navbar = () => {
             <Link to="/cart">
               <img className="cart-img" src={cartIcon} alt="" />
             </Link>
-            <div className="nav-cart-count">0</div>
+            <div className="nav-cart-count">{cartItems}</div>
           </div>
         </ul>
       </div>

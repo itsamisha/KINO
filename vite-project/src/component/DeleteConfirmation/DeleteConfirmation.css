@@ -1,0 +1,54 @@
+:root {
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-100: #f2d9df;
+    --text: #120708;
+    --background-500: #bf4060;
+  }
+
+  .delete-confirmation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .delete-confirmation {
+    background-color: var(--background-100);
+    border: 1px solid var(--background-500);
+    padding: 20px;
+    max-width: 45%;
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .delete-confirmation-text {
+    color: var(--text);
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 1.5rem 20px;
+  }
+  
+  .button-container button {
+    margin-right: 10px;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .button-container button:first-child {
+    background-color: var(--primary);
+    color: white;
+  }
+  
+  .button-container button:last-child {
+    background-color: var(--secondary);
+    color: white;
+  }
+  

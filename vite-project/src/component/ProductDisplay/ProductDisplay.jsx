@@ -6,13 +6,16 @@ import Star from "../Star/Star";
 import ProductPhoto from "../ProductPhoto/ProductPhoto";
 import Heart from "../Heart/Heart";
 const ProductDisplay = (props) => {
+
   const { product } = props;
   const {isFilled} = props;
+  const {inCart} = props;
   const url = product.photo_url;
   const product_id = product.product_id;
   const {isLoggedIn,authUser} = useAuth();
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const user_id = authUser.user_id;
+
   const handleIncrement = () => {
     if(quantity<product.stock_quantity)
     setQuantity(quantity + 1);
@@ -29,14 +32,15 @@ const ProductDisplay = (props) => {
       window.location.href = "/signin";
       return;
     }
-    const response = await fetch("http://localhost:5000/customer/add-to-wishlist", {
+    if(quantity>0){
+      const response = await fetch("http://localhost:5000/customer/add-to-wishlist", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ user_id, product_id }),
       });
-      console.log(response);
+    }
   }
 
   async function handleRemoveFromWishlist(){
@@ -64,10 +68,19 @@ const ProductDisplay = (props) => {
     }
   }
 
-  function handleAddToCart() {
+  async function handleAddToCart() {
     if (!isLoggedIn) {
       window.location.href = "/signin";
     }
+    const response = await fetch("http://localhost:5000/customer/add-to-cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_id, product_id, quantity}),
+    });
+
+    window.location.reload();
   }
   const containerStyles = {
     width: "500px",
@@ -133,8 +146,10 @@ const ProductDisplay = (props) => {
             {product.stock_quantity===0? <p>&nbsp;&nbsp;(Out of stock)</p> : <></>}
           </div>
         </div>
-        <br />
-        <button className="cart" onClick={handleAddToCart}>ADD TO CART</button>
+        <br /><br /><br />
+        {inCart>0?
+        <label className="already-in-cart">✔ ALREADY ADDED</label> 
+        :<button className="cart" onClick={handleAddToCart}>ADD TO CART</button>}
       </div>
     </div>
   );

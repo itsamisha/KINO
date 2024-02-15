@@ -19,7 +19,7 @@ export function AuthProvider(props) {
     phone_number: "",
     user_type: "",
     registration_date: "",
-    preferred_payment_method: "",
+    preferred_payment_method: ""
   };
 
   const [authUser, setAuthUser] = useState(initialAuthUser);

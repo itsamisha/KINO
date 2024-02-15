@@ -9,7 +9,7 @@ router.post("/signin",async(req,res)=>
 {try {
     const { email, password } = req.body;
     
-    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const result = await pool.query('SELECT * FROM users WHERE email = $1;', [email]);
 
     if (result.rows.length === 0) {
       return res.json({ success: false, message: 'Invalid email or password' });
@@ -22,16 +22,10 @@ router.post("/signin",async(req,res)=>
         return res.json({ success: false, message: 'Invalid email or password' });
       }
 
-    //  if (userInfo.user_type === 'customer')
-     {
-        // res.json({ success: true, message: 'Sign-in successful', redirectTo: `/customer-info/${userInfo.user_id}`, userInfo});
+      {
         res.json({ success: true, message: 'Sign-in successful', userInfo});
       }
 
-      // else 
-      // {
-      //   res.json({ success: true, message: 'Sign-in successful'});
-      // }
 
   } catch (error) {
     console.error(`Error in /signin route: ${error.message}`);

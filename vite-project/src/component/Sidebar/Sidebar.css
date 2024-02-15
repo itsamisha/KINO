@@ -10,7 +10,7 @@
 }
 
 .sidebar {
-  height: 55vh;
+  height: 65vh;
   width: 0;
   position: fixed;
   z-index: 1;
@@ -38,7 +38,7 @@
 .sidebar.open {
   position: fixed;
   width: 250px;
-  height: 55vh;
+  height: 65vh;
   margin-top: 20vh;
   border: 2px solid var(--background-200);
 }

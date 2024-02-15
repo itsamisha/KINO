@@ -40,7 +40,7 @@ router.get("/:user_id", async (req, res) => {
     try {
       const { user_id,product_id } = req.params;
       const count = await pool.query(
-        `SELECT COUNT(*) 
+        `SELECT COUNT(*),in_cart($1,$2) AS IN_CART
         FROM wishlist_items 
         WHERE wishlist_id = (SELECT W.wishlist_id
         FROM users U LEFT JOIN wishlist W
@@ -60,11 +60,12 @@ router.get("/:user_id", async (req, res) => {
       res.status(400).send(error.message);
     }
   });
+  
   //Get Cart Products
   router.get("/:user_id/cart", async (req, res) => {
     try {
       const { user_id } = req.params;
-      const customer = await pool.query(`SELECT P."name", P.photo_url, P.price, CI.quantity 
+      const customer = await pool.query(`SELECT P.product_id,P."name", P.photo_url, P.price,P.stock_quantity, CI.quantity 
       FROM users U LEFT JOIN cart C
       ON U.user_id = C.user_id
       AND U.user_id = $1
@@ -77,6 +78,22 @@ router.get("/:user_id", async (req, res) => {
         res.json(customer.rows);
       } else {
         res.status(404).json({ message: 'Customer not found or wishlist empty' });
+      }
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
+
+  //Get cart items count
+  router.get("/:user_id/cart_items", async (req, res) => {
+    try {
+      const { user_id } = req.params;
+      const customer = await pool.query(`SELECT cart_items_quantity($1) AS cart_items`, [user_id]);
+      if (customer.rows.length !== 0) {
+        res.json(customer.rows[0]);
+      } else {
+        res.status(404).json({ message: 'Error in /user_id/cart_items' });
       }
     } catch (error) {
       console.error(error.message);
@@ -114,12 +131,8 @@ router.get("/:user_id", async (req, res) => {
   //Update Quantity in Cart 
   router.put("/update-cart-quantity", async (req, res) => {
     try {
-      const { cart_id, product_id, quantity } = req.body;
-      const update = await pool.query(`UPDATE cart_items SET
-      quantity = $1
-      WHERE cart_id = $2
-      AND product_id = $3
-      RETURNING *`, [quantity,cart_id,product_id]);
+      const { user_id, product_id, quantity } = req.body;
+      const update = await pool.query(`SELECT update_cart_quantity($1,$2,$3)`, [user_id,product_id,quantity]);
       res.status(200).json(update.rows[0])
       console.log(update.rows[0])
     } catch (error) {
@@ -191,13 +204,16 @@ router.get("/:user_id", async (req, res) => {
   router.get("/:user_id/wishlist", async (req, res) => {
     try {
       const { user_id } = req.params;
-      const customer = await pool.query(`SELECT P.product_id,P.name, P.photo_url, WI.wishlist_item_id
+      const customer = await pool.query(`SELECT P.product_id,P.name,P.photo_url,WI.wishlist_item_id,
+      ROUND(COALESCE(D.discount_percentage, 0)*100) AS discount
       FROM users U LEFT JOIN wishlist W 
       ON U.user_id = W.user_id AND U.user_id = $1
       JOIN wishlist_items WI 
       ON WI.wishlist_id = W.wishlist_id
       JOIN product P 
-      ON P.product_id = WI.product_id;`, [user_id]);
+      ON P.product_id = WI.product_id
+      LEFT JOIN discount D ON D.product_id = P.product_id;
+      `, [user_id]);
       
       if (customer.rows.length !== 0) {
         res.json(customer.rows);

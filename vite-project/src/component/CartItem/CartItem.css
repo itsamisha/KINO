@@ -13,7 +13,7 @@
     font-family: 'Poppins', sans-serif;
   }
 
-  .wishlist-container{
+  .cart-container{
     background-image: linear-gradient(to right, var(--background), var(--background-50));
     padding: 10px;
     overflow: hidden;
@@ -29,11 +29,11 @@
     margin: 0 auto;
   }
 
-  .wishlist-image{
+  .cart-image{
     cursor: pointer;
     text-align: left;
-    height: 9rem;
-    width: 9rem;
+    height: 10rem;
+    width: 10rem;
     object-fit: cover;
     margin-right: auto;
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -59,6 +59,7 @@
     font-size: 29px;
     color: #b6b2ac;
     cursor: pointer;
+    padding: 0.55rem 0rem 0.25rem;
   }
   
   .delete:hover{
@@ -66,7 +67,7 @@
     color: var(--secondary);
   }
 
-  .wishlist-item-name{
+  .cart-item-name{
     font-family: 'Nunito Sans', sans-serif;
     font-weight: bold;
     padding-bottom: 0.5rem;
@@ -74,7 +75,7 @@
     font-size: large;
   }
 
-  .wishlist-item-discount{
+  .cart-item-discount{
     font-family: 'Nunito Sans', sans-serif;
     padding-bottom: 0.5rem;
     text-align: right;
@@ -82,10 +83,34 @@
     color: var(--accent);
   }
 
-  .wishlist-count{
+  .cart-count{
     font-family: 'Nunito Sans', sans-serif;
     padding-bottom: 0.5rem;
     text-align: center;
     font-size: large;
     color: var(--secondary);
+  }
+
+  .quantity-button{
+    color: #b6b2ac;
+    font-weight: 600;
+    font-size: large;
+    cursor: pointer;
+    margin: 0 0.5rem;
+  }
+
+  .quantity-count{
+    color: var(--secondary);
+    padding:0rem 0.5rem;
+    font-size: large;
+  }
+
+  .quantity-update{
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+  }
+
+  .quantity-button:hover{
+    color: var(--accent);
   }

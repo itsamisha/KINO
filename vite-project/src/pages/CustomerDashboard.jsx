@@ -7,6 +7,7 @@ import { useState} from "react";
 import Sidebar from "../component/Sidebar/Sidebar";
 import continueShopping from "../component/assets/continue-shopping.png";
 import continueShopping2 from "../component/assets/continue-shopping-2.png"
+import Title from "../component/Title/Title";
 
 function CustomerDashboard() {
 
@@ -51,12 +52,11 @@ function CustomerDashboard() {
     <>
       <Navbar />
       <Sidebar />
+      <Title title='PROFILE'/>
       <div className="customer-dashboard-container">
         <div className="user-info-parent">
-          <h2 className="header">◧ PROFILE</h2>
           <FaUserEdit className="edit-icon" onClick={editProfile} />
         </div>
-
         <div className="customer-info">
           <div className="info-row">
             <p className="info-label">Name</p>

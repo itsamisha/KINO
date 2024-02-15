@@ -1,0 +1,50 @@
+:root {
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-100: #f2d9df;
+    --text: #120708;
+    --background-500: #bf4060;
+  }
+
+.searchCart{
+    width: 45%;
+    padding: 8px;
+    font-size: medium;
+    font-weight: 400;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto ;
+    border: 1px solid var(--background-500);
+    background-color: var(--background-100);
+    outline: none;
+    height: 2rem;
+    font-size: 18px;
+  }
+  
+  .confirm-order {
+    padding: 12px 24px;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--background-100);
+    background-color: var(--secondary);
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 20%;
+    margin: 0 auto;
+  }
+  
+  .confirm-order:hover {
+    background-color: var(--primary);
+    border-color: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .confirm-order:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }

@@ -1,7 +1,6 @@
 import './WishlistItem.css'
 import { FaTrashAlt,FaCartPlus } from "react-icons/fa";
 import { useAuth } from '../../context/AuthContext';
-import { Link, Navigate } from 'react-router-dom';
 
 const WishlistItem = (props) => {
   function truncateString(str, maxWords) {
@@ -46,6 +45,9 @@ const WishlistItem = (props) => {
       <img src={props.photo} alt="" className='wishlist-image' onClick={handleClick}/>
       <div className='wishlist-item'>
         <div className='wishlist-item-name'>{truncateString(props.name, 7)}</div>
+        {props.discount>0? 
+        <div className='wishlist-item-discount'>{props.discount}% OFF</div> : <></> }
+        <br/> <br />
         <div className="buttons">
           <FaCartPlus className='add-to-cart'/>
           &nbsp;&nbsp;&nbsp;&nbsp;

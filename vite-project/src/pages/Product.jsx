@@ -13,6 +13,7 @@ const Product = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFilled,setIsFilled] = useState(false);
+  const [inCart,setInCart] = useState(-1);
   const { productId } = useParams();
   const userId = authUser.user_id;
 
@@ -27,9 +28,12 @@ const Product = () => {
       });
         const res = await isFilledResponse.json();
         const {count} = res;
-        console.log('hiiii    ' + count)
+        const {in_cart} = res;
         if(count>0){
           setIsFilled(true);
+        }
+        if(in_cart!==-1){
+          setInCart(in_cart);
         }
         const response = await fetch(`http://localhost:5000/${productId}`);
         const data = await response.json();
@@ -76,7 +80,7 @@ return (
   <div>
     <Navbar />
     <div className="product-grid">
-      <ProductDisplay product={product} isFilled = {isFilled}/>
+      <ProductDisplay product={product} isFilled = {isFilled} inCart = {inCart}/>
       <DescriptionBox description={product.description}/>
       <br /><br />
       <Popular param={`similar-products/${productId}`} title='Related Picks'/>

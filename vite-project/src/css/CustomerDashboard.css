@@ -14,9 +14,10 @@
 .user-info-parent{
   display: flex;
   justify-content: space-around;
-  align-items: center;
-  flex-direction: start;
-  width: 100%;}
+  align-items: right;
+  width: 100%;
+  text-align: right;
+}
 
 .header{
   width: 97%;
@@ -41,7 +42,7 @@
 .customer-dashboard-container {
   width: 60%;
   margin: auto;
-  padding: 20px;
+  padding: 20px; 
   background-color: var(--background-50);
   box-shadow: 0 0 0 .1em var(--background-200);
 }
