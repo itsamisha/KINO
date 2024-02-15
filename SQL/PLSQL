@@ -1,0 +1,52 @@
+--add products--
+CREATE OR REPLACE TRIGGER ADD_PROUDUCT
+AFTER INSERT
+ON Product
+FOR EACH ROW
+EXECUTE FUNCTION insert_category();
+
+CREATE OR REPLACE FUNCTION insert_category()
+
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Loop through each category associated with the product
+    FOREACH category_name IN ARRAY NEW.category_names
+    LOOP
+        
+            -- Insert the category
+            INSERT INTO category (category_name, product_id)
+            VALUES (category_name, NEW.product_id);
+       
+    END LOOP;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--update products--
+CREATE OR REPLACE TRIGGER update_Product
+AFTER INSERT
+ON Product
+FOR EACH ROW
+EXECUTE FUNCTION update_category();
+
+CREATE OR REPLACE FUNCTION update_category()
+RETURNS TRIGGER AS $$
+
+BEGIN
+
+        DELETE FROM category WHERE product_id=NEW.product_id;
+    -- Loop through each category associated with the product
+    FOREACH category_name IN ARRAY NEW.category_names
+    LOOP
+        
+            -- Insert the category
+            
+            INSERT INTO category (category_name, product_id)
+            VALUES (category_name, NEW.product_id);
+       
+    END LOOP;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;

@@ -1,0 +1,41 @@
+.reg-box {
+  position: relative;
+  left: 30%;
+  width: 30%; /* Adjust the width of the registration box */
+  margin: 0 auto; /* Center the box horizontally */
+  padding: 20px; /* Add padding */
+  background-color: #ffffff; /* Background color */
+  border: 1px solid #ccc; /* Border */
+  border-radius: 8px; /* Border radius */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+}
+
+.label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px; /* Font size for labels */
+}
+
+.reg-input {
+  width: calc(80% - 48px); /* Adjust input width to accommodate the eye icon and reduce the box size */
+  padding: 12px; /* Adjust padding */
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.eye1 {
+  position:relative;
+  top: 70%; /* Position the eye vertically centered */
+  left: 95%; /* Adjust the distance from the right */
+  transform: translateY(-175%); /* Center the eye vertically */
+  cursor: pointer;
+}
+.eye2 {
+  position:relative;
+  top: 80%; /* Position the eye vertically centered */
+  left: 95%; /* Adjust the distance from the right */
+  transform: translateY(-175%); /* Center the eye vertically */
+  cursor: pointer;
+}

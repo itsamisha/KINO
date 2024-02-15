@@ -1,7 +1,7 @@
 import Mascot from "./component/Mascot/Mascot"
 
 import NavbarSeller from "./component/NavbarSeller/NavbarSeller"
-
+import SellerReg from "./component/SellerReg/SellerReg"
 import Footer from "./component/Footer/Footer"
 
 
@@ -25,6 +25,7 @@ function SellerSide(){
     // updateSearchValue('')
     return <div>
         <NavbarSeller />
+        <SellerReg/>
         
         
       

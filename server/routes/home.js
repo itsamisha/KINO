@@ -43,7 +43,7 @@ router.post("/signin",async(req,res)=>
 //Registration
 router.post("/register", async (req,res) => {
     try {
-        const {email,password, name, phoneNumber, userType } = req.body;
+        const {email,password, name, phoneNumber, userType,bankAcc } = req.body;
 
         const hash = await bcrpyt.hash(password,10)
         const user = await pool.query("SELECT * FROM users WHERE email = $1 ", [email])
@@ -54,8 +54,8 @@ router.post("/register", async (req,res) => {
 
         else{
             const newUser = await pool.query(
-                "INSERT INTO users (email, password, name, phone_number, user_type, registration_date) VALUES ($1, $2, $3, $4, $5, CURRENT_DATE) RETURNING *",
-                [email, hash, name, phoneNumber, userType]
+                "INSERT INTO users (email, password, name, phone_number, user_type, bank_account_number,registration_date) VALUES ($1, $2, $3, $4, $5,$6, CURRENT_DATE) RETURNING *",
+                [email, hash, name, phoneNumber, userType,bankAcc]
             );
             res.status(200).send({ success: true, data: newUser.rows });
         }

@@ -10,7 +10,8 @@ import { Navigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 
 const Navbar = () => {
-  const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
+  const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn,sellerLoggedIn,
+    setSellerLoggedIn } = useAuth();
   const { updateSearchValue, updateSearchOption } = useSearch();
   const [loggingOut, setLoggingOut] = useState(false); 
 
@@ -38,6 +39,7 @@ const Navbar = () => {
     } finally {
       setLoggingOut(false); 
     }
+    
   };
 
   return (

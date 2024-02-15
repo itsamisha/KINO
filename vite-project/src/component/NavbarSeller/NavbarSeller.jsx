@@ -2,13 +2,37 @@ import './NavbarSeller.css'
 import logo from "../assets/logo_full_small.png";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useSellerAuth } from "../../context/SellerAuthContext.jsx";
 
 const NavbarSeller = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, authUser, setIsLoggedIn, setAuthUser } = useAuth();
+  const { isLoggedIn, authUser, setIsLoggedIn, setAuthUser } = useSellerAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    try {
+      setAuthUser({
+        user_id: "",
+        email: "",
+        password: "",
+        name: "Guest",
+        phone_number: "",
+        user_type: "",
+        registration_date: "",
+        preferred_payment_method: "",
+      });
+      setIsLoggedIn(false);
+      //setLoggingOut(true);
+      navigate('/sellerside');
+    } catch (error) {
+      console.error("Error during sign-out:", error);
+    } finally {
+      //setLoggingOut(false); 
+    }
+    
+  };
 
   function handleEmailUpdate(e) {
     setEmail(e.target.value);
@@ -51,11 +75,12 @@ const NavbarSeller = () => {
     } catch (error) {
       console.log(error.message);
     }
+    
   };
 
   useEffect(() => {
     if (isLoggedIn) {
-      alert(`Sign-in successful!\nWelcome back ${authUser.name}`);
+      // alert(`Sign-in successful!\nWelcome back ${authUser.name}`);
       navigate("/seller");
     }
   }, [isLoggedIn, authUser, navigate]);
@@ -71,11 +96,12 @@ const NavbarSeller = () => {
         <ul className="nav-menu">
           <li>
             {isLoggedIn ? (
-              <Link to="/customer" style={{ textDecoration: "none", color: "#000000" }}>
-                {/* <b>{authUser.name}</b> */}
+              <Link to="/seller" style={{ textDecoration: "none", color: "#000000" }}>
+                <b>{authUser.name}</b>
+                <button className='nav-login-cart button' onClick={handleLogout}>Logout</button>
               </Link>
             ) : (
-              <form onSubmit={handleLogin}>
+              <form className='nav-input' onSubmit={handleLogin}>
                 <input type="text" placeholder="Email or Phone" value={email} onChange={handleEmailUpdate} />
                 <input type="password" placeholder="Password" value={password} onChange={handlePasswordUpdate} />
                 <button type="submit">Login</button>

@@ -1,0 +1,73 @@
+.product-form-container {
+    width: 80%; /* Adjust width as needed */
+    margin: 0 auto;
+  }
+  
+  .product-form-container h2 {
+    margin-bottom: 20px;
+  }
+  
+  .product-form-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .product-form-container label {
+    margin-bottom: 10px;
+  }
+  
+  .product-form-container input[type="text"],
+  .product-form-container input[type="number"],
+  .product-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .product-form-container textarea {
+    resize: vertical; /* Allow vertical resizing */
+  }
+  
+  .product-form-container button {
+    padding: 10px 20px;
+    background-color: #f4828a;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .product-form-container button:hover {
+    background-color: #fc4e59;
+  }
+  
+  .product-form-container label,
+  .product-form-container button {
+    font-size: 16px;
+  }
+  
+  /* Category section styles */
+  .product-form-container div.categories {
+    margin-bottom: 10px;
+  }
+  
+  .product-form-container div.categories div {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 5px 10px;
+    background-color: #f2f2f2;
+    border-radius: 4px;
+  }
+  
+  .product-form-container div.categories input[type="text"] {
+    width: calc(100% - 120px);
+    margin-right: 10px;
+  }
+  
+  .product-form-container div.categories button {
+    padding: 5px 10px;
+  }
+  
