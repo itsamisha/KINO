@@ -1,0 +1,25 @@
+:root {
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-100: #f2d9df;
+    --text: #120708;
+    --background-500: #bf4060;
+  }
+
+.searchWishlist{
+    width: 45%;
+    padding: 8px;
+    font-size: medium;
+    font-weight: 400;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto ;
+    border: 1px solid var(--background-500);
+    background-color: var(--background-100);
+    outline: none;
+    height: 2rem;
+    font-size: 18px;
+  }
+
+  

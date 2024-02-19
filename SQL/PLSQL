@@ -50,3 +50,24 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+--deleting product
+
+CREATE OR REPLACE FUNCTION delete_category()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Delete related records from other tables
+    DELETE FROM category WHERE product_id = OLD.product_id;
+    DELETE FROM cart_items WHERE product_id = OLD.product_id;
+    DELETE FROM wishlist_items WHERE product_id = OLD.product_id;
+    DELETE FROM review WHERE product_id = OLD.product_id;
+    DELETE FROM discount WHERE product_id = OLD.product_id;
+
+    RETURN OLD; -- Return the OLD row after deletion
+
+EXCEPTION
+    WHEN others THEN
+        -- Log the error or handle it appropriately
+        RAISE NOTICE 'Error in delete_category trigger: %', SQLERRM;
+END;
+$$ LANGUAGE plpgsql;

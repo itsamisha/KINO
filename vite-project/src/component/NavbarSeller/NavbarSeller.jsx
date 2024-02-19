@@ -78,12 +78,12 @@ const NavbarSeller = () => {
     
   };
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      // alert(`Sign-in successful!\nWelcome back ${authUser.name}`);
-      navigate("/seller");
-    }
-  }, [isLoggedIn, authUser, navigate]);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     // alert(`Sign-in successful!\nWelcome back ${authUser.name}`);
+  //     navigate("/seller");
+  //   }
+  // }, [isLoggedIn, authUser, navigate]);
 
   return (
     <>

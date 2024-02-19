@@ -88,5 +88,55 @@ router.post("/updateproduct", upload.single("photo"), async (req, res) => {
       res.status(500).json({ success: false, error: "Internal server error" });
     }
   });
-router.post
+
+  //Get inventory
+  router.get("/:user_id/inventory", async (req, res) => {
+    try {
+      const { user_id } = req.params;
+      const customer = await pool.query(`SELECT P.product_id,P.name, P.photo_url
+      FROM  product P 
+      WHERE P.user_id =$1;`, [user_id]);
+      
+      if (customer.rows.length !== 0) {
+        res.json(customer.rows);
+      } else {
+        res.status(404).json({ message: 'Seller not found or inventory empty' });
+      }
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
+  //delete from inventory
+  router.delete("/remove-from-inventory", async (req, res) => {
+    const client = await pool.connect();
+    try {
+        const { user_id, product_id } = req.body;
+
+        await client.query('BEGIN'); // Start transaction
+
+        // Delete from Product table
+        await pool.query('DELETE FROM Product WHERE product_id = $1', [product_id]);
+
+        console.log(product_id);
+        await client.query('COMMIT'); // Commit transaction
+        res.json({ message: 'Inventory item deleted successfully' });
+        //console.log(message);
+    } catch (error) {
+        await client.query('ROLLBACK'); // Rollback transaction if error occurs
+        console.error(`Error deleting inventory: ${error.message}`);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        client.release(); // Release client back to the pool
+    }
+});
+
+module.exports = router;
+
+
+
+  
+
+
 module.exports = router

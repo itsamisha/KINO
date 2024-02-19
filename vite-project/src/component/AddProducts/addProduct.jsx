@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./addProduct.css"; // import CSS file for styling
 import { useSellerAuth } from "../../context/SellerAuthContext.jsx";
+import NavbarSeller from "../NavbarSeller/NavbarSeller.jsx";
 
 const ProductForm = () => {
   // State variables to hold form data
@@ -79,6 +80,8 @@ const handleChange = (e) => {
   };
 
   return (
+    <div>
+       
     <div className="product-form-container">
       <h2>Add a New Product</h2>
       <form onSubmit={handleSubmit}>
@@ -152,6 +155,7 @@ const handleChange = (e) => {
         </label>
         <button type="submit">Add Product</button>
       </form>
+    </div>
     </div>
   );
 };

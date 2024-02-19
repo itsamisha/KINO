@@ -41,6 +41,10 @@ const Sidebar = () => {
           <FaHeart className="seller-icon" />&nbsp;
          Add Products
         </a>
+        <a href="/inventory">
+          <FaHeart className="icon" />&nbsp;
+         Inventory
+        </a>
         <a href="/sellerreviews">
         <FaCommentAlt className="seller-icon" />&nbsp;
           Reviews And Reply
