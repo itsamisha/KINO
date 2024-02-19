@@ -26,20 +26,34 @@ const Review= ({ product_id }) => {
     setIsExpanded(!isExpanded);
   };
 
-  return ( 
+  return (
     <div className="review">
       <div className="review-header" onClick={toggleExpansion}>
-        <span>{isExpanded ? '▼' : '►'}</span>
+        <span>{isExpanded ? "▼" : "►"}</span>
         <span className="review-title">Reviews</span>
       </div>
       {isExpanded && (
         <div className="review-container">
-        <div className="review-scroll">
-          {reviews.map((review, index) => (
-            <ReviewItem key={index} review={review} />
-          ))}
+          <div className="review-scroll">
+            {reviews.length > 0 ? (
+              <>
+                <h4 className="no-review">
+                  Total review(s):&nbsp;{reviews.length}
+                </h4>
+                {reviews.map(
+                  (review, index) =>
+                    review.review_text.length > 0 && (
+                      <ReviewItem key={index} review={review} />
+                    )
+                )}
+              </>
+            ) : (
+              <>
+                <h4 className="no-review">No reviews found.</h4>
+              </>
+            )}
+          </div>
         </div>
-      </div>
       )}
     </div>
   );

@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
 import { useNavigate } from "react-router-dom";
 import photo from "../component/assets/SignIn.png";
+import Header from "../component/Header/Header";
 
 function SignIn() {
   const {updateSearchValue,updateSearchOption } = useSearch();
@@ -66,9 +67,9 @@ function SignIn() {
 
   return (
     <>
+    <Header/>
       <div className="signInContainer">
         <img src={photo} className="woman" alt="" />
-
         <div className="signin-form">
           <h1>SIGN IN</h1>
           <div className="flex-start">

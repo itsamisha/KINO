@@ -10,14 +10,14 @@
 .signInContainer {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   height: 100vh;
   background-color: var(--background);
   flex: 1;
 }
 
 .woman{
-  width: 45%;
+  width: 50%;
   margin: 0 auto;
 
 }

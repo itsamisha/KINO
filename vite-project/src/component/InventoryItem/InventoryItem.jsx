@@ -48,7 +48,6 @@ const InventoryItem = (props) => {
       <div className='wishlist-item'>
         <div className='wishlist-item-name'>{truncateString(props.name, 7)}</div>
         <div className="buttons">
-          <FaCartPlus className='add-to-cart'/>
           &nbsp;&nbsp;&nbsp;&nbsp;
           <FaTrashAlt className='delete' onClick={deleteWishlist}/>
         </div>

@@ -49,4 +49,9 @@
     margin: 0 auto;
     overflow-y: auto;
   }
+
+  .no-review{
+    font-family: 'Nunito Sans';
+    color: var(--background-700);
+  }
   

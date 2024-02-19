@@ -12,3 +12,11 @@ DROP CONSTRAINT review_rating_check;
 
 ALTER TABLE review
 ADD CONSTRAINT review_rating_check CHECK (rating>=0);
+--19 feb
+ALTER TABLE orders DROP CONSTRAINT orders_cart_id_fkey;
+
+ALTER TABLE orders
+ADD COLUMN address TEXT;
+
+ALTER TABLE orders
+ADD COLUMN order_status VARCHAR(15);

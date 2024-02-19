@@ -1,0 +1,52 @@
+  
+  :root {
+    --text: #120708;
+    --background: #e9e2e2;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-100: #f2d9df;
+    --background-50: #f9ecef;
+    --white: #fff;
+  }
+  .logo{
+    width: 100px;
+  }
+  .header-wrap {
+    background-color: var(--background-50);
+    margin: 0 auto;
+  }
+  .header {
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    background-color: var(--background-50);
+    margin: 0 auto;
+  }
+
+  
+  .slogan {
+    flex: 1;
+  }
+  
+  .slogan h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 35px;
+    margin: 0;
+    color: var(--text);
+    text-align: right;
+  }
+
+  .new-gradient-line-footer {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0.25rem;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    margin-bottom: 5rem;
+  }
+  
