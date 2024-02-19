@@ -45,3 +45,5 @@ yarn.lock
 # Optional: OS-specific files
 .DS_Store
 Thumbs.db
+package.json
+server/database.js

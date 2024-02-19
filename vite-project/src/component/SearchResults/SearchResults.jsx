@@ -321,7 +321,7 @@ const SearchResults = () => {
           <div className="search-results-info">Search Results: {searchCount}</div>
           <div className="popular">
             {results.map((item) => (
-              <Item key={item.product_id} id={item.product_id} name={item.name} price={Math.round(item.price)} photo={item.photo_url} description={item.description} new_price={item.new_price} discount_pct={item.discount_pct}/>
+              <Item key={item.product_id} id={item.product_id} name={item.name} price={Math.round(item.price)} photo={item.photo_url} description={item.description} new_price={item.new_price} discount_pct={item.discount_pct} rating={item.rating}/>
             ))}
           </div>
         </>

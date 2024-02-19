@@ -3,6 +3,8 @@ import { FaTrashAlt,FaCartPlus } from "react-icons/fa";
 import { useAuth } from '../../context/AuthContext';
 
 const WishlistItem = (props) => {
+  
+
   function truncateString(str, maxWords) {
     const words = str.split(/\s+/);
     const truncatedWords = words.slice(0, maxWords);
@@ -12,8 +14,10 @@ const WishlistItem = (props) => {
     }
     return truncatedString;
   }
+
   const product_id = props.id;
   const {authUser} = useAuth()
+  const quantity = 1;
   const user_id = authUser.user_id;
 
   async function deleteWishlist(){
@@ -40,6 +44,18 @@ const WishlistItem = (props) => {
     window.location.href =  `/product/${props.id}`
   };
 
+  async function handleAddToCart(){
+    const response = await fetch("http://localhost:5000/customer/add-to-cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_id, product_id, quantity}),
+    });
+
+    window.location.reload();
+  }
+
   return (
     <div className='wishlist-container' >
       <img src={props.photo} alt="" className='wishlist-image' onClick={handleClick}/>
@@ -49,7 +65,7 @@ const WishlistItem = (props) => {
         <div className='wishlist-item-discount'>{props.discount}% OFF</div> : <></> }
         <br/> <br />
         <div className="buttons">
-          <FaCartPlus className='add-to-cart'/>
+          {props.in_cart>-1? <></> : <FaCartPlus className='add-to-cart' onClick={handleAddToCart}/>}
           &nbsp;&nbsp;&nbsp;&nbsp;
           <FaTrashAlt className='delete' onClick={deleteWishlist}/>
         </div>

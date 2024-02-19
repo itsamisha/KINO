@@ -1,0 +1,31 @@
+:root {
+    --text: #120708;
+    --background: #fdf9fa;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-200: #e6b3bf;
+    --background-100: #f2d9df;
+    --primary-700: #86131b;
+    --primary-800: #590d12;
+    font-family: "Saira Condensed", sans-serif;
+  }
+
+.receipt-cont{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin-bottom: 2px;
+    border: 1px solid var(--background-200);
+}
+.receipt-name{
+    text-align: left;
+    width: 60%;
+    font-family: "Saira Condensed", sans-serif;
+}
+.receipt-price{
+    text-align: right;
+    width: 50%;
+    font-family: "Saira Condensed", sans-serif;
+}

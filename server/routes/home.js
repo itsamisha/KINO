@@ -1,8 +1,7 @@
 const router = require('express').Router()
 const pool = require('../database')
-const axios = require('axios');
 const bcrpyt = require('bcrypt')
-
+const fetch = require('node-fetch');
 
 //signIn
 router.post("/signin",async(req,res)=>
@@ -59,7 +58,8 @@ router.post("/register", async (req,res) => {
         res.status(500).send({success: false, error: error.message})
     }
 })
-// //getting categories
+
+//getting categories
 router.get('/category', async (req, res) => {
     try {
       const categoriesQuery = 'SELECT DISTINCT(category_name) FROM category ORDER BY category_name';
@@ -143,20 +143,18 @@ router.get("/search", async (req, res) => {
     let searchQuery;
     switch (option) {
       case "product":
-        searchQuery = `SELECT P.*, ROUND((D.discount_percentage*100),0) AS discount_pct,
+        searchQuery = `SELECT P.*, ROUND((D.discount_percentage*100),0) AS discount_pct,rating(P.product_id) AS rating,
         ROUND(P.price*(1-D.discount_percentage),2) AS new_price
         FROM product P LEFT JOIN discount D
         ON P.product_id = D.product_id
         WHERE LOWER(P.name) LIKE LOWER($1)
-        AND P.stock_quantity > 0
-        ORDER BY P.purchase_count DESC`;
+        ORDER BY rating DESC,P.purchase_count DESC`;
         break;
         
       case "seller":
-        searchQuery = `SELECT 	P.* FROM product P JOIN users U
+        searchQuery = `SELECT 	P.*,rating(P.product_id) AS rating FROM product P JOIN users U
         ON U.user_id = P.user_id 
        WHERE LOWER(U.name) LIKE LOWER($1) AND U.user_type='seller'
-       AND P.stock_quantity > 0
        ORDER BY purchase_count DESC;`;
         break;
       default:
@@ -175,12 +173,13 @@ router.get("/search", async (req, res) => {
 //Fetch popular products
 router.get("/popular", async(req,res)=>{
     try {
-        const products = await pool.query(`SELECT P.*, ROUND((D.discount_percentage*100),0) AS discount_pct,
+        const products = await pool.query(`SELECT P.*, ROUND((D.discount_percentage*100),0) AS discount_pct, 
+        rating(P.product_id) AS rating,
         ROUND(P.price*(1-D.discount_percentage),2) AS new_price
         FROM product P LEFT JOIN discount D
         ON P.product_id = D.product_id
         AND P.stock_quantity > 0
-        ORDER BY P.purchase_count DESC
+        ORDER BY P.purchase_count DESC,rating DESC
         LIMIT 12`)
         res.status(200).send(products.rows)
     } catch (error) {
@@ -194,6 +193,7 @@ router.get("/new-arrival", async(req,res) =>{
     try {
         const products = await pool.query(`
         SELECT P.*, ROUND((D.discount_percentage*100),0) AS discount_pct,
+        rating(P.product_id) AS rating,
         ROUND(P.price*(1-D.discount_percentage),2) AS new_price
         FROM product P LEFT JOIN discount D
         ON P.product_id = D.product_id
@@ -210,6 +210,7 @@ router.get("/new-arrival", async(req,res) =>{
 router.get("/discount-product", async(req,res) =>{
     try {
         const products = await pool.query(`SELECT P.*, ROUND((D.discount_percentage*100),0) AS discount_pct,
+        rating(P.product_id) AS rating,
         ROUND(P.price*(1-D.discount_percentage),2) AS new_price
         FROM product P JOIN discount D
         ON P.product_id = D.product_id
@@ -228,6 +229,7 @@ router.get("/similar-products/:product_id", async(req,res) =>{
   try {
       const {product_id} = req.params
       const products = await pool.query(`SELECT P.*,
+      rating(P.product_id) AS rating,
       ROUND(P.price*(1-D.discount_percentage),2) as new_price,
       ROUND(D.discount_percentage*100,0) as discount_pct
       FROM product P LEFT JOIN product SP
@@ -253,7 +255,7 @@ router.get("/:product_id", async (req, res) => {
   try {
     const { product_id } = req.params;
     const products = await pool.query(
-      `SELECT P.*, U.name AS Shop,
+      `SELECT P.*, rating(P.product_id) AS rating, U.name AS Shop,
       STRING_AGG(C.category_name, ', ') AS category_name,
       ROUND((P.price - COALESCE(D.discount_percentage, 0) * P.price), 2) AS new_price 
       FROM product P 
@@ -277,45 +279,27 @@ router.get("/:product_id", async (req, res) => {
   }
 });
 
+//Get Reviews 
+router.get("/reviews/:product_id", async (req, res) => {
+  try {
+    const { product_id } = req.params;
+    const products = await pool.query(
+      `SELECT *,(SELECT "name" AS author FROM users WHERE user_id = R.user_id) 
+      FROM review R
+      WHERE R.product_id = $1;`,
+      [product_id]
+    );
 
-
-
-
-router.get("/photos", async (req, res) => {
-    try {
-        const products = await pool.query("SELECT * FROM product");
-
-        // Fetch Unsplash photos for each product
-        const productsWithPhotos = await Promise.all(products.rows.map(async (product) => {
-            try {
-                
-                const unsplashResponse = await axios.get('https://api.unsplash.com/search/photos?', {
-                    params: {
-                        query: `${product.name}`,
-                        // client_id: 'QARjXzyZmHpJwHJrc61TbUpz6D3ghMa_nk2wcjxU33U',
-                        // client_id: 'GjsMBVfSCqxwVL05d9vPtatujrcKnHhxgyu0oUy5I8Y'
-                        client_id: 'IOK4GGRXvtyG32o5Ze-qOZoFq_HH7a_UMs70TqvJD48'
-                    },
-                });
-                console.log(product.name)
-                console.log(`Unsplash API URL: https://api.unsplash.com/photos/?query=${product.name}&client_id=GjsMBVfSCqxwVL05d9vPtatujrcKnHhxgyu0oUy5I8Y`);
-
-                const randomPhotoUrl= unsplashResponse.data.results[0].urls.regular;
-
-                console.log(randomPhotoUrl);
-
-                await pool.query("UPDATE product SET photo_url = $1 WHERE product_id = $2", [randomPhotoUrl, product.product_id]);
-                
-            } catch (error) {
-                console.error(`Error fetching or updating for product ${product.product_id}: ${error.message}`);
-            }
-        }));
-
-        res.status(200).send(productsWithPhotos);
-    } catch (error) {
-        console.log(error.message);
-        res.status(400).send(error.message);
+    if (!products.rows.length) {
+      res.status(404).send("Product not found");
+      return;
     }
+
+    res.status(200).send(products.rows);
+  } catch (error) {
+    console.error(`Error in /popular route: ${error.message}`);
+    res.status(400).send(error.message);
+  }
 });
 
 module.exports = router;

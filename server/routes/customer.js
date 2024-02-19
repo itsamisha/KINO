@@ -204,7 +204,7 @@ router.get("/:user_id", async (req, res) => {
   router.get("/:user_id/wishlist", async (req, res) => {
     try {
       const { user_id } = req.params;
-      const customer = await pool.query(`SELECT P.product_id,P.name,P.photo_url,WI.wishlist_item_id,
+      const customer = await pool.query(`SELECT P.product_id,P.name,P.photo_url,WI.wishlist_item_id,in_cart($1,P.product_id) AS in_cart,
       ROUND(COALESCE(D.discount_percentage, 0)*100) AS discount
       FROM users U LEFT JOIN wishlist W 
       ON U.user_id = W.user_id AND U.user_id = $1

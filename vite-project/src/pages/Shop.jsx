@@ -23,7 +23,7 @@ const urls = [
 function Shop(){
     const {updateSearchValue,updateSearchOption } = useSearch();
     return <div>
-        <Navbar />
+     <Navbar /> 
         <div style={containerStyles}>
           <ImageSlider urls={urls}/>
         </div>

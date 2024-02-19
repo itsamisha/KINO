@@ -1,0 +1,52 @@
+:root {
+    --text: #120708;
+    --background: #fdf9fa;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+  
+    --background-50: #f9ecef;
+    --background-100: #f2d9df;
+    --background-700: #732639;
+    --background-900: #260d13;
+  }
+
+  .review-header{
+    cursor: pointer;
+    padding: 8px;
+    background-color: var(--background-100);
+    display: flex;
+    align-items: center;
+    color: var(--background-900);
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .review-title{
+    margin-left: 8px;
+  }  
+  
+  .review{
+    border: 1px solid #ddd;
+    margin: 0 auto;
+    width: 75.5%;
+    box-sizing: border-box;
+    color: var(--text);
+    overflow: hidden;
+    transition: 0.5s ease;
+  }
+
+  .review-header:hover {
+    color: var(--primary);
+  }
+
+ .review-container {
+    padding: 20px;
+  }
+  
+  .review-scroll {
+    max-height: 300px; 
+    width: 100%;
+    margin: 0 auto;
+    overflow-y: auto;
+  }
+  

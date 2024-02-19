@@ -6,3 +6,9 @@ ALTER TABLE cart_items ADD PRIMARY KEY (cart_id, product_id);
 ALTER TABLE cart_items
 ADD CONSTRAINT check_quantity_positive
 CHECK (quantity > 0);
+--17 feb
+ALTER TABLE review
+DROP CONSTRAINT review_rating_check;
+
+ALTER TABLE review
+ADD CONSTRAINT review_rating_check CHECK (rating>=0);

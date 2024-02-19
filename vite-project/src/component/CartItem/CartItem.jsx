@@ -1,4 +1,3 @@
-
 import './CartItem.css';
 import { FaTrashAlt, FaPlus, FaMinus } from "react-icons/fa";
 import { useAuth } from '../../context/AuthContext';
@@ -47,20 +46,20 @@ const CartItem = (props) => {
   }
 
   const incrementQuantity = () => {
-        if (quantity < props.stock_quantity) {
-          const newQuantity = quantity + 1;
-          setQuantity(newQuantity);
-          updateCartQuantity(newQuantity);
-        }
-      };
+    if (quantity < props.stock_quantity) {
+      const newQuantity = quantity + 1;
+      setQuantity(newQuantity);
+      updateCartQuantity(newQuantity);
+    }
+  };
 
-      const decrementQuantity = () => {
-            if (quantity > 1) {
-              const newQuantity = quantity - 1;
-              setQuantity(newQuantity);
-              updateCartQuantity(newQuantity);
-            }
-          };
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      const newQuantity = quantity - 1;
+      setQuantity(newQuantity);
+      updateCartQuantity(newQuantity);
+    }
+  };
 
   const toggleDeleteConfirmation = () => {
     setShowDeleteConfirmation(!showDeleteConfirmation);
@@ -103,9 +102,9 @@ const CartItem = (props) => {
         <br /> 
         <div className="buttons">
           <div className="quantity-update">
-            <FaPlus className='quantity-button' onClick={incrementQuantity} />
+            <FaPlus className={quantity >= props.stock_quantity ? 'quantity-button disabled' : 'quantity-button'} onClick={incrementQuantity} />
             <label className='quantity-count'>{quantity}</label>
-            <FaMinus className='quantity-button' onClick={decrementQuantity} />
+            <FaMinus className={quantity <= 1 ? 'quantity-button disabled' : 'quantity-button'} onClick={decrementQuantity} />
           </div>
           <FaTrashAlt className='delete' onClick={toggleDeleteConfirmation}/>
         </div>

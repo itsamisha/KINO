@@ -105,7 +105,7 @@ function Registration() {
             Username
             <br />
             <input className="reg-input" value={name} onChange={handleNameChange}/>
-          </label >
+          </label > 
           <br />
           <label className="label">
             Email

@@ -7,6 +7,7 @@ import Navbar from "../component/Navbar/Navbar";
 import Popular from "../component/Popular/Popular";
 import DescriptionBox from "../component/DescriptionBox/DescriptionBox";
 import Loading from "../component/Loading/Loading";
+import Review from "../component/Review/Review";
 
 const Product = () => {
   const {isLoggedIn,authUser} = useAuth();
@@ -82,6 +83,7 @@ return (
     <div className="product-grid">
       <ProductDisplay product={product} isFilled = {isFilled} inCart = {inCart}/>
       <DescriptionBox description={product.description}/>
+      <Review product_id={productId}/>
       <br /><br />
       <Popular param={`similar-products/${productId}`} title='Related Picks'/>
     </div>

@@ -45,15 +45,18 @@ const Wishlist = () => {
       <br />
       <Title title="WISHLIST" />
       <br />
-      <div className="wishlist-count">Products Added: {products.length}</div>
+      <div className="wishlist-count">Products Added: {products.length>0? products.length : 0}</div>
       <br />
+      {products.length>0?
       <input
-        type="text"
-        placeholder="Search wishlist..."
-        value={searchQuery}
-        className="searchWishlist"
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
+      type="text"
+      placeholder="Search wishlist..."
+      value={searchQuery}
+      className="searchWishlist"
+      onChange={(e) => setSearchQuery(e.target.value)}
+      /> : <></>
+      }
+      
       <br />
       <br />
       <br />
@@ -66,6 +69,7 @@ const Wishlist = () => {
                 name={item.name}
                 discount={item.discount}
                 photo={item.photo_url}
+                in_cart={item.in_cart}
               />
               <br />
             </React.Fragment>

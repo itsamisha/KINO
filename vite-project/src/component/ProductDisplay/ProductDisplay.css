@@ -141,3 +141,19 @@
 #quantity{
   background-color: var(--background-50);
 }
+
+.quantity button.not-allowed {
+  background-color: #ccc;
+  color: #777;
+  border: none;
+  cursor: not-allowed;
+  font-size: 1.2rem;
+} 
+
+.quantity-input button.disabled:hover {
+  background-color: #ccc;
+} 
+
+.quantity-b{
+  font-size: 1.2rem;
+}

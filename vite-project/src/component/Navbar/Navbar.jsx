@@ -10,8 +10,7 @@ import Loading from "../Loading/Loading";
 import { useEffect } from "react";
 
 const Navbar = () => {
-  const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn,sellerLoggedIn,
-    setSellerLoggedIn } = useAuth();
+  const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth();
   const { updateSearchValue, updateSearchOption } = useSearch();
   const [loggingOut, setLoggingOut] = useState(false); 
   const [cartItems, setCartItems] = useState(0);
@@ -23,7 +22,10 @@ const Navbar = () => {
           `http://localhost:5000/customer/${authUser.user_id}/cart_items`
         );
         const {cart_items} = await response.json();
-        setCartItems(cart_items);
+        if(cart_items>-1){
+          setCartItems(cart_items);
+        }
+
       } catch (error) {
         console.log(error.message);
       }
@@ -36,7 +38,6 @@ const Navbar = () => {
 
   const logOut = async (e) => {
     e.preventDefault();
-
     try {
       setAuthUser({
         user_id: "",
@@ -121,7 +122,7 @@ const Navbar = () => {
                 ) : (
                   <button
                     onClick={(e) => {
-                      logOut(e);
+                      logOut(e);``
                     }}
                   >
                     Sign Out

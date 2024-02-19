@@ -35,7 +35,7 @@ const Item = (props) => {
         ) : (
           <div className="price">৳{props.price}</div>
         )}
-        <Star rating={0} size={1} />
+        <Star rating={props.rating} size={1} />
     </div>
   );
 };

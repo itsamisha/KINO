@@ -7,7 +7,7 @@ import { useState} from "react";
 import SellerSidebar from "../component/SellerSidebar/SellerSidebar";
 
 
-function CustomerDashboard() {
+function SellerDashboard() {
 
   const navigate = useNavigate();
   const { isLoggedIn, authUser } = useSellerAuth();
@@ -89,4 +89,4 @@ function CustomerDashboard() {
   );
 }
 
-export default CustomerDashboard;
+export default SellerDashboard;

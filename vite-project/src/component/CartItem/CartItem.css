@@ -75,12 +75,11 @@
     font-size: large;
   }
 
-  .cart-item-discount{
+  .cart-item-price{
     font-family: 'Nunito Sans', sans-serif;
-    padding-bottom: 0.5rem;
     text-align: right;
-    font-size: large;
-    color: var(--accent);
+    font-size: 17px;
+    color: var(--primary-700);
   }
 
   .cart-count{
@@ -113,4 +112,14 @@
 
   .quantity-button:hover{
     color: var(--accent);
+  }
+
+  .quantity-button.disabled {
+    opacity: 0.5; 
+    cursor: not-allowed; 
+  }
+
+  .quantity-button.disabled:hover {
+    background-color: #f2f2f2; 
+    color: #ccc; 
   }

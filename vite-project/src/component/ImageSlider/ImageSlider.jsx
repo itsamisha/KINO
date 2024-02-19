@@ -75,7 +75,7 @@ const ImageSlider = ({ urls }) => {
   };
 
   useEffect(() => {
-    const intervalId = setInterval(goToPrevious, 2000); 
+    const intervalId = setInterval(goToPrevious, 2500); 
     return () => clearInterval(intervalId);
   }, [index]);
 

@@ -36,12 +36,15 @@ const Cart = () => {
   };
 
   const calculateTotalPrice = (cartProducts) => {
-    let totalPrice = 0;
-    cartProducts.forEach((product) => {
-      const price = parseFloat(product.price);
-      totalPrice += price * product.quantity;
-    });
-    return totalPrice;
+    if(cartProducts.length>0){
+      let totalPrice = 0;
+      cartProducts.forEach((product) => {
+        const price = parseFloat(product.price);
+        totalPrice += price * product.quantity;
+      });
+      return totalPrice;
+    }
+    
   };
 
   useEffect(() => {
@@ -69,23 +72,25 @@ const Cart = () => {
       <br />
       <Title title="CART" />
       <br />
-      <div className="cart-count">Products Added: {products.length}</div>
+      <div className="cart-count">Products Added: {products.length!==undefined? products.length : 0}</div>
       <br />
-      <div className="confirm-order" onClick={handleCheckout}>
+      {products.length>0? <div className="confirm-order" onClick={handleCheckout}>
         PROCEED TO CHECKOUT
-      </div>
+      </div>: <></>}
       {showCheckout && (
-        <CheckOut totalPrice={totalPrice} onClose={handleCloseCheckout} />
+        <CheckOut onClose={handleCloseCheckout} />
       )}
       <br />
       <br />
+      {products.length>0? 
       <input
         type="text"
         placeholder="Search in cart..."
         value={searchQuery}
         className="searchCart"
         onChange={(e) => setSearchQuery(e.target.value)}
-      />
+      /> 
+      : <></>}
       <br />
       <br />
       <br />
@@ -106,7 +111,7 @@ const Cart = () => {
           ))
         ) : (
           <Link to="/">
-            <h1>Wishlist empty</h1>
+            <h1>No product in the cart, continue shopping</h1>
           </Link>
         )
       ) : (

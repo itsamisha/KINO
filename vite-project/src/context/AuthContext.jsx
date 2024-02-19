@@ -19,18 +19,19 @@ export function AuthProvider(props) {
     phone_number: "",
     user_type: "",
     registration_date: "",
-    preferred_payment_method: ""
+    preferred_payment_method: "",
   };
 
   const [authUser, setAuthUser] = useState(initialAuthUser);
   const [isLoggedIn, setIsLoggedIn] = useState(
-    initialAuthUser.user_id && initialAuthUser.user_type !== 'seller' // Set isLoggedIn based on user_id and user_type
+    initialAuthUser.user_id && initialAuthUser.user_type !== 'seller' 
   );
   const [sellerLoggedIn, setSellerLoggedIn] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("authUser", JSON.stringify(authUser));
     setIsLoggedIn(
+      authUser.user_id &&
      authUser.user_type !== 'seller' // Update isLoggedIn based on user_id and user_type
     );
     setSellerLoggedIn(authUser.user_type === 'seller'); // Update sellerLoggedIn based on user_type
