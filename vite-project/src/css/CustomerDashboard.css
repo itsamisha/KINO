@@ -13,9 +13,9 @@
 
 .user-info-parent{
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: right;
-  width: 100%;
+  width: 50%;
   text-align: right;
 }
 
@@ -26,10 +26,17 @@
   color: var(--text);
 }
 
+.edit-wrap{
+  text-align: right;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column-reverse;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
 .edit-icon{
   width: 10%;
-  display: flex;
-  flex-grow: 1;
   font-size: 24px;
   color: var(--accent);
   cursor: pointer;

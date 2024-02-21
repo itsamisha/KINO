@@ -8,6 +8,7 @@ import Sidebar from "../component/Sidebar/Sidebar";
 import continueShopping from "../component/assets/continue-shopping.png";
 import continueShopping2 from "../component/assets/continue-shopping-2.png"
 import Title from "../component/Title/Title";
+import ProfileForm from "../component/ProfileForm/ProfileForm";
 
 function CustomerDashboard() {
 
@@ -15,6 +16,7 @@ function CustomerDashboard() {
   const { isLoggedIn, authUser } = useAuth();
   console.log(isLoggedIn)
   const [photo,setPhoto] = useState(continueShopping)
+  const [showEditForm, setShowEditForm] = useState(false);
   if (!isLoggedIn) {
     return <Navigate to="/signin"/>
   }
@@ -32,7 +34,8 @@ function CustomerDashboard() {
   }
 
   function editProfile() {
-    navigate("/customer/edit-profile");
+    //navigate("/customer/edit-profile");
+    setShowEditForm(true);
   }
 
   function goToHome(){
@@ -53,9 +56,15 @@ function CustomerDashboard() {
       <Navbar />
       <Sidebar />
       <Title title='PROFILE'/>
+      {showEditForm && (
+        <ProfileForm
+          authUser={authUser}
+          onCancel={() => setShowEditForm(false)}
+        />
+      )}
       <div className="customer-dashboard-container">
-        <div className="user-info-parent">
-          <FaUserEdit className="edit-icon" onClick={editProfile} />
+        <div className="edit-wrap">
+        <FaUserEdit className="edit-icon" onClick={editProfile} />
         </div>
         <div className="customer-info">
           <div className="info-row">
@@ -95,9 +104,9 @@ function CustomerDashboard() {
         </div>
       </div>
       <div className="space"></div>
-      <div className="img-cont" onClick={goToHome}>
+      {/* <div className="img-cont" onClick={goToHome}>
           <img src={photo} alt="" onMouseEnter={changePhotoEntry} onMouseLeave={changePhotoExit} />
-      </div>
+      </div> */}
     </>
   );
 }

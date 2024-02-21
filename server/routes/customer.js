@@ -15,7 +15,7 @@ router.get("/:user_id", async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   })
-
+ 
  //Update Profile Info
   router.put("/update", async (req, res) => {
     try {
@@ -382,6 +382,25 @@ router.get("/:user_id", async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
+  //Get Address from Post Code
+  router.get("/post_code/:post_code", async (req,res) => {
+    try {
+      const {post_code} = req.params;
+      const address = await pool.query(`SELECT * FROM shipping_zones WHERE 
+      post_code = $1`,[post_code])
+
+      if(address.rows.length===0){
+        res.json({message:'No such post code exists'})
+      }
+      else{
+        res.json(address.rows)
+      }
+    } catch (error) {
+      console.error(`Error /customer/post_code: ${error.message}`);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
 
 
 module.exports = router

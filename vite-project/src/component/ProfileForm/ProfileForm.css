@@ -1,0 +1,108 @@
+:root {
+    --text: #120708;
+    --background: #fdf9fa;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-50: #f9ecef;
+    --background-200: #e6b3bf;
+  
+  --text-700: #6e2b30;
+  --primary-700: #86131b;
+  }
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(1.5px);
+  }
+  
+  .modal-content {
+    width: 45%;
+    height: 80vh;
+    background-color: var(--background);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: solid 1px var(--primary-700);
+  }
+
+.profile-form-container {
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+    background-color: var(--background-50);
+    box-shadow: 0 0 0 .1em var(--background-200);
+  }
+  
+  .profile-form-container h2 {
+    font-size: 26px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text);
+  }
+  
+  .profile-form-container form {
+    margin-top: 20px;
+  }
+  
+  .profile-form-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text);
+  }
+
+
+  .info-row {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0.5rem;
+  }
+  
+  .info-label {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text);
+  }
+  
+  .info-row input,
+  .info-row select {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid var(--background-200);
+  }
+  
+  .button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 5rem;
+  }
+  .change-password-button[type="submit"] {
+    background-color: var(--primary);
+  }
+  
+  .change-password-button[type="submit"]:hover {
+    background-color: var(--accent);
+  }
+  
+  .change-password-button[type="button"] {
+    background-color: var(--secondary);
+  }
+  
+  .change-password-button[type="button"]:hover {
+    background-color: var(--primary-700);
+    cursor: pointer;
+  }
+  

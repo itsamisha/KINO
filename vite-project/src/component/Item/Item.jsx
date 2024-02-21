@@ -25,7 +25,6 @@ const Item = (props) => {
           <img src={props.photo} className="image" alt="" />
         )}
         <br />
-        <br />
         <div className="name">{truncateString(props.name, 7)}</div>
         {props.new_price !== null ? (
           <div className="new-price-container">
