@@ -3,6 +3,7 @@ import "./CheckOut.css";
 import Receipt from "../Receipt/Receipt";
 import { useAuth } from "../../context/AuthContext";
 import AddressDetails from "../AddressDetails/AddressDetails";
+import DeliveryOptions from "../DeliveryOoptions/DeliveryOptions";
 
 const CheckOut = ({ onClose }) => {
   const { isLoggedIn, authUser } = useAuth();
@@ -13,6 +14,15 @@ const CheckOut = ({ onClose }) => {
   const [house, setHouse] = useState("");
   const [road, setRoad] = useState("");
   const [shippingCharge, setShippingCharge] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [giftCardCode, setGiftCardCode] = useState("");
+  const [selectedDeliveryMode, setSelectedDeliveryMode] = useState('');
+
+  const handleSelectDeliveryMode = (mode) => {
+    setSelectedDeliveryMode(mode);
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -45,15 +55,30 @@ const CheckOut = ({ onClose }) => {
     return totalPrice;
   };
 
+  const handleConfirmOrder = async () => {
+    // Logic to handle order confirmation
+  };
+
   const handlePostCodeChange = (value) => {
     setPostCode(value);
   };
+  
   const handleHouseChange = (event) => {
     setHouse(event.target.value);
   };
 
   const handleRoadChange = (event) => {
     setRoad(event.target.value);
+  };
+
+  const handlePaymentMethodChange = (event) => {
+    const selectedPaymentMethod = event.target.value;
+    setPaymentMethod(selectedPaymentMethod);
+
+    // Reset other input fields when changing payment method
+    setPhoneNumber("");
+    setCardNumber("");
+    setGiftCardCode("");
   };
 
   return (
@@ -106,6 +131,49 @@ const CheckOut = ({ onClose }) => {
             onPostCodeChange={handlePostCodeChange}
             fixShippingCharge={setShippingCharge}
           />
+          <div className="info-row">
+            <label className="info-label">Payment Method:</label>
+            <select value={paymentMethod} onChange={handlePaymentMethodChange}>
+              <option value="">Select Payment Method</option>
+              <option value="bkash">bKash</option>
+              <option value="rocket">Rocket</option>
+              <option value="bank">Bank Payment</option>
+              <option value="gift_card">Gift Card</option>
+              <option value="cash_on_delivery">Cash on Delivery</option>
+            </select>
+          </div>
+          {/* Conditional rendering based on the selected payment method */}
+          {paymentMethod === "bkash" || paymentMethod === "rocket" ? (
+            <div className="info-row">
+              <label className="info-label">Phone Number:</label>
+              <input
+                type="text"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </div>
+          ) : paymentMethod === "bank" ? (
+            <div className="info-row">
+              <label className="info-label">Card Number:</label>
+              <input
+                type="text"
+                value={cardNumber}
+                onChange={(e) => setCardNumber(e.target.value)}
+              />
+            </div>
+          ) : paymentMethod === "gift_card" ? (
+            <div className="info-row">
+              <label className="info-label">Gift Card Code:</label>
+              <input
+                type="text"
+                value={giftCardCode}
+                onChange={(e) => setGiftCardCode(e.target.value)}
+              />
+              <button>Redeem</button>
+            </div>
+          ) : null}
+           <DeliveryOptions onSelectDeliveryMode={handleSelectDeliveryMode} />
+          <button onClick={handleConfirmOrder}>Confirm</button>
         </div>
       </div>
     </div>
@@ -113,3 +181,4 @@ const CheckOut = ({ onClose }) => {
 };
 
 export default CheckOut;
+

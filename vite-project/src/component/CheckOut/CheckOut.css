@@ -24,9 +24,9 @@
 }
 
 .check-container{
-  height: 60vh;
+  height: max-content;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   text-align: center;
 }

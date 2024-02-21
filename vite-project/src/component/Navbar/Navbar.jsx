@@ -73,11 +73,21 @@ const Navbar = () => {
     <>
       <div className="nav-top">
         <ul>
-        <Link to="/sellerside">
+        <Link style={{
+                  textDecoration: "none",
+                  color: "#000000",
+                  width: "min-width",
+                }} to="/sellerside">
         <li>Become a seller</li>
               </Link>
-          
+          <Link style={{
+                  textDecoration: "none",
+                  color: "#000000",
+                  width: "min-width",
+                }} to="/gift-cards">
           <li>Gift Cards</li>
+          </Link>
+         
         </ul>
       </div>
       <div className="navbar">

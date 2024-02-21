@@ -21,3 +21,32 @@ CREATE TABLE Order_Shipping_Charges (
     shipping_charge DECIMAL(10, 2),
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
+
+--update the address in orders
+ALTER TABLE orders
+RENAME COLUMN address TO address_id;
+
+ALTER TABLE orders
+ALTER COLUMN address_id TYPE INT;
+
+ALTER TABLE orders
+ADD CONSTRAINT orders_unique_address_id UNIQUE (address_id);
+
+ALTER TABLE address
+ADD CONSTRAINT fk_order_address
+FOREIGN KEY (address_id) REFERENCES orders(address_id)
+ON DELETE CASCADE;
+
+CREATE SEQUENCE address_id_seq;
+
+ALTER TABLE orders
+ALTER COLUMN address_id SET DEFAULT nextval('address_id_seq');
+
+ALTER TABLE orders
+ALTER COLUMN address_id TYPE INTEGER;
+
+UPDATE orders
+SET address_id = nextval('address_id_seq')
+WHERE address_id IS NULL;
+
+
