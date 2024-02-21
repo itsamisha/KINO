@@ -11,6 +11,7 @@ import CustomerDashboard from "./pages/CustomerDashboard";
 import { AuthProvider } from "./context/AuthContext";
 import { SellerAuthProvider } from "./context/SellerAuthContext";
 import Product from "./pages/Product";
+import SellerProduct from "./pages/SellerProduct";
 import SearchResults from "./component/SearchResults/SearchResults";
 import { SearchProvider } from "./context/SearchContext";
 import Wishlist from "./pages/Wishlist";
@@ -43,11 +44,12 @@ function App() {
               <Route path="/seller" element={<SellerDashboard />} />
               <Route path="/addproduct" element={<AddProduct />} />
               <Route path="/inventory" element={<Inventory />} />
-          
+              <Route path="/seller/:productId" element={<SellerProduct />} />
 
             <Route path="/search-results" element={<SearchResults />} />
             <Route path="/product" element={<Product />}>
             <Route path=":productId" element={<Product />} />
+            
             </Route>
           </Routes>
           <Footer />

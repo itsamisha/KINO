@@ -6,6 +6,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import InventoryItem from "../component/InventoryItem/InventoryItem";
+// import { link } from "../../../server/routes/seller";
 const Inventory = () => {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,7 +16,10 @@ const Inventory = () => {
   if (!isLoggedIn) {
     return <Navigate to="/signin"/>
   }
-  
+  const handleClick = () => {
+    return <Navigate to="/addproduct"/>
+  };
+
   const getInventory = async () => {
     try {
       const response = await fetch(
@@ -62,14 +66,23 @@ const Inventory = () => {
               id={item.product_id}
               name={item.name}
               photo={item.photo_url}
+              purchase_count={item.purchase_count}
+              stock_quantity={item.stock_quantity}
+              discount={item.discount}
+              
+
             />
             <br />
           </>
         ))
-      ) : (
-        <Link to="/">
-          <h1>Wishlist empty</h1>
+      ) : (<div>
+        <Link to="/seller">
+          <h1>Inventory empty</h1>
         </Link>
+        <button onClick={handleClick}> 
+            Add Products
+        </button>
+        </div>
       )}
     </div>
   );

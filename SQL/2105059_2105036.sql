@@ -85,10 +85,9 @@ CREATE TABLE order_items (
     order_item_id SERIAL PRIMARY KEY,
     order_id INT,
     product_id INT,
-    FOREIGN KEY (order_id) REFERENCES order(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
-
 CREATE TABLE payment (
     payment_id SERIAL PRIMARY KEY,
     order_id INT,

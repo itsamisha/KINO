@@ -17,7 +17,7 @@ const InventoryItem = (props) => {
   const {authUser} = useSellerAuth()
   const user_id = authUser.user_id;
 
-  async function deleteWishlist(){
+  async function deleteInventory(){
     try {
       const response = await fetch("http://localhost:5000/seller/remove-from-inventory", {
         method: "DELETE",
@@ -39,7 +39,8 @@ const InventoryItem = (props) => {
     }
   }
   const handleClick = () => {
-    window.location.href =  `/product/${props.id}`
+    window.location.href =  `/seller/${props.id}`
+    console.log("uwu");
   };
 
   return (
@@ -49,7 +50,7 @@ const InventoryItem = (props) => {
         <div className='wishlist-item-name'>{truncateString(props.name, 7)}</div>
         <div className="buttons">
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <FaTrashAlt className='delete' onClick={deleteWishlist}/>
+          <FaTrashAlt className='delete' onClick={deleteInventory}/>
         </div>
       </div>
     </div>

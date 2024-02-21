@@ -271,7 +271,7 @@ router.get("/:product_id", async (req, res) => {
       return;
     }
 
-    console.log(products.rows[0]);
+    //console.log(products.rows[0]);
     res.status(200).send(products.rows[0]);
   } catch (error) {
     console.error(`Error in /popular route: ${error.message}`);
