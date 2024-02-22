@@ -16,6 +16,7 @@ import SearchResults from "./component/SearchResults/SearchResults";
 import { SearchProvider } from "./context/SearchContext";
 import Wishlist from "./pages/Wishlist";
 import Inventory from "./pages/Inventory";
+import SellerReviewsPage from "./pages/SellerReviewsPage";
 import Orders from "./pages/Orders";
 import AddProduct from "./component/AddProducts/AddProduct";
 import SellerDashboard from "./pages/SellerDashboard"
@@ -44,6 +45,7 @@ function App() {
               <Route path="/seller" element={<SellerDashboard />} />
               <Route path="/addproduct" element={<AddProduct />} />
               <Route path="/inventory" element={<Inventory />} />
+              <Route path="/sellerreviews" element={<SellerReviewsPage />} />
               <Route path="/seller/:productId" element={<SellerProduct />} />
 
             <Route path="/search-results" element={<SearchResults />} />

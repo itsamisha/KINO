@@ -4,9 +4,10 @@ import Title from "../Title/Title";
 
 function ProductForm({ product, onCancel }) {
   const [formData, setFormData] = useState({
+    product_id:product.product_id,
     name: product.name,
     price: product.price,
-    category:product.category,
+    category:product.category_name,
     stock_quantity: product.stock_quantity,
     description: product.description,
     photo_url: product.photo_url,
@@ -34,6 +35,7 @@ function ProductForm({ product, onCancel }) {
       }
 
       const updatedProduct = await response.json();
+      console.log(updatedProduct);
       return updatedProduct;
     } catch (error) {
       throw new Error('Failed to update product. Please try again.');
@@ -46,16 +48,21 @@ function ProductForm({ product, onCancel }) {
     try {
         await updateProduct(formData);
        
-        alert('Profile updated successfully!');
+        alert('Product updated successfully!');
+    onCancel(); // Hide the form
+   // window.history.back(); // Reload the previous page
         setFormData({
-          name: authUser.name,
-          email: authUser.email,
-          phone_number: authUser.phone_number,
-          preferred_payment_method: authUser.preferred_payment_method || "",
+          product_id:product.product_id,
+            name: product.name,
+            price: product.price,
+            category:product.category_name,
+            stock_quantity: product.stock_quantity,
+            description: product.description,
+            photo_url: product.photo_url,
         });
       } catch (error) {
-        console.error('Error updating profile:', error.message);
-        alert('Failed to update profile. Please try again.');
+        console.error('Error updating product:', error.message);
+        alert('Failed to update product. Please try again.');
       }
 
 
@@ -100,6 +107,16 @@ function ProductForm({ product, onCancel }) {
             />
           </div>
           <div className="info-row">
+            <label className="info-label">Categories:</label>
+            <input
+              
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="info-row">
             <label className="info-label">Description:</label>
             <textarea
               name="description"
@@ -115,6 +132,15 @@ function ProductForm({ product, onCancel }) {
               value={formData.photo_url}
               onChange={handleChange}
             />
+            {/* Display image preview */}
+            {formData.photo_url && (
+              <img
+              
+                src={formData.photo_url}
+                alt="Product"
+                className="image-preview"
+              />
+            )}
           </div>
           <div className="button-container">
             <button type="submit" className="change-password-button">
