@@ -4,12 +4,13 @@ import Sidebar from "../component/SellerSidebar/SellerSidebar";
 import Title from "../component/Title/Title";
 import "../css/SellerOrders.css";
 import { useSellerAuth } from "../context/SellerAuthContext";
+import OrderItem from "../component/OrderItem/OrderItem";
 
 const Orders = () => {
   const [products, setProducts] = useState([]);
   const { authUser } = useSellerAuth();
   const user_id = authUser.user_id;
-  const [selectedOption, setSelectedOption] = useState("Pending");
+  const [selectedOption, setSelectedOption] = useState("pending");
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -39,32 +40,32 @@ const Orders = () => {
       <div className="orders-tab">
         <button
           className={`orders-option ${
-            selectedOption === "Pending" ? "selected" : ""
+            selectedOption === "pending" ? "selected" : ""
           }`}
-          onClick={() => handleOptionSelect("Pending")}
+          onClick={() => handleOptionSelect("pending")}
         >
           Pending
         </button>
         <button
           className={`orders-option ${
-            selectedOption === "History" ? "selected" : ""
+            selectedOption === "cancelled" ? "selected" : ""
           }`}
-          onClick={() => handleOptionSelect("History")}
+          onClick={() => handleOptionSelect("cancelled")}
         >
-          History
+          Cancelled
         </button>
         <button
           className={`orders-option ${
-            selectedOption === "Confirmed" ? "selected" : ""
+            selectedOption === "confirmed" ? "selected" : ""
           }`}
-          onClick={() => handleOptionSelect("Confirmed")}
+          onClick={() => handleOptionSelect("confirmed")}
         >
           Confirmed
         </button>
       </div>
       <div className="orders-list">
-      {Array.isArray(products) && products.map((order) => (
-  <OrderItem key={order.order_id} order={order} />
+      {Array.isArray(products) && products.map((order,index) => (
+  <OrderItem key={index} order={order} />
 ))}
 
       </div>

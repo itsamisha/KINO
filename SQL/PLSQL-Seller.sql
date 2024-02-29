@@ -77,7 +77,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION update_stock_quantity_after_order_cancel()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.order_status="cancelled" THEN
+    IF NEW.order_status='cancelled' THEN
     UPDATE product SET stock_quantity = (stock_quantity+OLD.quantity)
 		WHERE product_id = OLD.product_id;
     END IF;    
@@ -122,6 +122,6 @@ BEGIN
     JOIN product p ON oi.product_id = p.product_id
     JOIN orders o ON oi.order_id = o.order_id
     WHERE p.user_id = p_user_id
-    AND oi.order_status = p_order_status;
+    AND (p_order_status <> 'history' OR oi.order_status = p_order_status);
 END;
 $$ LANGUAGE plpgsql;
