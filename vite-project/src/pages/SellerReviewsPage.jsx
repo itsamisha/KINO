@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import SellerReviewItem from '../component/SellerReviewItem/SellerReviewItem'; // Import the SellerReviewItem component
 //import './SellerReviewsPage.css'; // Import your CSS file for styling
+import NavbarSeller from '../component/NavbarSeller/NavbarSeller';
+import Sidebar from '../component/SellerSidebar/SellerSidebar';
 import { useSellerAuth } from '../context/SellerAuthContext';
 
 const SellerReviewsPage = () => {
@@ -66,6 +68,8 @@ const SellerReviewsPage = () => {
 
   return (
     <div className="seller-reviews-page">
+      <NavbarSeller/>
+      <Sidebar/>
       <div className="unreplied-reviews-section">
         <h2>Unreplied Reviews</h2>
         {unrepliedReviews.map((review) => (

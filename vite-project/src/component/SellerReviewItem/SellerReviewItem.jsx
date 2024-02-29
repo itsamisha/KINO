@@ -52,8 +52,8 @@ const ReviewItem = ({ review, onReplySubmit }) => {
 
       {reply_text ?  <div className="reply-text"> Reply:  {reply_text}</div> : (
         <div className="reply-form">
-          <textarea value={reply} onChange={handleReplyChange} placeholder="Type your reply here..." />
-          <button onClick={handleSubmitReply}>Submit Reply</button>
+          <textarea className='signin-input' value={reply} onChange={handleReplyChange} placeholder="Type your reply here..." />
+          <button className='change-password-button' onClick={handleSubmitReply}>Submit Reply</button>
         </div>
       )}
     </div>

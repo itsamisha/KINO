@@ -120,7 +120,7 @@ const Navbar = () => {
                 }}
                 to="/signin"
               >
-                <b className="line">{authUser.name}</b>
+                <b className="line">Guest</b>
               </Link>
             )}
           </li>

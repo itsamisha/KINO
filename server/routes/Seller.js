@@ -93,6 +93,7 @@ router.post("/addproduct", upload.single("photo"), async (req, res) => {
   router.get("/:user_id/inventory", async (req, res) => {
     try {
       const { user_id } = req.params;
+      console.log(user_id);
       const customer = await pool.query(`SELECT P.product_id,P.name, P.photo_url
       FROM  product P 
       WHERE P.user_id =$1;`, [user_id]);
@@ -242,7 +243,136 @@ router.put('/submit-reply', async (req, res) => {
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+//top rating
+router.get('/:user_id/top-rated-products', async (req, res) => {
+  try {
+     const {user_id}=req.params;
+    const topRatedProducts = await pool.query(`
+    SELECT p.product_id, name, AVG(rating) AS avg_rating
+    FROM product p JOIN review r 
+    ON(p.product_id=r.product_id)
+    GROUP BY p.product_id, name
+    HAVING p.user_id=$1
+    ORDER BY avg_rating DESC
+    LIMIT 10;
+    `,[user_id]);
+    res.json(topRatedProducts.rows);
+  } catch (error) {
+    console.error('Error fetching top-rated products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+//worst rating
+router.get('/:user_id/worst-rated-products', async (req, res) => {
+  try {
+     const {user_id}=req.params;
+    const topRatedProducts = await pool.query(`
+    SELECT p.product_id, name, AVG(rating) AS avg_rating
+    FROM product p JOIN review r 
+    ON(p.product_id=r.product_id)
+    GROUP BY p.product_id, name
+    HAVING p.user_id=$1
+    ORDER BY avg_rating 
+    LIMIT 10;
+    `,[user_id]);
+    res.json(topRatedProducts.rows);
+  } catch (error) {
+    console.error('Error fetching top-rated products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
+// Get top-sold products
+router.get('/:user_id/top-sold-products', async (req, res) => {
+  try {
+    const {user_id}=req.params;
+    const topSoldProducts = await pool.query(`
+      SELECT product_id, name,purchase_count
+      FROM product
+      GROUP BY product_id, name
+      HAVING user_id=$1
+      ORDER BY purchase_count DESC
+      LIMIT 10;
+    `,[user_id]);
+    res.json(topSoldProducts.rows);
+  } catch (error) {
+    console.error('Error fetching top-sold products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+// Get least-sold products
+router.get('/:user_id/least-sold-products', async (req, res) => {
+  try {
+    const {user_id}=req.params;
+    const topSoldProducts = await pool.query(`
+      SELECT product_id, name,purchase_count
+      FROM product
+      GROUP BY product_id, name
+      HAVING user_id=$1
+      ORDER BY purchase_count 
+      LIMIT 10;
+    `,[user_id]);
+    res.json(topSoldProducts.rows);
+  } catch (error) {
+    console.error('Error fetching top-sold products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Get order status distribution
+router.get('/:user_id/order-status-distribution', async (req, res) => {
+  try {
+    const {user_id}=req.params;
+    const orderStatusDistribution = await pool.query(`
+    SELECT p.product_id, name,order_status
+    FROM product p 
+    join order_items o ON(p.product_id=o.product_id)
+    JOIN orders o1 ON(o1.order_id=o.order_id)
+    GROUP BY p.product_id, name,o1.order_status
+    HAVING p.user_id=$1
+    LIMIT 10;
+    `,[user_id]);
+    res.json(orderStatusDistribution.rows);
+  } catch (error) {
+    console.error('Error fetching order status distribution:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Get revenue data
+router.get('/:user_id/revenue-data', async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const revenueData = await pool.query(`
+      SELECT o1.product_id, order_date, SUM(price) AS total_revenue
+      FROM orders o 
+      JOIN order_items o1 ON o.order_id = o1.order_id
+      JOIN product p ON p.product_id = o1.product_id
+      WHERE p.user_id = $1
+      GROUP BY o1.product_id, order_date
+      ORDER BY order_date;
+    `, [user_id]);
+    res.json(revenueData.rows);
+  } catch (error) {
+    console.error('Error fetching revenue data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+//get orders
+router.get('/:user_id/:status/orders', async (req, res) => {
+  try {
+    const { user_id,status } = req.params;
+    console.log(user_id);
+    
+    const orderData=await pool.query(`
+    SELECT * FROM get_orders_for_user($1, $2)
+  `, [user_id,status]);
+    res.json(orderData.rows);
+  } catch (error) {
+    console.error('Error fetching ordersellers data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 module.exports = router;

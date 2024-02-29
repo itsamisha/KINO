@@ -12,7 +12,7 @@
 
   .review-item {
     border: 1px solid var(--accent);
-    padding: 15px;
+    padding: 50px;
     margin-bottom: 15px;
     margin-right: 1.05rem;
     background-color: var(--background-50);
@@ -26,8 +26,8 @@
   
   .reply-text {
     color: var(--secondary);
-    font-size: 0.9rem;
-    margin-top: 5px;
+    font-size: 1.1rem;
+    margin-top: 10px;
   }
   
   .author {
@@ -46,3 +46,20 @@
     height: auto; /* Maintain aspect ratio */
   }
   
+  .change-password-button {
+    background-color:var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    float: right;
+    font-size: 15px;
+  }
+  .signin-input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--secondary);
+    font-size: large;
+    font-weight: 400;
+  }

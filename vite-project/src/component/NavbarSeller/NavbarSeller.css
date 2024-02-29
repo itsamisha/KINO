@@ -12,13 +12,17 @@
     --background-50: #f9ecef;
     ---white : #fff;
   }
-  .nav-input {
+  .nav-input-seller{
     width: calc(80% - 48px); /* Adjust input width to accommodate the eye icon and reduce the box size */
     padding: 12px; /* Adjust padding */
     margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  /* border: 1px solid #ccc; */
+    /* border-radius: 4px; */
     font-size: 14px;
+    display: flex; /* Use flexbox */
+  align-items: center; /* Align items vertically */
+  gap: 15px;
+  margin-top: 20px;
   }
   .gradient-line {
     width: 100%;
@@ -35,7 +39,7 @@
   }
   
   .nav-logo {
-    margin-left: 20px;
+    margin-right: auto;
     display: flex;
     align-items: center;
     padding: 2.75rem 0;
@@ -140,6 +144,7 @@
   .line{
     font-size: large;
     width: max-content;
+    margin-left: -100px !important;
   }
   .line:hover{
       color: var(--primary)
@@ -152,4 +157,20 @@
   .cart-img{
     height: 2.45rem;
   }
-  
+  .change-password-button {
+    background-color: var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    float: right;
+    font-size: 15px;
+}
+.signin-input {
+  width: 70%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--secondary);
+  font-size: large;
+  font-weight: 400;
+}
