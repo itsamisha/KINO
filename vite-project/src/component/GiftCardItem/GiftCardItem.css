@@ -1,0 +1,30 @@
+:root {
+    --text: #120708;
+    --background: #fdf9fa;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-200: #e6b3bf;
+    --background-100: #f2d9df;
+    --primary-700: #86131b;
+    --primary-800: #590d12;
+    font-family: 'Playfair Display', serif;
+    font-family: 'Poppins', sans-serif;
+  }
+
+.giftcard-text{
+    font-family: 'Nunito Sans', sans-serif;
+    padding-bottom: 0.5rem;
+    text-align: right;
+    font-size:medium;
+  }
+
+  .amount-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .amount-container .giftcard-text {
+    margin-bottom: 5px;
+  }
+  

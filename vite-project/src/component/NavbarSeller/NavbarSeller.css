@@ -1,4 +1,4 @@
-* {
+/* * {
     font-family: "Quicksand", sans-serif;
   }
   
@@ -13,14 +13,13 @@
     ---white : #fff;
   }
   .nav-input-seller{
-    width: calc(80% - 48px); /* Adjust input width to accommodate the eye icon and reduce the box size */
-    padding: 12px; /* Adjust padding */
+    width: calc(80% - 48px); /
+    padding: 12px; 
     margin-bottom: 10px;
-  /* border: 1px solid #ccc; */
-    /* border-radius: 4px; */
+  
     font-size: 14px;
-    display: flex; /* Use flexbox */
-  align-items: center; /* Align items vertically */
+    display: flex; 
+  align-items: center;
   gap: 15px;
   margin-top: 20px;
   }
@@ -30,7 +29,7 @@
     background: linear-gradient(to right, var(--primary), var(--secondary));
     margin-top: 0rem;
   }
-  .navbar {
+  .seller-navbar {
     display: flex;
     justify-content: space-evenly;
     box-shadow: 0 1px 3px -2px var(--text);
@@ -38,7 +37,7 @@
     height: 4.75rem;
   }
   
-  .nav-logo {
+  .seller-nav-logo {
     margin-right: auto;
     display: flex;
     align-items: center;
@@ -101,52 +100,16 @@
     color: var(--secondary)
   }
   
-  .nav-login-cart {
-    display: flex;
-    align-items: center;
-    gap: 45px;
-  }
-  
-  .nav-login-cart button {
-    border:none;
-    width: 95px;
-    height: 35px;
-    outline: none;
-    border-radius: 65px;
-    color: var(---white);
-    font-size: large;
-    background: var(--primary);
-  }
-  
-  .nav-login-cart button:hover {
-    background: var(--accent);
-    cursor: pointer;
-  }
-  
-  .nav-cart-count {
-    width: 1.25rem;
-    height: 1.25rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: -35px;
-    margin-left: -53px;
-    border-radius: 15px;
-    font-size: 14px;
-    background-color: var(--primary);
-    color: var(---white);
-  }
-  
   .selected {
     background-color: #fff;
   }
   
-  .line{
+  .seller-line{
     font-size: large;
     width: max-content;
     margin-left: -100px !important;
   }
-  .line:hover{
+  .seller-line:hover{
       color: var(--primary)
   }
   
@@ -154,10 +117,7 @@
     height: 3.5rem;
   }
   
-  .cart-img{
-    height: 2.45rem;
-  }
-  .change-password-button {
+  .seller-change-password-button {
     background-color: var(--primary);
     color: white;
     padding: 10px 20px;
@@ -166,11 +126,11 @@
     float: right;
     font-size: 15px;
 }
-.signin-input {
+.seller-signin-input {
   width: 70%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid var(--secondary);
   font-size: large;
   font-weight: 400;
-}
+} */

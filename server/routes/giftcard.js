@@ -16,7 +16,7 @@ router.get("/received/:user_id", async (req, res) => {
     try {
         const { user_id } = req.params;
         const giftcards = await pool.query(
-            `SELECT amount,initial_amount, message, (SELECT name FROM users WHERE user_id = from_user_id) AS from, gift_card_code, design, purchase_date
+            `SELECT amount,initial_amount, message, (SELECT name FROM users WHERE user_id = from_user_id) AS name, gift_card_code, design, purchase_date
             FROM gift_card WHERE user_id = $1;`, [user_id] 
         );
         if (giftcards.rows.length !== 0) {
@@ -35,7 +35,7 @@ router.get("/sent/:user_id", async (req, res) => {
     try {
         const { user_id } = req.params;
         const giftcards = await pool.query(
-            `SELECT (SELECT name FROM users WHERE user_id = G.user_id) AS to, initial_amount, message,gift_card_code,design, purchase_date
+            `SELECT (SELECT name FROM users WHERE user_id = G.user_id) AS name, initial_amount, message,gift_card_code,design, purchase_date
             FROM gift_card G
             WHERE G.from_user_id = $1;`, [user_id] 
         );

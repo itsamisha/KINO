@@ -11,7 +11,7 @@ import { useSellerAuth } from "../context/SellerAuthContext";
 import SellerSidebar from "../component/SellerSidebar/SellerSidebar";
 import Chart from 'chart.js/auto';
 import {Link, Navigate, useNavigate } from "react-router-dom";
-import InventoryItem from "../component/InventoryItem/InventoryItem";
+import InventoryItem from "../component/InventoryItem/InventoryItem"; 
 
 const AnalyticsPage = () => {
     Chart.register(ArcElement);
@@ -101,7 +101,7 @@ const AnalyticsPage = () => {
   }, []);
 
   return (
-    <div className='product-grid '>
+    <div className='product-grid-analytics'>
         <NavbarSeller/>
         <SellerSidebar/>
       <h1>Analytics Dashboard</h1>

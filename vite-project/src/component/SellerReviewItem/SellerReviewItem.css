@@ -10,7 +10,7 @@
     --background-900: #260d13;
   }
 
-  .review-item {
+  .review-item-seller {
     border: 1px solid var(--accent);
     padding: 50px;
     margin-bottom: 15px;

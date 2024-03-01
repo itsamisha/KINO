@@ -25,6 +25,7 @@ import GiftCard from "./pages/GiftCard";
 import GiftCardPurchase from "./component/GiftCardPurchase/GiftCardPurchase";
 import GiftCardCustomer from "./pages/GiftCardCustomer";
 import AnalyticsPage from "./pages/Analytics";
+
 function App() {
   return (
     <SellerAuthProvider>

@@ -5,7 +5,8 @@ import GiftCardItem from "../component/GiftCardItem/GiftCardItem";
 import Navbar from "../component/Navbar/Navbar";
 import Sidebar from "../component/Sidebar/Sidebar";
 import Title from "../component/Title/Title";
-import Loading from "../component/Loading/Loading"; // Import your loading component
+import Loading from "../component/Loading/Loading"; 
+import ContinueShopping from "../component/ContinueShopping/ContinueShopping" // Import your loading component
 
 const GiftCardCustomer = () => {
   const { isLoggedIn, authUser } = useAuth();
@@ -82,8 +83,12 @@ const GiftCardCustomer = () => {
               giftcards.map((item) => (
                 <React.Fragment key={item.gift_card_code}>
                   <GiftCardItem
-                    name={item.from}
+                    name={item.name}
+                    message={item.message}
                     photo={item.design}
+                    amount={item.amount}
+                    initial={item.initial_amount}
+                    selection = {selectedOption}
                   />
                   <br />
                 </React.Fragment>
@@ -91,7 +96,12 @@ const GiftCardCustomer = () => {
               </>
              
             ) : (
-                <ContinueShopping/> 
+              <>
+              <br />
+              <br />
+              <ContinueShopping/> 
+              </>
+                
             )}
           </div>
         </>

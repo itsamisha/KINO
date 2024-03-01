@@ -38,7 +38,7 @@ const ReviewItem = ({ review, onReplySubmit }) => {
   };
   
   return (
-    <div className="review-item">
+    <div className="review-item-seller">
       <div className="product-details">
         <div className="product-name">Product: {name}</div>
         <div className="product-description">Description: {description}</div>
