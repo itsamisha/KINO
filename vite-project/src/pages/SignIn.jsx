@@ -5,6 +5,9 @@ import { useSearch } from "../context/SearchContext";
 import { useNavigate } from "react-router-dom";
 import photo from "../component/assets/SignIn.png";
 import Header from "../component/Header/Header";
+import Warning from "../component/Warning/Warning";
+import Successful from "../component/Successful/Successful";
+import Backdrop from "../component/Backdrop/Backdrop";
 
 function SignIn() {
   const {updateSearchValue,updateSearchOption } = useSearch();
@@ -13,9 +16,25 @@ function SignIn() {
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn, setAuthUser } = useAuth();
 
+  if (isLoggedIn) {
+    navigate("/");
+  }
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
+  const [warning, setWarning] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleShowSucces = () => {
+    window.location.href = "/"
+  }
+
+  const handleShowWarning = () => {
+    setShowWarning(false);
+  };
+
 
   function handleEmailUpdate(e) {
     setEmail(e.target.value);
@@ -33,7 +52,8 @@ function SignIn() {
     try {
       e.preventDefault();
       if (fieldEmpty()) {
-        alert("Fill up all the fields");
+        setWarning("Please fill up the fields");
+        setShowWarning(true);
         return;
       }
       const response = await fetch("http://localhost:5000/signin", {
@@ -49,29 +69,23 @@ function SignIn() {
       if (success) {
         setAuthUser(userInfo);
         setIsLoggedIn(true);
-        alert(`Sign-in successful!\nWelcome back to KINO ${userInfo.name}`);
       } else {
-        alert("Invalid email or password, please try again");
+        setWarning("Invalid email or password, please try again");
+        setShowWarning(true);
       }
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      alert(`Sign-in successful!\nWelcome back to KINO `);
-      navigate("/");
-    }
-  }, [isLoggedIn]);
-
+  
   return (
     <>
     <Header/>
       <div className="signInContainer">
         <img src={photo} className="woman" alt="" />
         <div className="signin-form">
-          <h1>SIGN IN</h1>
+          <h1 className="signin-h1">SIGN IN</h1>
           <div className="flex-start">
             <input
               className="signin-input"
@@ -114,7 +128,16 @@ function SignIn() {
             </u>
           </div>
         </div>
+        {showWarning && (
+          <>
+            <Backdrop />{" "}
+            <Warning message={warning} onClose={handleShowWarning} />
+          </>
+        )}
       </div>
+      <br />
+      <br />
+     
     </>
   );
 }

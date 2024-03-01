@@ -1,0 +1,15 @@
+
+  .del-checkbox-options {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .del-option {
+    display: flex;
+    align-items: center;
+  }
+  
+  .del-option input[type="checkbox"] {
+    margin-right: 8px; 
+  }
+  

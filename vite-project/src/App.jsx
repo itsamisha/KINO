@@ -19,6 +19,9 @@ import Inventory from "./pages/Inventory";
 import Orders from "./pages/Orders";
 import AddProduct from "./component/AddProducts/AddProduct";
 import SellerDashboard from "./pages/SellerDashboard"
+import GiftCard from "./pages/GiftCard";
+import GiftCardPurchase from "./component/GiftCardPurchase/GiftCardPurchase";
+import GiftCardCustomer from "./pages/GiftCardCustomer";
 function App() {
   return (
     <SellerAuthProvider>
@@ -33,6 +36,9 @@ function App() {
             <Route path="/customer" element={<CustomerDashboard />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/orders" element={<Orders/>} />
+            <Route path="/gift-cards" element={<GiftCard/>} />
+            <Route path="/gift-card-purchase" element={<GiftCardPurchase/>} />
+            <Route path="/giftcard" element={<GiftCardCustomer/>} />
             {/* <Route
               path="/customer/change_password"
               element={<ChangePassword />}

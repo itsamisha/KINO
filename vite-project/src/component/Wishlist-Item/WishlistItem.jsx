@@ -3,8 +3,6 @@ import { FaTrashAlt,FaCartPlus } from "react-icons/fa";
 import { useAuth } from '../../context/AuthContext';
 
 const WishlistItem = (props) => {
-  
-
   function truncateString(str, maxWords) {
     const words = str.split(/\s+/);
     const truncatedWords = words.slice(0, maxWords);

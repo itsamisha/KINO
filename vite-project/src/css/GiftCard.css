@@ -1,0 +1,27 @@
+:root {
+    --text: #120708;
+    --background: #fdf9fa;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-300: #d98c9f;
+}
+
+.buy-now-container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.buy-now-button {
+    background-color: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 2rem;
+    border: none;
+    cursor: pointer;
+}
+
+.buy-now-button:hover {
+    background-color: var(--accent);
+}
+

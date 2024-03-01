@@ -1,0 +1,10 @@
+.address-details p {
+    margin: 5px 0;
+    text-align: left; 
+}
+
+.address-details strong {
+    font-weight: bold; 
+    display: inline-block; 
+    width: 100px; 
+  }

@@ -26,6 +26,7 @@ export function AuthProvider(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(
     initialAuthUser.user_id && initialAuthUser.user_type !== 'seller' 
   );
+  
   const [sellerLoggedIn, setSellerLoggedIn] = useState(false);
 
   useEffect(() => {

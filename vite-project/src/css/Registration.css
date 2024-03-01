@@ -1,6 +1,6 @@
 :root{
   --text: #120708;
---background: #fdf9fa;
+--background: #fdf9fa; 
 --primary: #E2323F;
 --secondary: #f4828a;
 --accent: #fc4e59;
@@ -18,7 +18,15 @@
 }
 
 .reg-form {
-  width: 55%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  width: 35%;
+  background-color: var(--background-50);
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  margin: 0 auto; 
 }
 
 .h1 {

@@ -1,0 +1,125 @@
+:root {
+    --text: #120708;
+    --background: #fdf9fa;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-300: #d98c9f;
+}
+.gcp-container {
+    display: flex;
+  }
+  
+  .left-panel {
+    margin-left: 5rem;
+    flex: 1;
+  }
+  
+  .right-panel {
+    margin-left: 4rem;
+    flex: 2;
+  }
+  
+.gift-card-designs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+    grid-column-gap: 1.5rem; 
+    grid-row-gap: 1.5rem; 
+    justify-items: center;
+    align-items: center;
+    margin-top: 1.5rem;
+    margin-right: 2rem;
+}
+
+@media screen and (max-width: 1200px) {
+    .gift-card-designs {
+        grid-gap: 3rem; /* Decrease gap between images for medium screens */
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .gift-card-designs {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-gap: 2rem;
+    }
+}
+
+.pick-one {
+    display: block;
+    text-align: center;
+    font-size: 2.5rem; 
+    font-weight: bold;
+    margin-top: 3rem; 
+    font-family: 'Poppins';
+    text-align: left;
+    margin-left: 5rem;
+    color: var(--primary); 
+  }
+
+  .pick-one-small {
+    display: block;
+    text-align: center;
+    font-size: 20px; 
+    font-weight: bold;
+    font-family: 'Poppins';
+    text-align: left;
+    color: var(--primary); 
+  }
+
+.gift-card-designs img {
+    width: 100%;
+    height: auto;
+    border: 5px solid var(--background); 
+}
+
+.gift-card-designs img:hover {
+    border-color: var(--primary); 
+    cursor: pointer; 
+}
+
+.gc-info-select {
+    margin-left: 0.25rem;
+    flex: 2;
+    padding: 4px;
+    border: none;
+    box-sizing: border-box;
+    background-color: var(--background-50);
+    color: var(--text);
+    font-size: 16px;
+    max-width: fit-content;
+  }
+
+  .gc-info-select:focus {
+    outline: none;
+    border: 0.5px solid;
+    border-color: var(--accent);
+  }
+
+  .gc-warning-container{
+    position: fixed;
+    top: 50%;
+    left: 30%;
+    z-index: 1000;
+  }
+
+  .purchase-now-button-wrap{
+    text-align: right;
+    margin-top: 3rem;
+    margin-right: 4rem;
+   
+  }
+
+  .purchase-now-button{
+    font-size: 1.5rem;
+    color: var(--background);
+    background-color: var(--primary);
+    padding: 0.85rem;
+    border: none;
+    font-weight: bold;
+  }
+
+  .purchase-now-button:hover{
+    background-color: var(--accent);
+    border: none;
+    cursor: pointer;
+  }

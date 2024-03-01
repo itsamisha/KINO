@@ -157,8 +157,54 @@ router.get("/:user_id", async (req, res) => {
     }
   })
 
-  //Payment and Order Confirmation
-  
+  ////Payment and Order Confirmation
+
+  //Redeeming gift card
+  router.get("/:user_id/:gift_card_code/:total_amount", async (req, res) => {
+    try {
+      const { user_id ,gift_card_code, total_amount} = req.params;
+      const response = await pool.query(`SELECT payment_update_with_gift_card($1,$2,$3) AS new_total_price`, [user_id,gift_card_code,total_amount]);
+      if (response.rows.length !== 0) {
+        res.json(response.rows[0]);
+      } else {
+        res.status(404).json({ message: 'Error in /user_id/gift_card_code/total_amount' });
+      }
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
+
+ //Actually using gift card
+  router.get("/use_gift_card/:user_id/:gift_card_code/:total_amount", async (req, res) => {
+    try {
+      const { user_id ,gift_card_code, total_amount} = req.params;
+      const response = await pool.query(`SELECT confirm_payment_with_gift_card($1,$2,$3) AS new_total_price`, [user_id,gift_card_code,total_amount]);
+      if (response.rows.length !== 0) {
+        res.json(response.rows[0]);
+      } else {
+        res.status(404).json({ message: 'Error in /use_gift_card/user_id/gift_card_code/total_amount' });
+      }
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
+
+  //Paying with mobile banking 
+  router.post("/confirm_order_mobile_banking", async (req,res) => {
+    try {
+        const {user_id,house,road,post_code,day,phone_no} = req.body
+            const response = await pool.query(`SELECT confirm_order_mobile_banking($1,$2,$3,$4,$5,$6);`,[user_id,house,road,post_code,day,phone_no])
+            console.log(response);
+        console.log(response.rows);
+        res.json({ success: true, data: response.rows[0] });
+      
+    } catch (error) {
+        console.error(`Error in /customer/confirm_order_mobile_banking: ${error.message}`);
+        res.status(500).send({success: false, error: error.message})
+    }
+  })
 
   
   //Get Order History

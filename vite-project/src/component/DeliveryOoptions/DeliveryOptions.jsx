@@ -12,28 +12,29 @@ const DeliveryOptions = ({ onSelectDeliveryMode }) => {
 
   return (
     <div className="delivery-options">
-      <div className="checkbox-options">
-        <label>
+      <div className="del-checkbox-options">
+        <div className="del-option">
           <input 
             type="checkbox" 
             name="normal" 
             checked={selectedMode === 'normal'} 
             onChange={handleDeliveryModeChange} 
           />
-          Normal Delivery
-        </label>
-        <label>
+          <label htmlFor="normal">Standard Delivery (3 - 4 days)</label>
+        </div>
+        <div className="del-option">
           <input 
             type="checkbox" 
             name="rapid" 
             checked={selectedMode === 'rapid'} 
             onChange={handleDeliveryModeChange} 
           />
-          Rapid Delivery
-        </label>
+          <label htmlFor="rapid">Rapid Delivery (1 day)</label>
+        </div>
       </div>
     </div>
   );
 };
 
 export default DeliveryOptions;
+

@@ -17,7 +17,7 @@
 }
 
 .woman{
-  width: 50%;
+  width: 45%;
   margin: 0 auto;
 
 }
@@ -26,16 +26,10 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  width: 28%;
+  width: 30%;
   background-color: var(--background-50);
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  margin: 0 auto; 
-}
-
-h1 {
-  padding: 2rem;
-  color: var(--text);
   margin: 0 auto; 
 }
 
@@ -47,6 +41,22 @@ h1 {
   font-size: large;
   font-weight: 400;
 }
+.signin-h1{
+  padding: 2rem;
+  color: var(--text);
+  margin: 0 auto; 
+  font-size: 48px;
+  font-family: 'Poppins';
+}
+.signin-label {
+  width: 90%;
+  margin-bottom: 10px;
+  font-size: large;
+  font-family: 'Poppins';
+  font-weight: bold;
+  color:var(--primary);
+}
+
 
 .btn {
   border:none;

@@ -1,13 +1,14 @@
+import React, { useState, useEffect } from "react";
 import "../css/Cart.css";
-import React from "react";
 import Navbar from "../component/Navbar/Navbar";
 import Sidebar from "../component/Sidebar/Sidebar";
 import { useAuth } from "../context/AuthContext";
 import { Link, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import CartItem from "../component/CartItem/CartItem";
 import Title from "../component/Title/Title";
 import CheckOut from "../component/CheckOut/CheckOut";
+import Loading from "../component/Loading/Loading"; // Import the loading component
+import ContinueShopping from "../component/ContinueShopping/ContinueShopping";
 
 const Cart = () => {
   const { isLoggedIn, authUser } = useAuth();
@@ -16,12 +17,16 @@ const Cart = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // State to manage loading
 
+  if(!isLoggedIn){
+    window.location.href = '/signin'
+  }
   useEffect(() => {
     if (isLoggedIn) {
       getCartItems();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn]); 
 
   const getCartItems = async () => {
     try {
@@ -30,13 +35,15 @@ const Cart = () => {
       );
       const data = await response.json();
       setProducts(data);
+      setIsLoading(false); // Set loading to false after data is fetched
     } catch (error) {
       console.log(error.message);
+      setIsLoading(false); // Set loading to false in case of error
     }
   };
 
   const calculateTotalPrice = (cartProducts) => {
-    if(cartProducts.length>0){
+    if (cartProducts.length > 0) {
       let totalPrice = 0;
       cartProducts.forEach((product) => {
         const price = parseFloat(product.price);
@@ -44,7 +51,6 @@ const Cart = () => {
       });
       return totalPrice;
     }
-    
   };
 
   useEffect(() => {
@@ -67,55 +73,73 @@ const Cart = () => {
 
   return (
     <div className="container">
-      {isLoggedIn ? <Navbar /> : null}
-      {isLoggedIn ? <Sidebar /> : null}
-      <br />
-      <Title title="CART" />
-      <br />
-      <div className="cart-count">Products Added: {products.length!==undefined? products.length : 0}</div>
-      <br />
-      {products.length>0? <div className="confirm-order" onClick={handleCheckout}>
-        PROCEED TO CHECKOUT
-      </div>: <></>}
-      {showCheckout && (
-        <CheckOut onClose={handleCloseCheckout} />
-      )}
-      <br />
-      <br />
-      {products.length>0? 
-      <input
-        type="text"
-        placeholder="Search in cart..."
-        value={searchQuery}
-        className="searchCart"
-        onChange={(e) => setSearchQuery(e.target.value)}
-      /> 
-      : <></>}
-      <br />
-      <br />
-      <br />
-      {isLoggedIn ? (
-        products.length > 0 ? (
-          filteredProducts.map((item) => (
-            <React.Fragment key={item.product_id}>
-              <CartItem
-                id={item.product_id}
-                name={item.name}
-                price={item.price}
-                quantity={item.quantity}
-                photo={item.photo_url}
-                stock_quantity={item.stock_quantity}
-              />
-              <br />
-            </React.Fragment>
-          ))
-        ) : (
-          <Link to="/">
-            <h1>No product in the cart, continue shopping</h1>
-          </Link>
-        )
+      {isLoading ? ( // Conditionally render loading component
+        <Loading />
       ) : (
-        <Navigate to="/signin" />
+        <>
+          {isLoggedIn ? <Navbar /> : null}
+          {isLoggedIn ? <Sidebar /> : null}
+          <br />
+          <Title title="CART" />
+          <br />
+          {products.length > 0 ? (
+          <div className="cart-count">
+            Products Added: {products.length !== undefined ? products.length : 0}
+          </div>) : <></> }
+          {products.length > 0 ? (
+            <>
+            <br />
+            <div className="confirm-order" onClick={handleCheckout}>
+              PROCEED TO CHECKOUT
+            </div>
+            </>
+          ) : (
+            <></>
+          )}
+          {showCheckout && <><CheckOut onClose={handleCloseCheckout}/> <br />
+          <br /></>}
+          {products.length > 0 ? (
+            <>
+            <br />
+            <br />
+
+            <input
+              type="text"
+              placeholder="Search in cart..."
+              value={searchQuery}
+              className="searchCart"
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          <br />
+          <br />
+          <br />
+          </>
+          ) : (
+            <></>
+          )}
+          
+          {isLoggedIn ? (
+            products.length > 0 ? (
+              filteredProducts.map((item) => (
+                <React.Fragment key={item.product_id}>
+                  <CartItem
+                    id={item.product_id}
+                    name={item.name}
+                    price={item.price}
+                    quantity={item.quantity}
+                    photo={item.photo_url}
+                    stock_quantity={item.stock_quantity}
+                  />
+                  <br />
+                </React.Fragment>
+              ))
+            ) : (
+              <ContinueShopping/>
+            )
+          ) : (
+            <Navigate to="/signin" />
+          )}
+        </>
       )}
     </div>
   );

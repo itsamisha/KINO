@@ -1,19 +1,24 @@
+import React, { useState, useEffect } from "react";
 import "../css/Wishlist.css";
 import Navbar from "../component/Navbar/Navbar";
 import Sidebar from "../component/Sidebar/Sidebar";
 import { useAuth } from "../context/AuthContext";
 import { Link, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import WishlistItem from "../component/Wishlist-Item/WishlistItem";
 import Title from "../component/Title/Title";
-import React from "react";
+import Loading from "../component/Loading/Loading"; // Import the loading component
+import ContinueShopping from "../component/ContinueShopping/ContinueShopping";
 
 const Wishlist = () => {
   const { isLoggedIn, authUser } = useAuth();
-  const userId = authUser.user_id;
+  const userId = authUser.user_id; 
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // State to manage loading
 
+  if(!isLoggedIn){
+    window.location.href = '/signin'
+  }
   useEffect(() => {
     if (isLoggedIn) {
       getWishlist();
@@ -27,8 +32,10 @@ const Wishlist = () => {
       );
       const data = await response.json();
       setProducts(data);
+      setIsLoading(false); // Set loading to false after data is fetched
     } catch (error) {
       console.log(error.message);
+      setIsLoading(false); // Set loading to false in case of error
     }
   };
 
@@ -45,42 +52,54 @@ const Wishlist = () => {
       <br />
       <Title title="WISHLIST" />
       <br />
-      <div className="wishlist-count">Products Added: {products.length>0? products.length : 0}</div>
-      <br />
-      {products.length>0?
-      <input
-      type="text"
-      placeholder="Search wishlist..."
-      value={searchQuery}
-      className="searchWishlist"
-      onChange={(e) => setSearchQuery(e.target.value)}
-      /> : <></>
-      }
-      
-      <br />
-      <br />
-      <br />
-      {isLoggedIn ? (
-        products.length > 0 ? (
-          filteredProducts.map((item) => (
-            <React.Fragment key={item.product_id}>
-              <WishlistItem
-                id={item.product_id}
-                name={item.name}
-                discount={item.discount}
-                photo={item.photo_url}
-                in_cart={item.in_cart}
-              />
-              <br />
-            </React.Fragment>
-          ))
-        ) : (
-          <Link to="/">
-            <h1>Wishlist empty</h1>
-          </Link>
-        )
+      {isLoading ? ( 
+        <Loading />
       ) : (
-        <Navigate to="/signin" />
+        <>
+          
+          {products.length > 0 ? (
+            <>
+            <div className="wishlist-count">
+            Products Added: {products.length > 0 ? products.length : 0}
+          </div>
+          <br />
+            <input
+              type="text"
+              placeholder="Search wishlist..."
+              value={searchQuery}
+              className="searchWishlist"
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            </>
+          ) : null}
+          
+          {isLoggedIn ? (
+            products.length > 0 ? (
+              <>
+              <br />
+              <br />
+              <br />
+              {filteredProducts.map((item) => (
+                <React.Fragment key={item.product_id}>
+                  <WishlistItem
+                    id={item.product_id}
+                    name={item.name}
+                    discount={item.discount}
+                    photo={item.photo_url}
+                    in_cart={item.in_cart}
+                  />
+                  <br />
+                </React.Fragment>
+              ))}
+              </>
+             
+            ) : (
+                <ContinueShopping/> 
+            )
+          ) : (
+            <Navigate to="/signin" />
+          )}
+        </>
       )}
     </div>
   );
