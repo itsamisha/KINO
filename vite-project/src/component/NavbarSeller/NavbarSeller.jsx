@@ -94,17 +94,18 @@ const NavbarSeller = () => {
           </Link>
         </div>
         <ul className="nav-menu">
-          <li>
+          <li  className={isLoggedIn ? "username" : ""}>
             {isLoggedIn ? (
-              <Link to="/seller" style={{ textDecoration: "none", color: "#000000" }}>
-                <b>{authUser.name}</b>
-                <button className='nav-login-cart button' onClick={handleLogout}>Logout</button>
+              <Link to="/seller" style={{ textDecoration: "none", color: "#000000" ,
+              width: "min-width",}}>
+                <b className="line">{authUser.name}</b>
+                <button className='change-password-button ' onClick={handleLogout}>Logout</button>
               </Link>
             ) : (
-              <form className='nav-input' onSubmit={handleLogin}>
-                <input type="text" placeholder="Email or Phone" value={email} onChange={handleEmailUpdate} />
-                <input type="password" placeholder="Password" value={password} onChange={handlePasswordUpdate} />
-                <button type="submit">Login</button>
+              <form className='nav-input-seller' onSubmit={handleLogin}>
+                <input className='signin-input' type="text" placeholder="Email or Phone" value={email} onChange={handleEmailUpdate} />
+                <input className='signin-input' type="password" placeholder="Password" value={password} onChange={handlePasswordUpdate} />
+                <button className='change-password-button' type="submit">Login</button>
               </form>
             )}
           </li>

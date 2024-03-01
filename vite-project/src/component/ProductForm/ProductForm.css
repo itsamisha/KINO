@@ -25,8 +25,8 @@
   }
   
   .modal-content {
-    width: 45%;
-    height: 80vh;
+    width: 60%;
+    height: 90vh;
     background-color: var(--background);
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -39,7 +39,18 @@
     padding: 20px;
     background-color: var(--background-50);
     box-shadow: 0 0 0 .1em var(--background-200);
+   
   }
+  /* ProductForm.css */
+
+.image-preview {
+  max-width: 100px; /* Set the maximum width of the image */
+  max-height: 100px; /* Set the maximum height of the image */
+  display: block; /* Ensure the image is displayed as a block element */
+  margin-top: 10px; /* Add some top margin for spacing */
+  margin: -70px auto 10px;
+}
+
   
   .profile-form-container h2 {
     font-size: 26px;

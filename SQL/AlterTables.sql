@@ -20,3 +20,7 @@ ADD COLUMN address TEXT;
 
 ALTER TABLE orders
 ADD COLUMN order_status VARCHAR(15);
+--29feb2024
+ALTER TABLE orders
+DROP COLUMN order_status;
+ALTER TABLE order_items ADD COLUMN order_status VARCHAR(255);

@@ -48,6 +48,7 @@ const Product = () => {
     try {
       const response = await fetch(`http://localhost:5000/${productId}`);
       const data = await response.json();
+      console.log(data);
       setProduct(data);
       setLoading(false);
     } catch (error) {

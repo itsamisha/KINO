@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaHeart,FaShoppingCart, FaCommentAlt ,FaUser} from "react-icons/fa";
+import { FaHeart,FaShoppingCart, FaCommentAlt ,FaUser, FaBitcoin, FaClipboardList, FaPaste} from "react-icons/fa";
 import './SellerSidebar.css';
 
 
@@ -38,16 +38,21 @@ const Sidebar = () => {
           Orders
         </a>
         <a href="/addproduct">
-          <FaHeart className="seller-icon" />&nbsp;
+          <FaPaste
+          className="seller-icon" />&nbsp;
          Add Products
         </a>
         <a href="/inventory">
-          <FaHeart className="icon" />&nbsp;
+          <FaClipboardList  className="icon" />&nbsp;
          Inventory
         </a>
         <a href="/sellerreviews">
         <FaCommentAlt className="seller-icon" />&nbsp;
           Reviews And Reply
+        </a>
+        <a href="/analytics">
+          <FaBitcoin className="icon" />&nbsp;
+         Analytics
         </a>
       </div>
       <div
