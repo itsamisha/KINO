@@ -1,10 +1,12 @@
 import Navbar from "../Navbar/Navbar";
 import "./GiftCardPurchase.css";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import Successful from "../Successful/Successful";
 import Warning from "../Warning/Warning";
 import Backdrop from "../Backdrop/Backdrop";
+import Loading from "../Loading/Loading";
+
 
 const giftCardDesigns = [
   "/src/component/assets/1.png",
@@ -23,7 +25,8 @@ const defaultSelectedDesign = `/src/component/assets/${
 
 const GiftCardPurchase = () => {
   const { isLoggedIn, authUser } = useAuth();
-  const [paymentMethod, setPaymentMethod] = useState("bkash");
+  const [loading, setLoading] = useState(true);
+  const [paymentMethod, setPaymentMethod] = useState(authUser.preferred_payment_method);
   const [phoneNumber, setPhoneNumber] = useState(authUser.phone_number);
   const [cardNumber, setCardNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -34,9 +37,13 @@ const GiftCardPurchase = () => {
   const [showWarning, setShowWarning] = useState(false);
   const [warning, setWarning] = useState("");
 
-  if (!isLoggedIn) {
-    window.location.href = "/signin";
-  }
+  useEffect(() => {
+    if (!isLoggedIn) {
+      window.location.href = "/signin";
+    } else {
+      setLoading(false); 
+    }
+  }, [isLoggedIn]);
 
   const [selectedDesign, setSelectedDesign] = useState(defaultSelectedDesign);
 
@@ -119,6 +126,7 @@ const GiftCardPurchase = () => {
   return (
     <div>
       <Navbar />
+      {loading && <Loading/>}
       {showWarning && (
         <div className="gc-warning-container">
           <Backdrop />
