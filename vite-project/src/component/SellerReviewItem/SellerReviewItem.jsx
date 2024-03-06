@@ -28,6 +28,7 @@ const ReviewItem = ({ review, onReplySubmit }) => {
       const { success } = await response.json();
       if (success) {
         alert("Reply submitted");
+        window.location.reload();
       } else {
         alert("Submission unsuccessful, please try again");
       }

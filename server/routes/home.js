@@ -257,12 +257,17 @@ router.get("/:product_id", async (req, res) => {
     const products = await pool.query(
       `SELECT P.*, rating(P.product_id) AS rating, U.name AS Shop,
       STRING_AGG(C.category_name, ', ') AS category_name,
+      D.discount_percentage,
+      D.start_date,
+      D.end_date,
       ROUND((P.price - COALESCE(D.discount_percentage, 0) * P.price), 2) AS new_price 
       FROM product P 
       JOIN users U ON U.user_id = P.user_id AND product_id = $1
       LEFT JOIN category C ON C.product_id = P.product_id 
       LEFT JOIN discount D ON D.product_id = P.product_id
-      GROUP BY P.product_id, U.name, P.price, D.discount_percentage;`,
+      GROUP BY P.product_id, U.name, P.price, D.discount_percentage,
+      D.start_date,
+      D.end_date;`,
       [product_id]
     );
 

@@ -7,7 +7,7 @@ router.post("/addproduct", upload.single("photo"), async (req, res) => {
     
     try {
  
-      const { userid,name, price, stockQuantity, description, categories,photoUrl} = req.body;
+      const { userid,name, price, stockQuantity, description,discount_percentage, categories,photoUrl} = req.body;
       console.log(req.body);
       const count=0;
       console.log(userid);
@@ -23,16 +23,32 @@ router.post("/addproduct", upload.single("photo"), async (req, res) => {
         // Insert product categories into the category table
         console.log(categories);
         const jsonArray = JSON.parse(categories.replace(/'/g, '"'));
-        console.log("newarray");
-        console.log(jsonArray);
+        //console.log("newarray");
+        //console.log(jsonArray);
         for (const categoryName of jsonArray) {
-            console.log(categoryName.trim());
+           // console.log(categoryName.trim());
             await pool.query(
                 `INSERT INTO category (category_name, product_id) 
                 VALUES ($1, $2)`,
                 [categoryName, productId]
             );
-        }
+        }// Check if discount information is provided
+if (req.body.discountPercentage && req.body.discountPercentage >= 0 && req.body.discountPercentage <= 100) {
+  // Convert start and end dates to Date objects
+  const start_date = new Date(req.body.start_date);
+  const end_date = new Date(req.body.end_date);
+
+  // Insert discount information into the discount table
+  if(req.body.discountPercentage)
+  {
+    await pool.query(
+      `INSERT INTO discount (product_id, start_date, end_date, discount_percentage) 
+      VALUES ($1, $2, $3, $4)`,
+      [productId, start_date, end_date,(req.body.discountPercentage)/100]
+  );
+  }
+  
+}
      res.status(200).send({ success: true, data: newProduct.rows });
     } catch (error) {
       console.error("Error adding product:", error);
@@ -41,12 +57,12 @@ router.post("/addproduct", upload.single("photo"), async (req, res) => {
   });
   // update products
   router.put("/updateproduct", upload.single("photo"), async (req, res) => {
+
     const client = await pool.connect();
     try {
-      
-      const { product_id, name, price, stock_quantity, description, category, photo_url } = req.body;
-      console.log(name);
-      console.log(req.body);
+        const { product_id, name, price, stock_quantity, description, category, photo_url, startDate, endDate, discountPercentage } = req.body;
+        console.log(req.body);
+
         await client.query('BEGIN');
 
         // Update product details
@@ -56,36 +72,56 @@ router.post("/addproduct", upload.single("photo"), async (req, res) => {
             WHERE product_id = $6`,
             [name, price, stock_quantity, description, photo_url, product_id]
         );
-       console.log(category);
+
         // Update categories
         if (category) {
-          // Split the categories string into an array
-          const categoriesArray = category.split(',');
-      
-          console.log("Updated categories:");
-          console.log(categoriesArray);
-      
-          // Iterate over the categories array
-          for (const categoryName of categoriesArray) {
-              console.log(categoryName);
-      
-              // Perform the update query for each category
-              await pool.query(
-                  `UPDATE category 
-                  SET category_name = $1
-                  WHERE product_id = $2`,
-                  [categoryName.trim(), product_id] // Trim the category name to remove any leading or trailing whitespace
-              );
-          }
-          await client.query('COMMIT');
-      } 
-      
+            // Split the categories string into an array
+            const categoriesArray = category.split(',');
+
+            // Iterate over the categories array
+            for (const categoryName of categoriesArray) {
+                // Perform the update query for each category
+                await pool.query(
+                    `UPDATE category 
+                    SET category_name = $1
+                    WHERE product_id = $2`,
+                    [categoryName.trim(), product_id] // Trim the category name to remove any leading or trailing whitespace
+                );
+            }
+        }
+
+        // Check if a discount exists for the product
+        const existingDiscount = await pool.query(
+            `SELECT * FROM discount WHERE product_id = $1`,
+            [product_id]
+        );
+
+        if (existingDiscount.rows.length === 0&& discountPercentage ) {
+            // If no discount exists, insert a new discount record
+            await pool.query(
+                `INSERT INTO discount (product_id, start_date, end_date, discount_percentage) 
+                VALUES ($1, $2, $3, $4)`,
+                [product_id, startDate, endDate, discountPercentage/100 ]
+            );
+        } else {
+            // If a discount already exists, update the existing discount information
+            await pool.query(
+                `UPDATE discount 
+                SET start_date = $1, end_date = $2, discount_percentage = $3
+                WHERE product_id = $4`,
+                [startDate, endDate, discountPercentage/100, product_id]
+            );
+        }
+
+        await client.query('COMMIT');
 
         res.status(200).json({ success: true, data: updatedProduct.rows });
     } catch (error) {
-     // await client.query('ROLLBACK');
+        await client.query('ROLLBACK');
         console.error("Error updating product:", error);
         res.status(500).json({ success: false, error: "Internal server error" });
+    } finally {
+        client.release();
     }
 });
 
@@ -169,9 +205,10 @@ router.get("/:user_id/unrepliedreviews", async (req, res) => {
     //console.log("p");
     const { user_id } = req.params;
     const products = await pool.query(
-      `SELECT *
+      `SELECT r.*, p1.user_id AS product_user_id,p1.photo_url,p1.description,p1.name,u1.name AS customer_name
       FROM review r
       JOIN product p1 ON r.product_id = p1.product_id
+      JOIN users u1 ON r.user_id=u1.user_id
       WHERE p1.user_id = $1
       AND r.reply_text IS NULL;
       `,
@@ -184,7 +221,7 @@ router.get("/:user_id/unrepliedreviews", async (req, res) => {
     }
 
     console.log(products.rows[0]);
-    console.log("uwu");
+   // console.log("uwu");
     res.status(200).send(products.rows);
   } catch (error) {
     console.error(`Error in route: ${error.message}`);
@@ -199,14 +236,17 @@ router.get("/:user_id/repliedreviews", async (req, res) => {
     const { user_id } = req.params;
     console.log(user_id);
     const products = await pool.query(
-      `SELECT *
+      `SELECT r.*, p1.user_id AS product_user_id,p1.photo_url,p1.description,p1.name,u1.name AS customer_name
       FROM review r
       JOIN product p1 ON r.product_id = p1.product_id
+      JOIN users u1 ON r.user_id=u1.user_id
       WHERE p1.user_id = $1
       AND r.reply_text IS NOT NULL;
+      
       `,
       [user_id]
     );
+    console.log(products.rows);
     
     if (!products.rows.length) {
       res.status(200).send([]);
@@ -228,6 +268,7 @@ router.put('/submit-reply', async (req, res) => {
   try {
     await client.query('BEGIN');
     const { user_id, product_id, reply } = req.body;
+    console.log(req.body);
 
     // Update the reply_text in the database for the specified user_id and product_id
     await pool.query(
@@ -242,7 +283,8 @@ router.put('/submit-reply', async (req, res) => {
     console.error('Error submitting reply:', error.message);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
-});
+}); 
+
 //top rating
 router.get('/:user_id/top-rated-products', async (req, res) => {
   try {
@@ -328,7 +370,7 @@ router.get('/:user_id/order-status-distribution', async (req, res) => {
     FROM product p 
     join order_items o ON(p.product_id=o.product_id)
     JOIN orders o1 ON(o1.order_id=o.order_id)
-    GROUP BY p.product_id, name,o1.order_status
+    GROUP BY p.product_id, name,o.order_status
     HAVING p.user_id=$1
     LIMIT 10;
     `,[user_id]);
@@ -362,17 +404,64 @@ router.get('/:user_id/revenue-data', async (req, res) => {
 router.get('/:user_id/:status/orders', async (req, res) => {
   try {
     const { user_id,status } = req.params;
-    console.log(user_id);
+    //console.log(user_id);
     
     const orderData=await pool.query(`
     SELECT * FROM get_orders_for_user($1, $2)
   `, [user_id,status]);
+  console.log(status);
+  console.log(orderData.rows);
     res.json(orderData.rows);
   } catch (error) {
     console.error('Error fetching ordersellers data:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+//cancel order from seller
+router.put('/cancel-order/:order_id/:product_id',async(req,res)=>{
+  const client=await pool.connect();
+try{
+  await client.query('BEGIN');
+  const{order_id,product_id}=req.params;
+  await pool.query(
+    `UPDATE order_items SET order_status='cancelled'
+    WHERE order_id=$1 AND product_id=$2;`,
+    [order_id,product_id]
+  );
+  await client.query('COMMIT');
+  res.status(200).json({ success: true, message: 'Order cancelled successfully' });
+
+
+}catch (error) {
+  console.error('Error Cancelling ORDER:', error.message);
+  res.status(500).json({ success: false, error: 'Internal Server Error' });
+}
+
+}
+);
+//confirm order from seller
+router.put('/confirm-order/:order_id/:product_id',async(req,res)=>{
+  const client=await pool.connect();
+try{
+  await client.query('BEGIN');
+  const{order_id,product_id}=req.params;
+  await pool.query(
+    `UPDATE order_items SET order_status='to receive'
+    WHERE order_id=$1 AND product_id=$2;`,
+    [order_id,product_id]
+  );
+  await client.query('COMMIT');
+  res.status(200).json({ success: true, message: 'Order confirmed successfully' });
+
+
+}catch (error) {
+  console.error('Error CONFIRMING ORDER from seller:', error.message);
+  res.status(500).json({ success: false, error: 'Internal Server Error' });
+}
+
+}
+);
 
 
 module.exports = router;

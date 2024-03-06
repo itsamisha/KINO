@@ -8,6 +8,8 @@ import { useSellerAuth } from '../context/SellerAuthContext';
 const SellerReviewsPage = () => {
   // State variables to store unreplied and replied reviews
   const [unrepliedReviews, setUnrepliedReviews] = useState([]);
+  const [showMoreUnreplied, setShowMoreUnreplied] = useState(false);
+  const [showMoreReplied, setShowMoreReplied] = useState(false);
   const { isLoggedIn, authUser } = useSellerAuth();
   const [repliedReviews, setRepliedReviews] = useState([]);
   const id = parseInt(authUser.user_id);
@@ -68,27 +70,37 @@ const SellerReviewsPage = () => {
 
   return (
     <div className="seller-reviews-page">
-      <NavbarSeller/>
-      <Sidebar/>
+      <NavbarSeller />
+      <Sidebar />
       <div className="unreplied-reviews-section">
         <h2>Unreplied Reviews</h2>
-        {unrepliedReviews.map((review) => (
+        {unrepliedReviews.slice(0, showMoreUnreplied ? undefined : 5).map((review) => (
           <SellerReviewItem
             key={review.id}
             review={review}
             onSubmitReply={handleReplySubmit}
           />
         ))}
+        {unrepliedReviews.length > 5 && (
+          <button className='show-more-button' onClick={() => setShowMoreUnreplied(!showMoreUnreplied)}>
+            {showMoreUnreplied ? 'Show Less' : 'Show More'}
+          </button>
+        )}
       </div>
       <div className="replied-reviews-section">
         <h2>Replied Reviews</h2>
-        {repliedReviews.map((review) => (
+        {repliedReviews.slice(0, showMoreReplied ? undefined : 5).map((review) => (
           <SellerReviewItem
             key={review.id}
             review={review}
             onSubmitReply={handleReplySubmit}
           />
         ))}
+        {repliedReviews.length > 5 && (
+          <button className='show-more-button' onClick={() => setShowMoreReplied(!showMoreReplied)}>
+            {showMoreReplied ? 'Show Less' : 'Show More'}
+          </button>
+        )}
       </div>
     </div>
   );
