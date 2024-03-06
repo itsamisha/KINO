@@ -169,6 +169,25 @@ router.get("/search", async (req, res) => {
   }
 });
 
+//delete id
+router.delete('/delete-user/:user_id', async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    // Execute the SQL DELETE statement
+    const result = await pool.query('DELETE FROM users WHERE user_id = $1', [user_id]);
+
+    if (result.rowCount === 0) {
+      // If no rows were affected, user with provided user_id does not exist
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 //Fetch popular products
 router.get("/popular", async(req,res)=>{
