@@ -74,7 +74,7 @@ OrderItem.propTypes = {
     name: PropTypes.string.isRequired,
     order_date: PropTypes.string.isRequired,
     estimated_delivery_date: PropTypes.string.isRequired,
-    order_status: PropTypes.string.isRequired, // Add order_status prop type
+    order_status: PropTypes.string.isRequired, 
   }).isRequired,
 };
 

@@ -19,7 +19,7 @@ const CheckOut = ({ onClose }) => {
   const [house, setHouse] = useState("");
   const [road, setRoad] = useState("");
   const [shippingCharge, setShippingCharge] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState("bkash");
+  const [paymentMethod, setPaymentMethod] = useState("COD");
   const [phoneNumber, setPhoneNumber] = useState(authUser.phone_number);
   const [cardNumber, setCardNumber] = useState("");
   const [giftCardCode, setGiftCardCode] = useState("");
@@ -124,7 +124,6 @@ const CheckOut = ({ onClose }) => {
       setWarningMessage('Invalid Card Number')
       return false;
     }
-    // Check if phone number is at least 11 digits
     if (paymentMethod === "bkash" && phoneNumber.length < 11) {
       setWarningMessage('Invalid Phone Number')
       return false;
@@ -169,7 +168,7 @@ const CheckOut = ({ onClose }) => {
       if(selectedDeliveryMode==="normal"){
           day = 4;
       }
-      if(phoneNumber){
+      if(paymentMethod=="bkash"){
         const response = await fetch("http://localhost:5000/customer/confirm_order_mobile_banking", {
           method: "POST",
           headers: {
@@ -186,11 +185,46 @@ const CheckOut = ({ onClose }) => {
           alert("Order wasn't placed.");
         }
       } 
-      
-    } else {
-      setShowWarning(true); // Show warning if form validation fails
+      else if(cardNumber){
+        const response = await fetch("http://localhost:5000/customer/confirm_order_bank", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({user_id,house, road, post_code,day,phone_no }),
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+          setOrderConfirmed(true)
+  
+        } else {
+          alert("Order wasn't placed.");
+        }
+      } 
+      else if(paymentMethod === 'COD'){
+        const response = await fetch("http://localhost:5000/customer/confirm_order_COD", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({user_id,house, road, post_code,day}),
+          });
+          
+          const data = await response.json();
+          if (data.success) {
+            setOrderConfirmed(true)
+    
+          } else {
+            alert("Order wasn't placed.");
+          }
+        } 
+      else {
+          setShowWarning(true); // Show warning if form validation fails
+        }
+    } 
     }
-  }; 
+    
 
   const handleShowOrderConfirm = () => {
     window.location.href = "/";

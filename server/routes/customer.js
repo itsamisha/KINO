@@ -205,33 +205,76 @@ router.get("/:user_id", async (req, res) => {
         res.status(500).send({success: false, error: error.message})
     }
   })
-
-  
-  //Get Order History
-  router.get("/:user_id/orders", async (req, res) => {
+  //paying with bank card
+  router.post("/confirm_order_bank", async (req,res) => {
     try {
-      const { user_id } = req.params;
-      const customer = await pool.query(`SELECT P.product_id,P.name,P.photo_url,
-      OI.quantity,OI.order_item_id, O.order_date
-      FROM users U LEFT JOIN orders O 
-      ON U.user_id = O.user_id AND U.user_id = $1
-      JOIN order_items OI 
-      ON OI.order_id = O.order_id
-      JOIN product P
-      ON P.product_id = OI.product_id
-      GROUP BY O.order_date, P.product_id, OI.quantity`, [user_id]);
-
-      if (customer.rows.length === 1) {
-        res.json(customer.rows);
-      } else {
-        res.status(404).json({ message: 'Customer not found' });
-      }
+        const {user_id,house,road,post_code,day,card_no} = req.body
+            const response = await pool.query(`SELECT confirm_order_bank($1,$2,$3,$4,$5,$6);`,[user_id,house,road,post_code,day,card_no])
+            console.log(response);
+        console.log(response.rows);
+        res.json({ success: true, data: response.rows[0]});
+      
     } catch (error) {
-      console.error(error.message);
-      res.status(500).json({ error: 'Internal Server Error' });
+        console.error(`Error in /customer/confirm_order_bank: ${error.message}`);
+        res.status(500).send({success: false, error: error.message})
     }
   })
-  
+  //Cash on delivery
+  router.post("/confirm_order_COD", async (req,res) => {
+    try {
+        const {user_id,house,road,post_code,day} = req.body
+        console.log(req.body)
+            const response = await pool.query(`SELECT confirm_order_cod($1,$2,$3,$4,$5);`,[user_id,house,road,post_code,day])
+            console.log(response);
+        console.log(response.rows);
+        res.json({ success: true, data: response.rows[0] });
+      
+    } catch (error) {
+        console.error(`Error in /customer/confirm_order_COD: ${error.message}`);
+        res.status(500).send({success: false, error: error.message})
+    }
+  })
+    
+  router.post("/get-orders", async (req, res) => {
+    try {
+        const { user_id, option } = req.body;
+        const orders = await pool.query(`
+            SELECT 
+                P.name, 
+                P.photo_url, 
+                ROUND((P.price - (COALESCE(D.discount_percentage, 0) * P.price)), 2) AS price, 
+                OI.quantity, 
+                O.order_date,
+                OI.order_item_id,
+                O.order_id
+            FROM 
+                product P 
+            JOIN 
+                order_items OI ON P.product_id = OI.product_id
+            JOIN 
+                orders O ON O.order_id = OI.order_id
+            LEFT JOIN 
+                discount D ON D.product_id = P.product_id
+            WHERE 
+                O.user_id = $1 AND
+                OI.order_status = $2
+            ORDER BY O.order_date DESC;
+        `, [user_id, option]); 
+    
+        if (orders.rows.length > 0) {
+            res.json(orders.rows);
+        } else {
+            res.status(404).json({ message: 'No pending orders found for the user' });
+        }
+    } catch (error) {
+        console.error(`Error in /customer/get-orders: ${error.message}`);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+
+
   //Delete Order History
   router.delete("/remove-order", async (req, res) => {
     try {
