@@ -25,6 +25,7 @@ import GiftCard from "./pages/GiftCard";
 import GiftCardPurchase from "./component/GiftCardPurchase/GiftCardPurchase";
 import GiftCardCustomer from "./pages/GiftCardCustomer";
 import AnalyticsPage from "./pages/Analytics";
+import AdminPage from "./pages/Admin";
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
             <Route path=":productId" element={<Product />} />
             
             </Route>
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
           <Footer />
         </BrowserRouter>

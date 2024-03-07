@@ -7,3 +7,14 @@
     float: right;
     font-size: 15px;
   }
+  .show-more-button {
+    background-color: var(--primary);
+    color: white;
+    padding: 15px 30px; /* Increase padding for larger size */
+    border: none;
+    cursor: pointer;
+    margin: 0 auto; /* Center the button horizontally */
+    display: block; /* Ensure the button takes up the full width */
+    font-size: 18px; /* Increase font size */
+  }
+  

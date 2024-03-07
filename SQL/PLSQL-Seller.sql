@@ -125,3 +125,33 @@ BEGIN
     AND (p_order_status <> 'history' OR oi.order_status = p_order_status);
 END;
 $$ LANGUAGE plpgsql;
+--reply to review
+CREATE OR REPLACE FUNCTION update_reply_text(
+    p_user_id INT,
+    p_product_id INT,
+    p_reply TEXT
+) 
+RETURNS VARCHAR AS $$
+DECLARE
+    v_result VARCHAR(100);
+    seller_id INT;
+BEGIN
+    -- Retrieve the seller ID from the product table
+    
+    -- Update the reply_text in the database for the specified user_id and product_id
+    UPDATE review
+    SET reply_text = p_reply
+    WHERE user_id =  p_user_id  AND product_id = p_product_id;
+
+    -- Check if any rows were affected by the update
+    GET DIAGNOSTICS v_result = ROW_COUNT;
+    IF v_result > 0 THEN
+        RETURN 'Reply submitted successfully';
+    ELSE
+        RETURN 'No rows updated';
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN 'Error: ' || SQLERRM;
+END;
+$$ LANGUAGE plpgsql;

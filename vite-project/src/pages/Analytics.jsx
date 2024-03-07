@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Pie, Line } from 'react-chartjs-2';
 import {ArcElement} from 'chart.js';
+import OrderStatusPieChart from '../component/OrderStatusPieChart/OrderStatusPieChart';
 import ProductDisplay from '../component/SellerProductDisplay/SellerProductDisplay';
 import DescriptionBox from "../component/DescriptionBox/DescriptionBox";
 import Loading from "../component/Loading/Loading";
@@ -67,6 +68,7 @@ const AnalyticsPage = () => {
         }
         const topSoldData = await topSoldResponse.json();
         setTopSoldProducts(topSoldData);
+       // console.log(topSoldData);
         
 
         // Fetch least-sold products
@@ -84,6 +86,7 @@ const AnalyticsPage = () => {
         }
         const orderStatusData = await orderStatusResponse.json();
         setOrderStatusDistribution(orderStatusData);
+        console.log(orderStatusData);
 
         // Fetch revenue data
         const revenueResponse = await fetch(`http://localhost:5000/seller/${id}/revenue-data`);
@@ -214,13 +217,15 @@ const AnalyticsPage = () => {
 
       <div>
         <h2>Order Status Distribution</h2>
-        <Pie data={{
+        <OrderStatusPieChart products={orderStatusDistribution} />
+
+        {/* <Pie data={{
           labels: orderStatusDistribution.map(status => status.status),
           datasets: [{
             data: orderStatusDistribution.map(status => status.count),
             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'], // You can add more colors as needed
           }],
-        }} />
+        }} /> */}
       </div>
 
       <div>

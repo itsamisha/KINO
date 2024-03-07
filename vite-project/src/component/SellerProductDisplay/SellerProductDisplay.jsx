@@ -48,9 +48,9 @@ const SellerProductDisplay = (props) => {
 
         {product.new_price !== product.price ? (
           <div className="productdisplay-right-prices">
-            <div className="productdisplay-right-price-new">৳{product.new_price}</div>
-            <div className="productdisplay-right-price-new"><b>Discount Percentage : </b>{product.discount_percentage}</div>
-            <div className="productdisplay-right-price-old">৳{product.price}</div>
+            <div className="productdisplay-right-price-new"><b>New Price : </b>৳{product.new_price}</div>
+            <div className="productdisplay-right-price-new"><b>Discount : </b>{product.discount_percentage*100}%</div>
+            <div className="productdisplay-right-price-old"><b>Old Price : </b>৳{product.price}</div>
           </div>
         ) : (
           <div className="productdisplay-right-prices">
