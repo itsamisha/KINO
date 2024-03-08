@@ -64,7 +64,7 @@ router.get('/low-stock-products', async (req, res) => {
       ORDER BY stock_quantity;
       `);
       res.json(Products.rows);
-      console.log(Products.rows);
+     // console.log(Products.rows);
     } catch (error) {
       console.error('Error fetching low-stock products:', error);
       res.status(500).json({ error: 'Internal Server Error' });
@@ -72,6 +72,32 @@ router.get('/low-stock-products', async (req, res) => {
   });
   //specific user and product er jonno we can use routes from seller.js and customer.js ig?
   //all gift card details
+  router.get('/giftcards-graph', async (req, res) => {
+    try {
+      const result = await pool.query(`
+        SELECT DATE_TRUNC('day', g1.purchase_date) AS purchase_day,
+               SUM(g1.initial_amount) AS total_initial_amount_per_day
+        FROM gift_card g1
+        JOIN users u1 ON (g1.user_id = u1.user_id)
+        GROUP BY purchase_day
+        ORDER BY purchase_day;
+      `);
+  
+      // Check if there are rows returned
+      if (result.rows.length > 0) {
+        console.log(result.rows);
+        res.status(200).json(result.rows);
+      } else {
+        console.log('No rows found');
+        res.status(404).json({ error: 'No data found' });
+      }
+    } catch (error) {
+      console.error('Error fetching cards:', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+  //giftcardgraph
   router.get('/giftcards', async (req, res) => {
     try {
       const usersQuery = 'SELECT * FROM gift_card g1 JOIN users u1 ON (g1.user_id=u1.user_id) ORDER BY g1.user_id';
@@ -157,6 +183,26 @@ GROUP BY sz.division;
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+  // Route to call the PL/pgSQL function to get monthly shipping revenue
+router.get('/monthly-shipping-revenue', async (req, res) => {
+    try {
+      const { rows } = await pool.query("SELECT * FROM get_shipping_revenue('monthly')");
+      res.json(rows);
+    } catch (error) {
+      console.error('Error executing query:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
   
+  // Route to call the PL/pgSQL function to get weekly shipping revenue
+  router.get('/weekly-shipping-revenue', async (req, res) => {
+    try {
+      const { rows } = await pool.query("SELECT * FROM get_shipping_revenue('weekly')");
+      res.json(rows);
+    } catch (error) {
+      console.error('Error executing query:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
   
   module.exports = router;

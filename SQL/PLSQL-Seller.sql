@@ -148,3 +148,63 @@ BEGIN
     WHERE( oi.order_status = p_order_status);
 END;
 $$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION get_revenue(p_interval VARCHAR) RETURNS TABLE (period VARCHAR, total_revenue NUMERIC) AS $$
+BEGIN
+    IF p_interval = 'monthly' THEN
+        RETURN QUERY
+        SELECT 
+            TO_CHAR(purchase_date, 'YYYY-MM') AS period,
+            SUM(initial_amount) AS total_revenue
+        FROM 
+            gift_card
+        GROUP BY 
+            TO_CHAR(purchase_date, 'YYYY-MM')
+        ORDER BY 
+            TO_CHAR(purchase_date, 'YYYY-MM');
+    ELSIF p_interval = 'weekly' THEN
+        RETURN QUERY
+        SELECT 
+            TO_CHAR(purchase_date, 'IYYY-IW') AS period,
+            SUM(initial_amount) AS total_revenue
+        FROM 
+            gift_card
+        GROUP BY 
+            TO_CHAR(purchase_date, 'IYYY-IW')
+        ORDER BY 
+            TO_CHAR(purchase_date, 'IYYY-IW');
+    ELSE
+        -- Handle invalid interval
+        RAISE EXCEPTION 'Invalid interval: %', p_interval;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION get_shipping_revenue(p_interval VARCHAR) RETURNS TABLE (period VARCHAR, total_shipping_revenue NUMERIC) AS $$
+BEGIN
+    IF p_interval = 'monthly' THEN
+        RETURN QUERY
+        SELECT 
+            TO_CHAR(shipping_date, 'YYYY-MM') AS period,
+            SUM(shipping_charge) AS total_shipping_revenue
+        FROM 
+            orders
+        GROUP BY 
+            TO_CHAR(shipping_date, 'YYYY-MM')
+        ORDER BY 
+            TO_CHAR(shipping_date, 'YYYY-MM');
+    ELSIF p_interval = 'weekly' THEN
+        RETURN QUERY
+        SELECT 
+            TO_CHAR(shipping_date, 'IYYY-IW') AS period,
+            SUM(shipping_charge) AS total_shipping_revenue
+        FROM 
+            orders
+        GROUP BY 
+            TO_CHAR(shipping_date, 'IYYY-IW')
+        ORDER BY 
+            TO_CHAR(shipping_date, 'IYYY-IW');
+    ELSE
+        -- Handle invalid interval
+        RAISE EXCEPTION 'Invalid interval: %', p_interval;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;

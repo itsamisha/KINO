@@ -123,3 +123,14 @@ CREATE TABLE gift_card (
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (cart_id) REFERENCES cart(cart_id)
 );
+
+--log table
+CREATE TABLE ProcedureCallLog (
+    LogID SERIAL PRIMARY KEY,
+    ProcedureName VARCHAR(255),
+		UserType VARCHAR(10),
+    UserID INT,
+    Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Parameters TEXT
+);
+ALTER TABLE ProcedureCallLog ADD COLUMN User_name VARCHAR(10);

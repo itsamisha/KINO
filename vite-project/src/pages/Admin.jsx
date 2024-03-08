@@ -9,6 +9,7 @@ import ShopAdmin from '../component/AdminShop/AdminShop';
 import GiftCardGraph from '../component/GiftCardGraph/GiftCardGraph';
 import Order from '../component/AdminOrder/AdminOrder';
 import ShippingPieChart from '../component/ShippingPieChart/ShippingPieChart'; 
+import AdminChart from '../component/AdminCharts/AdminCharts';
 const Admin = () => {
     const [activeTab, setActiveTab] = useState('users');
     const handleTabChange = (tab) => {
@@ -141,6 +142,7 @@ return (
                 <button onClick={() => handleTabChange('products')}>Products</button>
                 <button onClick={() => handleTabChange('orders')}>All Orders</button>
                 <button onClick={() => handleTabChange('orderStats')}>Order Stats</button>
+                <button onClick={() => handleTabChange('RevenueStats')}>Shipping Revenue Stats</button>
                 {/* Add more buttons for other options */}
             </div>
             <div className="admin-dashboard">
@@ -203,6 +205,13 @@ return (
               <h2>Order Location Pie Chart</h2>
               <ShippingPieChart />
               <OrderStatusPieChart orderData={products} />
+            </section>
+          )}
+          {activeTab === 'RevenueStats' && (
+            <section>
+              <h1>Order Statistics</h1>
+              <h2>Order Location Pie Chart</h2>
+             <AdminChart/>
             </section>
           )}
                 {/* Add more sections for other tabs */}
