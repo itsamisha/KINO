@@ -8,6 +8,7 @@ import OrderStatusPieChart from '../component/OrderStatusPieChart/OrderStatusPie
 import ShopAdmin from '../component/AdminShop/AdminShop';
 import GiftCardGraph from '../component/GiftCardGraph/GiftCardGraph';
 import Order from '../component/AdminOrder/AdminOrder';
+import ShippingPieChart from '../component/ShippingPieChart/ShippingPieChart'; 
 const Admin = () => {
     const [activeTab, setActiveTab] = useState('users');
     const handleTabChange = (tab) => {
@@ -129,108 +130,7 @@ const Admin = () => {
     
     
 
-//     return (
-//         <div>
-//             <Navbar />
-//             <div>
-//                 <OrderStatusPieChart orderData={products} />
-//             </div>
-//             <div className="admin-dashboard">
-//                 <h1>Admin Dashboard</h1>
-//                 {/* Filter buttons */}
-//                 <div>
-//                     <button onClick={() => filterUsers('customer')}>Show Customers ({customerCount})</button>
-//                     <button onClick={() => filterUsers('seller')}>Show Sellers ({sellerCount})</button>
-//                     <button onClick={() => setFilteredUsers(users)}>Show All Users ({users.length})</button>
-//                     <button onClick={handleShowGiftCards}>Show Gift Cards</button>
-//                     <button onClick={handleShowAllProducts}>Show All Products</button>
-//                 </div>
-//                 {/* Display Users */}
-//                 {!showGiftCards && (
-//                     <section>
-//                         <h2>Users</h2>
-//                         <table>
-//                             <thead>
-//                                 <tr>
-//                                     <th>User ID</th>
-//                                     <th>Email</th>
-//                                     <th>Name</th>
-//                                     <th>User Type</th>
-//                                     <th>Phone Number</th>
-//                                 </tr>
-//                             </thead>
-//                             <tbody>
-//                                 {filteredUsers.map(user => (
-//                                     <tr key={user.user_id}>
-//                                         <td>{user.user_id}</td>
-//                                         <td>{user.email}</td>
-//                                         <td>{user.name}</td>
-//                                         <td>{user.user_type}</td>
-//                                         <td>{user.phone_number}</td>
-//                                     </tr>
-//                                 ))}
-//                             </tbody>
-//                         </table>
-//                     </section>
-//                 )}
-//                 {/* Display Gift Cards */}
-//                 {showGiftCards && (
-//                     <section>
-//                         <h2>Gift Cards</h2>
-//                         <ul>
-//                             {giftCards.map(giftCard => (
-//                                 <li key={giftCard.gift_card_id}>Amount: ${giftCard.amount}, User ID: {giftCard.user_id},Purchase Date:{giftCard.purchase_date}</li>
-//                             ))}
-//                         </ul>
-//                         <GiftCardGraph giftCards={giftCards}/>
-//                     </section>
-//                 )}
-//                 {/* Display Products */}
-//                 {showAllProducts && (
-//                     <section>
-//                         {/* Display ShopAdmin component with products and shops */}
-//                         <ShopAdmin products={products} shops={shops} />
-//                     </section>
-//                 )}
-//                 {/* Display Top Users */}
-//                 <section>
-//                     <h2>Top Users</h2>
-//                     <ul>
-//                         {topUsers.map(user => (
-//                             <li key={user.user_id}>{user.name} - Orders: {user.total_orders}</li>
-//                         ))}
-//                     </ul>
-//                 </section>
 
-//                 {/* Display Top Sellers */}
-//                 <section>
-//                     <h2>Top Sellers</h2>
-//                     <ul>
-//                         {topSellers.map(seller => (
-//                             <li key={seller.user_id}>{seller.name} - Revenue: {seller.revenue}</li>
-//                         ))}
-//                     </ul>
-//                 </section>
-//                 {/* Display Stockout Products */}
-//                 <section>
-//     <h2>Stockout Products</h2>
-//     {Object.entries(groupProductsByShop(lowStockProducts)).map(([shopName, products]) => (
-//         <div key={shopName}>
-//             <h3>{shopName}</h3>
-//             <ul>
-//                 {products.map(product => (
-//                     <li key={product.product_id}>{product.name}</li>
-//                 ))}
-//             </ul>
-//         </div>
-//     ))}
-// </section>
-
-
-//             </div>
-//         </div>
-//     );
-// };
 return (
     <div>
         <Navbar />
@@ -240,6 +140,7 @@ return (
                 <button onClick={() => handleTabChange('giftCards')}>Gift Cards</button>
                 <button onClick={() => handleTabChange('products')}>Products</button>
                 <button onClick={() => handleTabChange('orders')}>All Orders</button>
+                <button onClick={() => handleTabChange('orderStats')}>Order Stats</button>
                 {/* Add more buttons for other options */}
             </div>
             <div className="admin-dashboard">
@@ -296,6 +197,14 @@ return (
                         <Order/>
                     </section>
                 )}
+                {activeTab === 'orderStats' && (
+            <section>
+              <h1>Order Statistics</h1>
+              <h2>Order Location Pie Chart</h2>
+              <ShippingPieChart />
+              <OrderStatusPieChart orderData={products} />
+            </section>
+          )}
                 {/* Add more sections for other tabs */}
             </div>
         </div>

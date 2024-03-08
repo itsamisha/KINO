@@ -128,11 +128,32 @@ router.get('/:status/orders', async (req, res) => {
       const orderData=await pool.query(`
       SELECT * FROM get_orders_for_all_user($1)
     `, [status]);
-    console.log(status);
-    console.log(orderData.rows);
+   // console.log(status);
+   // console.log(orderData.rows);
       res.json(orderData.rows);
     } catch (error) {
       console.error('Error fetching ordersellers data:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  //pie chart for shipping zone
+  router.get('/shippingpie', async (req, res) => {
+    try {
+     
+      
+      const orderData=await pool.query(`
+      SELECT sz.division, COUNT(o.order_id) AS order_count
+FROM orders o
+JOIN Address a ON o.address_id = a.address_id
+JOIN Shipping_Zones sz ON a.post_code = sz.post_code
+GROUP BY sz.division;
+
+    `);
+   
+    console.log(orderData.rows);
+      res.json(orderData.rows);
+    } catch (error) {
+      console.error('Error fetching shipping pie data:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
