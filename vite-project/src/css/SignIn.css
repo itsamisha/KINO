@@ -6,7 +6,7 @@
   --accent: #fc4e59;
   --background-300: #d98c9f;
 }
-
+ 
 .signInContainer {
   display: flex;
   align-items: center;
@@ -32,7 +32,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   margin: 0 auto; 
 }
-
+ 
 .signin-input {
   width: 90%;
   padding: 10px;

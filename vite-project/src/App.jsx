@@ -7,7 +7,6 @@ import SignIn from "./pages/SignIn";
 import Registration from "./pages/Registration";
 import Footer from "./component/Footer/Footer";
 import CustomerDashboard from "./pages/CustomerDashboard";
-// import ChangePassword from "./pages/ChangePassword";
 import { AuthProvider } from "./context/AuthContext";
 import { SellerAuthProvider } from "./context/SellerAuthContext";
 import Product from "./pages/Product";
@@ -45,7 +44,7 @@ function App() {
             <Route path="/gift-card-purchase" element={<GiftCardPurchase/>} />
             <Route path="/giftcard" element={<GiftCardCustomer/>} />
             {/* <Route
-              path="/customer/change_password"
+              path="/customer/change_password" 
               element={<ChangePassword />}
             /> */}
 

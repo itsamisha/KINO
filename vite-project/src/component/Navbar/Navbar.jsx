@@ -109,7 +109,7 @@ const Navbar = () => {
                 }}
                 to="/customer"
               >
-                <b className="line">{authUser.name}</b>
+                <b className="user-label">{authUser.name}</b>
               </Link>
             ) : (
               <Link
@@ -120,7 +120,7 @@ const Navbar = () => {
                 }}
                 to="/signin"
               >
-                <b className="line">Guest</b>
+                <b className="user-label">Guest</b>
               </Link>
             )}
           </li>

@@ -108,7 +108,7 @@ function SignIn() {
                   checked={showPassword}
                   onChange={() => setShowPassword(!showPassword)}
                 />
-                Show password
+                Show password 
               </label>
             </div>
           </div>

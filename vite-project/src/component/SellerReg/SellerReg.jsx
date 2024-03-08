@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SellerReg.css";
-import hidden from "../assets/hidden.png";
-import visible from "../assets/visible.png";
-import hidden1 from "../assets/hidden.png";
-import visible1 from "../assets/visible.png";
-import regPhoto from "../assets/reg-photo.png";
+import regPhoto from "../assets/SellerRegistration.png";
+import Warning from "../Warning/Warning";
+import Successful from "../Successful/Successful";
+import Backdrop from "../Backdrop/Backdrop";
 
 function Registration() {
   const { navigate } = useNavigate();
@@ -14,20 +13,46 @@ function Registration() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [location, setLocation] = useState("");
   const [bankAccNo, setBankAccNo] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [show, setShow] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
+  const [warning, setWarning] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const handleTogglePassword = () => {
-    setShowPassword(!showPassword);
+  const userType = "seller";
+
+  const handleShowSucces = () => {
+    window.location.reload();
+  }
+
+  const handleShowWarning = () => {
+    setShowWarning(false);
   };
 
-  const handleToggleConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
+  const validatePhoneNumber = (number) => {
+    return /^\d{11}$/.test(number);
   };
-  const userType ="seller";
+  
+  const validateEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+  
+  const validateBankAccountNumber = (accountNumber) => {
+    return /^\d{10}$/.test(accountNumber);
+  }
   const isFormValid = () => {
-    if (!name || !email || !password || !confirm || !phoneNumber || !userType||!bankAccNo) {
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !confirm ||
+      !phoneNumber ||
+      !userType ||
+      !bankAccNo
+    ) {
+      setWarning("Please complete all required fields.");
+      setShowWarning(true);
       return false;
     }
     return true;
@@ -37,31 +62,63 @@ function Registration() {
     e.preventDefault();
     try {
       if (!isFormValid()) {
-        alert("Fill up all the fields");
         return;
       }
 
       if (password !== confirm) {
-        alert("Password and Confirm Password must match");
+        setWarning("Passwords must match!");
+        setShowWarning(true);
         setConfirm("");
         setPassword("");
         return;
       }
+
+      if (!validateEmail(email)) {
+        setWarning("Please enter a valid email address.");
+        setShowWarning(true);
+        return;
+      }
+
+      if (!validatePhoneNumber(phoneNumber)) {
+        setWarning("Please enter a valid phone number (11 digits).");
+      setShowWarning(true);
+        return;
+      }
+    
+      if (!validateBankAccountNumber(bankAccNo)) {
+        setWarning("Please enter a valid bank account number (10 digits).");
+      setShowWarning(true);
+        return;
+      }
+
+      if (password.length < 8) {
+        setWarning("Password must be at least 8 characters long.");
+        setShowWarning(true);
+        return;
+      }
+    
 
       const response = await fetch("http://localhost:5000/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, name, phoneNumber, userType,bankAccNo }),
+        body: JSON.stringify({
+          email,
+          password,
+          name,
+          phoneNumber,
+          userType,
+          bankAccNo,
+        }),
       });
 
       const { success } = await response.json();
       if (success) {
-        alert("Registration completed!\n Welcome to KINO");
-        window.location.href = "/seller";
+        setShowSuccess(true);
       } else {
-        alert("Email already in use, please try again");
+        setWarning("Email already in use, please try again");
+        setShowWarning(true);
       }
     } catch (error) {
       console.log(error.message);
@@ -69,52 +126,116 @@ function Registration() {
   };
 
   return (
-    <div className="reg-box">
-      <h1 className="h1">REGISTER</h1>
-      <label className="label">
-        Username
-        <input className="reg-input" value={name} onChange={(e) => setName(e.target.value)} />
-      </label>
-      <label className="label">
-        Email
-        <input className="reg-input" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </label>
-      <label className="label">
-        Bank Account Number
-        <input className="reg-input" value={bankAccNo} onChange={(e) => setBankAccNo(e.target.value)} />
-      </label>
-      <label className="label">
-  Password
-  <div className="input-container">
-    <input
-      className="reg-input"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      type={showPassword ? "text" : "password"}
-    />
-    <img src={showPassword ? visible : hidden} onClick={handleTogglePassword} className="eye1" />
-  </div>
-</label>
-<label className="label">
-  Confirm Password
-  <div className="input-container">
-    <input
-      className="reg-input"
-      value={confirm}
-      onChange={(e) => setConfirm(e.target.value)}
-      type={showConfirmPassword ? "text" : "password"}
-    />
-    <img src={showConfirmPassword ? visible1 : hidden1} onClick={handleToggleConfirmPassword} className="eye2" />
-  </div>
-</label>
+    <>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <div className="signInContainer">
+        <img src={regPhoto} className="seller-woman" alt="" />
+        <div className="reg-form">
+          <h1 className="seller-signin-h1-first">REGISTER</h1>
+          <h1 className="seller-signin-h1">AS SELLER</h1>
+          <div className="flex-start">
+            <label className="signin-label">Username*</label>
+            <input
+              className="signin-input"
+              value={name}
+              placeholder="Timex"
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+            ></input>
+            <label className="signin-label">Email*</label>
+            <input
+              className="signin-input"
+              placeholder="timex@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+            ></input>
 
-      <label className="label">
-        Phone Number
-        <input className="reg-input" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
-      </label>
-      <button className="regbutton" onClick={handleRegister}>Register</button>
-      
-    </div>
+            <label className="signin-label">Phone Number*</label>
+            <input
+              className="signin-input"
+              placeholder="01XXXXXXXXX"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              type="text"
+            ></input>
+
+            <label className="signin-label">Bank Account Number*</label>
+            <input
+              className="signin-input"
+              placeholder="XXXXXXXXXX"
+              value={bankAccNo}
+              onChange={(e) => setBankAccNo(e.target.value)}
+            ></input>
+
+          <label className="signin-label">Location</label>
+            <input
+              className="signin-input"
+              placeholder="Dhanmondi,Dhaka"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              type="text"
+            ></input>
+
+            <label className="signin-label">Password*</label>
+            <input
+              className="signin-input"
+              value={password}
+              placeholder="********"
+              onChange={(e) => setPassword(e.target.value)}
+              type={show ? "text" : "password"}
+            ></input>
+
+            <label className="signin-label">Confirm Password</label>
+            <input
+              className="signin-input"
+              value={confirm}
+              placeholder="********"
+              onChange={(e) => setConfirm(e.target.value)}
+              type={show ? "text" : "password"}
+            ></input>
+            <div className="label-wrap">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={show}
+                  onChange={() => setShow(!show)}
+                />
+                Show passwords
+              </label>
+            </div>
+          </div>
+          <br />
+          <br />
+          <button className="btn" onClick={handleRegister}>
+          Sign Up
+          </button>
+        </div>
+        {showWarning && (
+          <>
+            <Backdrop />{" "}
+            <Warning message={warning} onClose={handleShowWarning} />
+          </>
+        )}
+        {showSuccess && (
+          <>
+            <Backdrop />{" "}
+            <Successful message={`Account created successfully!\nWelcome to KINO`} onClose={handleShowSucces} />
+          </>
+        )}
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </>
   );
 }
 

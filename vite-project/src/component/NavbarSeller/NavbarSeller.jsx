@@ -3,12 +3,16 @@ import logo from "../assets/logo_full_small.png";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSellerAuth } from "../../context/SellerAuthContext.jsx";
-
+import Warning from "../Warning/Warning.jsx"
+import Backdrop from '../Backdrop/Backdrop.jsx';
 const NavbarSeller = () => {
   const navigate = useNavigate();
   const { isLoggedIn, authUser, setIsLoggedIn, setAuthUser } = useSellerAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
+
   const handleLogout = async (e) => {
     e.preventDefault();
 
@@ -20,8 +24,7 @@ const NavbarSeller = () => {
         name: "Guest",
         phone_number: "",
         user_type: "",
-        registration_date: "",
-        preferred_payment_method: "",
+        registration_date: ""
       });
       setIsLoggedIn(false);
       //setLoggingOut(true);
@@ -49,12 +52,12 @@ const NavbarSeller = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (fieldEmpty()) {
-      alert("Fill up all the fields");
+      setWarningMessage("Fill up all the fields");
+      setShowWarning(true);
       return;
     }
 
     try {
-      
       const response = await fetch("http://localhost:5000/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -67,50 +70,49 @@ const NavbarSeller = () => {
         setIsLoggedIn(true);
         console.log(userInfo);
         alert(`Sign-in successful!\nWelcome back ${userInfo.name}`);
-        navigate("/seller"); // Redirect to home page
+        navigate("/seller");
       } else {
-        alert("Invalid email or password, please try again");
+        setWarningMessage("Invalid email or password, please try again");
+        setShowWarning(true);
       }
       
     } catch (error) {
       console.log(error.message);
     }
-    
   };
-
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     // alert(`Sign-in successful!\nWelcome back ${authUser.name}`);
-  //     navigate("/seller");
-  //   }
-  // }, [isLoggedIn, authUser, navigate]);
 
   return (
     <>
-      <div className="navbar">
-        <div className="nav-logo">
+          
+      <div className="seller-navbar">
+        <div className="seller-nav-logo">
           <Link to="/">
-            <img className="logo-img" src={logo} alt="logo" />
+            <img className="seller-logo-img" src={logo} alt="logo" />
           </Link>
         </div>
-        <ul className="nav-menu">
+        <ul className="seller-nav-menu">
           <li  className={isLoggedIn ? "username" : ""}>
             {isLoggedIn ? (
+              <>
               <Link to="/seller" style={{ textDecoration: "none", color: "#000000" ,
-              width: "min-width",}}>
-                <b className="line">{authUser.name}</b>
+              width: "max-width",}}>
+                <b className="user-label">{authUser.name}</b>
+                </Link>
                 <button className='change-password-button ' onClick={handleLogout}>Logout</button>
-              </Link>
+              </>
+              
             ) : (
               <form className='nav-input-seller' onSubmit={handleLogin}>
-                <input className='signin-input' type="text" placeholder="Email or Phone" value={email} onChange={handleEmailUpdate} />
-                <input className='signin-input' type="password" placeholder="Password" value={password} onChange={handlePasswordUpdate} />
+                <input className='seller-signin-input' type="text" placeholder="Email" value={email} onChange={handleEmailUpdate} />
+                <input className='seller-signin-input' type="password" placeholder="Password" value={password} onChange={handlePasswordUpdate} />
                 <button className='change-password-button' type="submit">Login</button>
               </form>
             )}
           </li>
         </ul>
       </div>
+      <div className="line"></div>
+      {showWarning && <><Backdrop/><Warning message={warningMessage} onClose={() => setShowWarning(false)} /></>}
     </>
   );
 };

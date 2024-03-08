@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --primary: #e2323f;
     --secondary: #f4828a;
     --accent: #fc4e59;
@@ -58,4 +58,60 @@
       opacity: 1;
     }
   }
+ */
+ :root {
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+  --background-100: #f2d9df;
+  --text: #120708;
+  --background-500: #bf4060;
+  --background-color: #fdf9fa;
+  --background-50: #f9ecef;
+}
 
+.warning-container {
+  background-color: var(--background-50);
+  border: 1px solid var(--accent);
+  color: var(--primary);
+  padding: 20px; /* Increased padding for better readability */
+  width: 300px; /* Adjust width as needed */
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Centering trick */
+  font-weight: bold; /* Corrected property name */
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.warning-icon {
+  width: 35%;
+  margin-right: 10px;
+}
+
+.warning-message {
+  flex: 1; /* Fill remaining space */
+  font-size: 18px; /* Adjust font size as needed */
+  text-align: center;
+  font-weight: 600;
+  font-family: 'Poppins';
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 25px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}

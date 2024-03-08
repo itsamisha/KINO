@@ -20,7 +20,7 @@
 }
 .navbar {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   box-shadow: 0 1px 3px -2px var(--text);
   background-color: var(--background-50);
   height: 4.75rem;
@@ -31,6 +31,7 @@
   display: flex;
   align-items: center;
   padding: 2.75rem 0;
+  margin-right: auto;
 }
 .nav-top{
   padding: auto;
@@ -129,16 +130,9 @@
   background-color: #fff;
 }
 
-.line{
-  font-size: large;
-  width: max-content;
-}
-.line:hover{
-    color: var(--primary)
-}
-
 .logo-img{
   height: 3.5rem;
+  margin-right: auto;
 }
 
 .cart-img{
