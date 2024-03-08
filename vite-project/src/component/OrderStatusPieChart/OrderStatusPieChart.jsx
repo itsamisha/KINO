@@ -1,39 +1,53 @@
 import React from 'react';
-import "./OrderStatusPieChart.css";
 import { Pie } from 'react-chartjs-2';
+import "./OrderStatusPieChart.css"
 
-const OrderStatusPieChart = ({ products }) => {
-  // Count the occurrences of each order_status
-  const orderStatusCount = products.reduce((acc, product) => {
-    const status = product.order_status;
-    acc[status] = (acc[status] || 0) + 1;
-    return acc;
-  }, {});
+const OrderStatusPieChart = ({ orderData }) => {
+    // Filter order data to keep only unique order items
+    const uniqueOrderData = Array.from(new Set(orderData.map(order => order.order_item_id)))
+        .map(orderItemId => orderData.find(order => order.order_item_id === orderItemId));
 
-  // Extract labels and data for the pie chart
-  const labels = Object.keys(orderStatusCount);
-  const data = Object.values(orderStatusCount);
+    // Extracting order status and count data, excluding null status
+    const orderStatusData = uniqueOrderData.map(order => order.order_status).filter(status => status !== null);
+    const orderStatusCount = orderStatusData.reduce((acc, status) => {
+        acc[status] = (acc[status] || 0) + 1;
+        return acc;
+    }, {});
 
-  // Define colors for each segment of the pie chart
-  const backgroundColors = ['#FF6384', '#36A2EB', '#FFCE56', '#8A2BE2', '#FFD700']; // Add more colors if needed
+    // Chart data
+    const data = {
+        labels: Object.keys(orderStatusCount),
+        datasets: [
+            {
+                label: 'Order Count',
+                data: Object.values(orderStatusCount),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(255, 206, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(153, 102, 255, 0.5)',
+                    'rgba(255, 159, 64, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
 
-  // Prepare data for the Pie component
-  const pieChartData = {
-    labels: labels,
-    datasets: [
-      {
-        data: data,
-        backgroundColor: backgroundColors,
-      },
-    ],
-  };
-
-  return (
-    <div className="chart-container">
-      
-      <Pie data={pieChartData} />
-    </div>
-  );
+    return (
+        <div className='chart-container'>
+            <h2>Order Status Pie Chart</h2>
+            <Pie data={data} />
+        </div>
+    );
 };
 
 export default OrderStatusPieChart;

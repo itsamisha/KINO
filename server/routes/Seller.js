@@ -360,6 +360,24 @@ router.get('/:user_id/least-sold-products', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+//get lowstock products
+router.get('/:user_id/low-stock-products', async (req, res) => {
+  try {
+    const {user_id}=req.params;
+    const topSoldProducts = await pool.query(`
+      SELECT product_id, name,purchase_count,stock_quantity
+      FROM product
+      GROUP BY product_id, name
+      HAVING user_id=$1 
+      ORDER BY stock_quantity
+      LIMIT 10;
+    `,[user_id]);
+    res.json(topSoldProducts.rows);
+  } catch (error) {
+    console.error('Error fetching low-stock products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // Get order status distribution
 router.get('/:user_id/order-status-distribution', async (req, res) => {
@@ -371,8 +389,7 @@ router.get('/:user_id/order-status-distribution', async (req, res) => {
     join order_items o ON(p.product_id=o.product_id)
     JOIN orders o1 ON(o1.order_id=o.order_id)
     GROUP BY p.product_id, name,o.order_status
-    HAVING p.user_id=$1
-    LIMIT 10;
+    HAVING p.user_id=$1;
     `,[user_id]);
     res.json(orderStatusDistribution.rows);
   } catch (error) {
