@@ -14,19 +14,19 @@ router.get("/:user_id", async (req, res) => {
       console.error(error.message);
       res.status(500).json({ error: 'Internal Server Error' });
     }
-  })
+  }) 
  
  //Update Profile Info
   router.put("/update", async (req, res) => {
     try {
-      const { id, name, email, phone_number, preferred_payment_method } = req.body;
+      const { user_id, name, email, phone_number, preferred_payment_method } = req.body;
       const update = await pool.query(`UPDATE users SET
       name = $1,
       email = $2,
       phone_number = $3,
       preferred_payment_method = $4
       WHERE user_id = $5
-      RETURNING *`, [name, email, phone_number, preferred_payment_method,id]);
+      RETURNING *`, [name, email, phone_number, preferred_payment_method,user_id]);
       res.status(200).json(update.rows[0])
       console.log(update.rows[0])
     } catch (error) {

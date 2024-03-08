@@ -10,7 +10,7 @@
   --text-700: #6e2b30;
   --primary-700: #86131b;
   }
-.modal {
+.customer-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -24,7 +24,7 @@
     backdrop-filter: blur(1.5px);
   }
   
-  .modal-content {
+  .customer-modal-content {
     width: 45%;
     height: 80vh;
     background-color: var(--background);

@@ -7,7 +7,6 @@ import Successful from "../Successful/Successful";
 import Backdrop from "../Backdrop/Backdrop";
 
 function Registration() {
-  const { navigate } = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

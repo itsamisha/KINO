@@ -16,7 +16,8 @@ function CustomerDashboard() {
   const { isLoggedIn, authUser } = useAuth();
   console.log(isLoggedIn)
   const [photo,setPhoto] = useState(continueShopping)
-  const [showEditForm, setShowEditForm] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
   if (!isLoggedIn) {
     return <Navigate to="/signin"/>
   }
@@ -37,18 +38,6 @@ function CustomerDashboard() {
     //navigate("/customer/edit-profile");
     setShowEditForm(true);
   }
-
-  function goToHome(){
-    window.location.href = '/'
-  }
-
-  function changePhotoEntry(){
-      setPhoto(continueShopping2)
-  }
-
-  function changePhotoExit(){
-   setPhoto(continueShopping)
-}
 
 
   return (
@@ -104,9 +93,6 @@ function CustomerDashboard() {
         </div>
       </div>
       <div className="space"></div>
-      {/* <div className="img-cont" onClick={goToHome}>
-          <img src={photo} alt="" onMouseEnter={changePhotoEntry} onMouseLeave={changePhotoExit} />
-      </div> */}
     </>
   );
 }

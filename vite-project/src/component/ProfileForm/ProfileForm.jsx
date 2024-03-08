@@ -5,39 +5,45 @@ import Title from "../Title/Title";
 
 function ProfileForm({ onCancel}) {
   const { authUser, setAuthUser} = useAuth();
-  const [formData, setFormData] = useState({
-    name: authUser.name,
-    email: authUser.email,
-    phone_number: authUser.phone_number,
-    preferred_payment_method: authUser.preferred_payment_method || "",
-  });
+  const [name, setName] = useState(authUser.name);
+  const [email, setEmail] = useState(authUser.email);
+  const [phoneNumber, setPhoneNumber] = useState(authUser.phone_number);
+  const [payment, setPayment] = useState(authUser.preferred_payment_method);
+  const [showWarning, setShowWarning] = useState(false);
+  const [warning, setWarning] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const userId = authUser.user_id;
+
+  const validatePhoneNumber = (number) => {
+    return /^\d{11}$/.test(number);
   };
+  
+  const validateEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+  
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  // };
-
-  const updateUserProfile = async (data) => {
+  const updateUserProfile = async () => {
     try {
+      const userData = {
+        name: name,
+        email: email,
+        phone_number: phoneNumber,
+        preferred_payment_method: payment,
+        user_id: userId
+      };  
       const response = await fetch("http://localhost:5000/customer/update", {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
       const updatedUser = await response.json();
       return updatedUser;
     } catch (error) {
@@ -48,21 +54,9 @@ function ProfileForm({ onCancel}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateUserProfile(formData);
-      setAuthUser((prevAuthUser) => ({
-        ...prevAuthUser,
-        name: formData.name,
-        email: formData.email,
-        phone_number: formData.phone_number,
-        preferred_payment_method: formData.preferred_payment_method,
-      }));
-      alert('Profile updated successfully!');
-      setFormData({
-        name: authUser.name,
-        email: authUser.email,
-        phone_number: authUser.phone_number,
-        preferred_payment_method: authUser.preferred_payment_method || "",
-      });
+      const updatedUser = await updateUserProfile();
+      setAuthUser(updatedUser);
+
     } catch (error) {
       console.error('Error updating profile:', error.message);
       alert('Failed to update profile. Please try again.');
@@ -71,8 +65,8 @@ function ProfileForm({ onCancel}) {
 
 
   return (
-    <div className="modal">
-      <div className="modal-content">
+    <div className="customer-modal">
+      <div className="customer-modal-content">
         <Title title="Edit Profile"/>
         <br /><br /><br />
         <form onSubmit={handleSubmit}>
@@ -83,8 +77,8 @@ function ProfileForm({ onCancel}) {
             <input
                 type="text"
                 name="name"
-                value={formData.name}
-                onChange={handleChange}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
           </div>
@@ -95,8 +89,8 @@ function ProfileForm({ onCancel}) {
             <input
                 type="email"
                 name="email"
-                value={formData.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
           </div>
@@ -107,8 +101,8 @@ function ProfileForm({ onCancel}) {
             <input
                 type="tel"
                 name="phone_number"
-                value={formData.phone_number}
-                onChange={handleChange}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 required
               />
           </div>
@@ -118,16 +112,17 @@ function ProfileForm({ onCancel}) {
             </label>
             <select
                 name="preferred_payment_method"
-                value={formData.preferred_payment_method}
-                onChange={handleChange}
+                value={payment}
+                onChange={(e) => setPayment(e.target.value)}
+                required
               >
                 <option value="">Select Payment Method</option>
                 <option value="bKash">bKash</option>
+                <option value="bank">bank payment</option>
                 <option value="COD">Cash on delivery</option>
-                {/* Add other payment methods as necessary */}
+                
               </select>
           </div>
-          {/* Add other fields as necessary */}
           <div className="button-container">
             <button type="submit" className="change-password-button">Save</button>
             <button type="button" className="change-password-button" onClick={onCancel}>

@@ -3,9 +3,6 @@ import { FaHeart,FaShoppingCart, FaCommentAlt ,FaUser, FaBitcoin, FaClipboardLis
 import './SellerSidebar.css';
 
 
-
-
-
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
