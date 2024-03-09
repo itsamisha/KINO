@@ -208,3 +208,42 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
+---notificationss
+CREATE OR REPLACE FUNCTION notify_order_status_change()
+RETURNS TRIGGER AS $$
+DECLARE
+    uid INT;
+    pname VARCHAR;
+BEGIN
+    -- Check if the order status has been updated
+    SELECT user_id INTO uid
+    FROM orders o 
+    JOIN order_items oi ON o.order_id = oi.order_id
+    WHERE o.order_id = NEW.order_id;
+    
+    SELECT "name" INTO pname
+    FROM product 
+    WHERE product_id = NEW.product_id;
+
+    IF NEW.order_status <> OLD.order_status THEN
+        -- Insert a new notification into the notifications table
+        INSERT INTO notifications (user_id, notification_text)
+        VALUES (uid, 'Your order status has been updated to ' || NEW.order_status || ' for ' || pname || '.');
+    END IF;
+
+    -- Return the new row
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+;
+
+-- Create a trigger to fire after update on the orders table
+CREATE TRIGGER order_status_change_trigger
+AFTER UPDATE ON order_items
+FOR EACH ROW
+EXECUTE FUNCTION notify_order_status_change();
+--after insert
+CREATE TRIGGER order_status_change_trigger_insert
+AFTER INSERT ON order_items
+FOR EACH ROW
+EXECUTE FUNCTION notify_order_status_change();

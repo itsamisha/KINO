@@ -10,6 +10,7 @@ import GiftCardGraph from '../component/GiftCardGraph/GiftCardGraph';
 import Order from '../component/AdminOrder/AdminOrder';
 import ShippingPieChart from '../component/ShippingPieChart/ShippingPieChart'; 
 import AdminChart from '../component/AdminCharts/AdminCharts';
+import Footer from '../component/Footer/Footer';
 const Admin = () => {
     const [activeTab, setActiveTab] = useState('users');
     const handleTabChange = (tab) => {
@@ -138,6 +139,8 @@ return (
         <div className="admin-container">
             <div className="side-tab">
                 <button onClick={() => handleTabChange('users')}>All Users</button>
+                <button onClick={() => handleTabChange('topUsers')}>Show Top Users</button>
+                <button onClick={() => handleTabChange('topSellers')}>Show Top Sellers</button>
                 <button onClick={() => handleTabChange('giftCards')}>Gift Cards</button>
                 <button onClick={() => handleTabChange('products')}>Products</button>
                 <button onClick={() => handleTabChange('orders')}>All Orders</button>
@@ -209,11 +212,37 @@ return (
           )}
           {activeTab === 'RevenueStats' && (
             <section>
-              <h1>Order Statistics</h1>
-              <h2>Order Location Pie Chart</h2>
+              <h1>Shipping Revenue Statistics</h1>
+              
              <AdminChart/>
             </section>
           )}
+          {activeTab === 'topUsers' && (
+  <section>
+    <h2>Top Users</h2>
+    <ul>
+      {topUsers.map(user => (
+        <li key={user.user_id}>
+          <strong>User ID:</strong> {user.user_id}, <strong>Name:</strong> {user.name}, <strong>Total Orders:</strong> {user.total_orders}
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+{activeTab === 'topSellers' && (
+  <section>
+    <h2>Top Sellers</h2>
+    <ul>
+      {topSellers.map(seller => (
+        <li key={seller.user_id}>
+          <strong>User ID:</strong> {seller.user_id}, <strong>Name:</strong> {seller.name}, <strong>Total Revenue:</strong> ${seller.revenue}
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
                 {/* Add more sections for other tabs */}
             </div>
         </div>

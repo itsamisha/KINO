@@ -328,5 +328,40 @@ router.get("/reviews/:product_id", async (req, res) => {
     res.status(400).send(error.message);
   }
 });
+//get notifications
+router.get('/notification/:user_id', async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    // Execute the SQL DELETE statement
+    const result = await pool.query('SELECT* FROM notifications WHERE user_id = $1', [user_id]);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error deleting user:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+//delete notif
+router.delete('/delete-notif/:notification_id', async (req, res) => {
+  const {notification_id } = req.params;
+
+  try {
+    // Execute the SQL DELETE statement
+    const result = await pool.query('DELETE FROM notifications WHERE notification_id = $1', [notification_id]);
+
+    if (result.rowCount === 0) {
+      // If no rows were affected, user with provided user_id does not exist
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Notif deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting notif', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 module.exports = router;
