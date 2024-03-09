@@ -72,9 +72,9 @@
   flex-direction: row;
   padding: 1.25rem;
   padding-top: 0;
-  margin-left: 2rem;
   margin-bottom: 15px;
   font-size: 18px;
   font-weight: bold;
   color: var(--text-700);
+  font-family: 'Poppins';
 }

@@ -7,6 +7,7 @@ import Sidebar from "../component/Sidebar/Sidebar";
 import Title from "../component/Title/Title";
 import Loading from "../component/Loading/Loading"; 
 import ContinueShopping from "../component/ContinueShopping/ContinueShopping" // Import your loading component
+import Footer from "../component/Footer/Footer";
 
 const GiftCardCustomer = () => {
   const { isLoggedIn, authUser } = useAuth();
@@ -107,6 +108,7 @@ const GiftCardCustomer = () => {
           </div>
         </>
       )}
+      <Footer/>
     </div>
   );
 };

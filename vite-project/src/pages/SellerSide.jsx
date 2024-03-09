@@ -1,3 +1,4 @@
+import Footer from "../component/Footer/Footer";
 import NavbarSeller from "../component/NavbarSeller/NavbarSeller"
 import SellerReg from "../component/SellerReg/SellerReg"
 import { useSellerAuth } from "../context/SellerAuthContext"
@@ -11,6 +12,7 @@ function SellerSide(){
         <br />
         <br />
         <SellerReg/>
+        <Footer/>
     </div>
 }
 

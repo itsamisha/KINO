@@ -9,6 +9,7 @@ import Title from "../component/Title/Title";
 import CheckOut from "../component/CheckOut/CheckOut";
 import Loading from "../component/Loading/Loading"; // Import the loading component
 import ContinueShopping from "../component/ContinueShopping/ContinueShopping";
+import Footer from "../component/Footer/Footer";
 
 const Cart = () => {
   const { isLoggedIn, authUser } = useAuth();
@@ -141,6 +142,7 @@ const Cart = () => {
           )}
         </>
       )}
+      <Footer/>
     </div>
   );
 };

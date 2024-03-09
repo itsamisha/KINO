@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Navbar from '../component/Navbar/Navbar';
 import '../css/GiftCard.css';
 import ImageSlider from '../component/ImageSlider/ImageSlider';
+import Footer from '../component/Footer/Footer';
 
 const containerStyles = {
     width: "75rem",
@@ -39,6 +40,7 @@ const GiftCard = () => {
             </div>
             <br />
             <br />
+            <Footer/>
         </div>
     );
 };

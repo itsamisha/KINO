@@ -217,6 +217,7 @@ return (
                 {/* Add more sections for other tabs */}
             </div>
         </div>
+        <Footer/>
     </div>
 );
 

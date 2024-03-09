@@ -17,6 +17,8 @@ const giftCardDesigns = [
   "/src/component/assets/6.png",
   "/src/component/assets/7.png",
   "/src/component/assets/8.png",
+  "/src/component/assets/9.png",
+  "/src/component/assets/10.png",
 ];
 
 const defaultSelectedDesign = `/src/component/assets/${

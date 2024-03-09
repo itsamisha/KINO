@@ -13,6 +13,7 @@ import SellerSidebar from "../component/SellerSidebar/SellerSidebar";
 import Chart from 'chart.js/auto';
 import {Link, Navigate, useNavigate } from "react-router-dom";
 import InventoryItem from "../component/InventoryItem/InventoryItem"; 
+import Footer from '../component/Footer/Footer';
 
 const AnalyticsPage = () => {
     Chart.register(ArcElement);
@@ -275,6 +276,7 @@ const AnalyticsPage = () => {
           }],
         }} />
       </div>
+      <Footer/>
     </div>
   );
 };

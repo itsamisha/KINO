@@ -8,6 +8,7 @@ import WishlistItem from "../component/Wishlist-Item/WishlistItem";
 import Title from "../component/Title/Title";
 import Loading from "../component/Loading/Loading"; // Import the loading component
 import ContinueShopping from "../component/ContinueShopping/ContinueShopping";
+import Footer from "../component/Footer/Footer";
 
 const Wishlist = () => {
   const { isLoggedIn, authUser } = useAuth();
@@ -15,7 +16,7 @@ const Wishlist = () => {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true); // State to manage loading
-
+ 
   if(!isLoggedIn){
     window.location.href = '/signin'
   }
@@ -46,6 +47,7 @@ const Wishlist = () => {
     : [];
 
   return (
+    <>
     <div className="container">
       {isLoggedIn ? <Navbar /> : null}
       {isLoggedIn ? <Sidebar /> : null}
@@ -102,6 +104,8 @@ const Wishlist = () => {
         </>
       )}
     </div>
+    <Footer/>
+    </>
   );
 };
 

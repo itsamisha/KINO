@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import './ProfileForm.css'
+import { useSellerAuth } from "../../context/SellerAuthContext";
+import '../ProfileForm/ProfileForm.css'
+import './SellerProfileForm.css'
 import Title from "../Title/Title";
 import Successful from "../Successful/Successful";
 import Backdrop from "../Backdrop/Backdrop"; 
 
 
-function ProfileForm({ onCancel}) {
-  const { authUser, setAuthUser} = useAuth();
+function SellerProfileForm({ location, bankAcc,onCancel}) {
+  const { authUser, setAuthUser} = useSellerAuth();
   const [name, setName] = useState(authUser.name);
   const [email, setEmail] = useState(authUser.email);
   const [phoneNumber, setPhoneNumber] = useState(authUser.phone_number);
-  const [payment, setPayment] = useState(authUser.preferred_payment_method);
+  const [locations, setLocations] = useState(location)
+  const [bank, setBank] = useState(bankAcc)
   const [showSuccess, setShowSuccess] = useState(false);
 
   const handleShowSucces = () => {
@@ -24,10 +26,11 @@ function ProfileForm({ onCancel}) {
         name: name,
         email: email,
         phone_number: phoneNumber,
-        preferred_payment_method: payment,
+        locations: locations,
+        bank_account_number: bank,
         user_id: authUser.user_id
       };  
-      const response = await fetch("http://localhost:5000/customer/update", {
+      const response = await fetch("http://localhost:5000/seller/update", {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -61,14 +64,14 @@ function ProfileForm({ onCancel}) {
 
 
   return (
-    <div className="customer-modal">
-      <div className="customer-modal-content">
+    <div className="seller-modal">
+      <div className="seller-modal-content">
         <Title title="Edit Profile"/>
         <br /><br /><br />
         <form onSubmit={handleSubmit}>
           <div className="info-row">
             <label className="info-label">
-              Name:
+              Shop Name:
             </label>
             <input
                 type="text"
@@ -104,20 +107,27 @@ function ProfileForm({ onCancel}) {
           </div>
           <div className="info-row">
             <label className="info-label">
-              Preferred Payment Method:
+              Location:
             </label>
-            <select
-                name="preferred_payment_method"
-                value={payment}
-                onChange={(e) => setPayment(e.target.value)}
+            <input
+                type="text"
+                name="locations"
+                value={locations}
+                onChange={(e) => setLocations(e.target.value)}
                 required
-              >
-                <option value="">Select Payment Method</option>
-                <option value="bkash">bKash</option>
-                <option value="bank">Bank Payment</option>
-                <option value="COD">Cash On Delivery</option>
-                
-              </select>
+              />
+          </div>
+          <div className="info-row">
+            <label className="info-label">
+              Bank Account Number
+            </label>
+            <input
+                type="text"
+                name="bank"
+                value={bank}
+                onChange={(e) => setBank(e.target.value)}
+                required
+              />
           </div>
           <div className="button-container">
             <button type="submit" className="change-password-button">Save</button>
@@ -137,4 +147,4 @@ function ProfileForm({ onCancel}) {
   );
 }
 
-export default ProfileForm;
+export default SellerProfileForm;

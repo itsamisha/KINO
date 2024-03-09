@@ -33,7 +33,7 @@ const Review= ({ product_id }) => {
         <span className="review-title">Reviews</span>
       </div>
       {isExpanded && (
-        <div className="review-container">
+        <div className="prod-review-container">
           <div className="review-scroll">
             {reviews.length > 0 ? (
               <>

@@ -4,20 +4,21 @@ import Sidebar from "../component/SellerSidebar/SellerSidebar";
 import { useSellerAuth } from "../context/SellerAuthContext";
 import { Link, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
 import InventoryItem from "../component/InventoryItem/InventoryItem";
-// import { link } from "../../../server/routes/seller";
+import Title from "../component/Title/Title";
+import Footer from "../component/Footer/Footer";
+
 const Inventory = () => {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const { isLoggedIn, authUser } = useSellerAuth();
   const userId = authUser.user_id;
-  
+   
   if (!isLoggedIn) {
-    return <Navigate to="/signin"/>
+    return <Navigate to="/sellerside"/>
   }
   const handleClick = () => {
-    return <Navigate to="/addproduct"/>
+    window.location.href = "/addproduct"
   };
 
   const getInventory = async () => {
@@ -45,20 +46,26 @@ const Inventory = () => {
   
 
   return (
+
     <div className="container">
      <Navbar/>
       <Sidebar />
-      <h2 className="header">◧ INVENTORY</h2>
-      
+
+      {products.length>0 ?<> <div className="wishlist-count">
+      <Title title="Inventory"/>
+            Total Products: {products.length > 0 ? products.length : 0}
+          </div>
+          <br/>
       <input
         type="text"
         placeholder="Search inventory..."
         value={searchQuery}
         className="searchWishlist"
         onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <br /><br /><br />
-      {products.length > 0 ? (
+      /></>
+     : null}
+     <br /><br /><br />
+      {products.length >0 ? (
         filteredProducts.map((item) => (
           <>
             <InventoryItem
@@ -69,21 +76,24 @@ const Inventory = () => {
               purchase_count={item.purchase_count}
               stock_quantity={item.stock_quantity}
               discount={item.discount}
-              
-
             />
             <br />
           </>
         ))
       ) : (<div>
-        <Link to="/seller">
-          <h1>Inventory empty</h1>
-        </Link>
-        <button onClick={handleClick}> 
+
+        <div className="inventory-empty">Your inventory is presently empty</div>
+        <br />
+        <br />
+        <div className="wrap-for-button">
+        <button className="a-buy-now-button" onClick={handleClick}> 
             Add Products
         </button>
         </div>
+       
+        </div>
       )}
+      <Footer/>
     </div>
   );
 };

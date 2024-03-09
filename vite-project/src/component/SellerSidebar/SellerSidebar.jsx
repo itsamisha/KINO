@@ -10,7 +10,7 @@ const Sidebar = () => {
     setIsOpen(true);
   };
 
-  const closeNav = () => {
+  const closeNav = () => { 
     setIsOpen(false);
   };
 

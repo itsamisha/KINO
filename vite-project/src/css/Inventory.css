@@ -20,6 +20,68 @@
     outline: none;
     height: 2rem;
     font-size: 18px;
+
   }
 
+  .wrap-for-button{
+      text-align: center;
+      margin-top: 2rem;
+  }
+
+  .inventory-empty{
+    font-family: 'Poppins';
+    font-size: 2.4rem;
+    text-align: center;
+  }
+  .a-buy-now-button {
+    background-color: var(--secondary);
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+  
+  .a-buy-now-button::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--accent);
+    opacity: 0;
+    animation: pulse 1s linear infinite;
+    font-weight: bold;
+  }
+  
+  /* Animation */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
+  }
+  
+  .a-buy-now-button:hover::after {
+    opacity: 1;
+  }
+  
+  .a-buy-now-button:hover {
+    background-color: var(--accent);
+    transform: translateY(-2px);
+  }
   

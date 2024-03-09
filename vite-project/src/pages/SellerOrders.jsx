@@ -5,6 +5,7 @@ import Title from "../component/Title/Title";
 import "../css/SellerOrders.css";
 import { useSellerAuth } from "../context/SellerAuthContext";
 import OrderItem from "../component/OrderItem/OrderItem";
+import Footer from "../component/Footer/Footer";
 
 const Orders = () => {
   const [products, setProducts] = useState([]);
@@ -56,9 +57,9 @@ const Orders = () => {
         </button>
         <button
           className={`orders-option ${
-            selectedOption === "confirmed" ? "selected" : ""
+            selectedOption === "history" ? "selected" : ""
           }`}
-          onClick={() => handleOptionSelect("confirmed")}
+          onClick={() => handleOptionSelect("history")}
         >
           Confirmed
         </button>
@@ -69,6 +70,7 @@ const Orders = () => {
 ))}
 
       </div>
+      <Footer/>
     </div>
   );
 };

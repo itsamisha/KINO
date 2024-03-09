@@ -1,112 +1,211 @@
-// import React, { useState, useEffect } from "react";
-// import { useLocation, useParams } from "react-router-dom";
-// import "./FilterMenu.css";
+// // import { useState } from "react";
 
-// const FilterMenu = ({ onFilterChange }) => {
-//   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
+// // const FilterMenu = () => {
+// //   const [isExpanded, setIsExpanded] = useState(false);
+
+// //   const toggleDescription = () => {
+// //     setIsExpanded(!isExpanded);
+// //   };
+// //   return (
+// //     <div className='filter-menu'>
+// //     <div className="filter" onClick={toggleDescription}>
+// //       <span>{isExpanded ? '▼' : '►'}</span>
+// //       <span className="filter">Filter Results</span>
+// //     </div>
+// //     {isExpanded && (
+// //       <div className="filter-section">
+// //         <div className="price-range">
+// //           Price Range
+// //           <input type="number" placeholder="Minimum Price"/>
+// //           <input type="number" placeholder="Maximum Price"/>
+// //         </div>      
+// //         <div className="category">
+// //           Category
+// //         </div>
+// //         <div className="sort">
+// //           Sort
+// //         </div>
+// //       </div>
+// //     )}
+// //    </div>
+// //   )
+// // }
+
+// // export default FilterMenu
+// import React, { useState } from "react";
+
+// const FilterMenu = ({ onFilterChange, onSortChange }) => {
+//   const [isExpanded, setIsExpanded] = useState(false);
+//   const [minPrice, setMinPrice] = useState("");
+//   const [maxPrice, setMaxPrice] = useState("");
 //   const [selectedCategory, setSelectedCategory] = useState("");
-//   const [categories, setCategories] = useState([]);
+//   const [selectedSortBy, setSelectedSortBy] = useState("");
 
-//   const location = useLocation();
-//   const params = useParams();
-//   const getCategories = async () => {
-//     try {
-//       const response = await fetch(`http://localhost:5000/category`);
-//       const data = await response.json();
-
-//       console.log(data);
-//       setCategories(data.categories);
-//     } catch (error) {
-//       console.log(error.message);
-//     }
+//   const toggleDescription = () => {
+//     setIsExpanded(!isExpanded);
 //   };
 
-//   useEffect(() => {
-//     getCategories();
-//   }, []);
+//   const handleMinPriceChange = (e) => {
+//     setMinPrice(e.target.value);
+//   };
+
+//   const handleMaxPriceChange = (e) => {
+//     setMaxPrice(e.target.value);
+//   };
 
 //   const handleCategoryChange = (e) => {
-//     onFilterChange("category", e.target.value);
+//     setSelectedCategory(e.target.value);
 //   };
 
-//   const handlePriceChange = (minOrMax) => (e) => {
-//     const newPriceRange = { ...priceRange, [minOrMax]: e.target.value };
-//     onFilterChange("priceRange", newPriceRange);
+//   const handleSortChange = (e) => {
+//     setSelectedSortBy(e.target.value);
 //   };
 
-//   useEffect(() => {
-//     // Trigger the update of the search results when filters change
-//     const handleFilterChange = () => {
-//       onFilterChange(priceRange, selectedCategory);
-//     };
-
-//     handleFilterChange();
-//   }, [priceRange, selectedCategory, onFilterChange]);
+//   const handleApplyFilters = () => {
+//     // Pass the selected filter options to the parent component
+//     onFilterChange({ minPrice, maxPrice, selectedCategory });
+//     onSortChange(selectedSortBy);
+//   };
 
 //   return (
 //     <div className="filter-menu">
-//       <div className="filter-section">
-//         <h4>Price</h4>
-//         <input
-//           type="number"
-//           placeholder="Min price"
-//           value={priceRange.min}
-//           onChange={handlePriceChange("min")}
-//         />
-//         <input
-//           type="number"
-//           placeholder="Max price"
-//           value={priceRange.max}
-//           onChange={handlePriceChange("max")}
-//         />
+//       <div className="filter" onClick={toggleDescription}>
+//         <span>{isExpanded ? "▼" : "►"}</span>
+//         <span className="filter">Filter Results</span>
 //       </div>
-//       <div className="filter-section">
-//         <h3>Category</h3>
-//         <select value={selectedCategory} onChange={handleCategoryChange}>
-//           <option value="">All</option>
-//           {categories.map((category) => (
-//             <option key={category} value={category}>
-//               {category}
-//             </option>
-//           ))}
-//         </select>
-//       </div>
+//       {isExpanded && (
+//         <div className="filter-section">
+//           <div className="price-range">
+//             <label htmlFor="minPrice">Minimum Price:</label>
+//             <input
+//               type="number"
+//               id="minPrice"
+//               value={minPrice}
+//               onChange={handleMinPriceChange}
+//               placeholder="Minimum Price"
+//             />
+//             <label htmlFor="maxPrice">Maximum Price:</label>
+//             <input
+//               type="number"
+//               id="maxPrice"
+//               value={maxPrice}
+//               onChange={handleMaxPriceChange}
+//               placeholder="Maximum Price"
+//             />
+//           </div>
+//           <div className="category">
+//             <label htmlFor="category">Category:</label>
+//             <select
+//               id="category"
+//               value={selectedCategory}
+//               onChange={handleCategoryChange}
+//             >
+//               <option value="">All Categories</option>
+//               {/* Add options dynamically based on available categories */}
+//             </select>
+//           </div>
+//           <div className="sort">
+//             <label htmlFor="sortBy">Sort By:</label>
+//             <select
+//               id="sortBy"
+//               value={selectedSortBy}
+//               onChange={handleSortChange}
+//             >
+//               <option value="">Select Sorting Option</option>
+//               <option value="price-low-to-high">Price: Low to High</option>
+//               <option value="price-high-to-low">Price: High to Low</option>
+//               {/* Add more sorting options as needed */}
+//             </select>
+//           </div>
+//           <button onClick={handleApplyFilters}>Apply Filters</button>
+//         </div>
+//       )}
 //     </div>
 //   );
 // };
 
 // export default FilterMenu;
-import { useState } from "react";
 
-const FilterMenu = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+import React, { useState } from "react";
+import './FilterMenu.css'
 
-  const toggleDescription = () => {
-    setIsExpanded(!isExpanded);
+const FilterMenu = ({ onFilterChange, onSortChange }) => {
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSortBy, setSelectedSortBy] = useState("");
+
+  const handleMinPriceChange = (e) => {
+    setMinPrice(e.target.value);
   };
+
+  const handleMaxPriceChange = (e) => {
+    setMaxPrice(e.target.value);
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleSortChange = (e) => {
+    setSelectedSortBy(e.target.value);
+  };
+
+  const handleApplyFilters = () => {
+    // Pass the selected filter options to the parent component
+    onFilterChange({ minPrice, maxPrice, selectedCategory });
+    onSortChange(selectedSortBy);
+  };
+
   return (
-    <div className='filter-menu'>
-    <div className="filter" onClick={toggleDescription}>
-      <span>{isExpanded ? '▼' : '►'}</span>
-      <span className="filter">Filter Results</span>
-    </div>
-    {isExpanded && (
+    <div className="filter-menu">
       <div className="filter-section">
         <div className="price-range">
-          Price Range
-          <input type="number" placeholder="Minimum Price"/>
-          <input type="number" placeholder="Maximum Price"/>
-        </div>      
+          <label htmlFor="minPrice">Minimum Price:</label>
+          <input
+            type="number"
+            id="minPrice"
+            value={minPrice}
+            onChange={handleMinPriceChange}
+            placeholder="Minimum Price"
+          />
+          <label htmlFor="maxPrice">Maximum Price:</label>
+          <input
+            type="number"
+            id="maxPrice"
+            value={maxPrice}
+            onChange={handleMaxPriceChange}
+            placeholder="Maximum Price"
+          />
+        </div>
         <div className="category">
-          Category
+          <label htmlFor="category">Category:</label>
+          <select
+            id="category"
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+          >
+            <option value="">All Categories</option>
+            {/* Add options dynamically based on available categories */}
+          </select>
         </div>
         <div className="sort">
-          Sort
+          <label htmlFor="sortBy">Sort By:</label>
+          <select
+            id="sortBy"
+            value={selectedSortBy}
+            onChange={handleSortChange}
+          >
+            <option value="">Select Sorting Option</option>
+            <option value="price-low-to-high">Price: Low to High</option>
+            <option value="price-high-to-low">Price: High to Low</option>
+            {/* Add more sorting options as needed */}
+          </select>
         </div>
+        <button onClick={handleApplyFilters}>Apply Filters</button>
       </div>
-    )}
-   </div>
-  )
-}
+    </div>
+  );
+};
 
-export default FilterMenu
+export default FilterMenu;

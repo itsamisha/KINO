@@ -7,6 +7,7 @@ import photo from "../component/assets/SignIn.png";
 import Header from "../component/Header/Header";
 import Warning from "../component/Warning/Warning";
 import Backdrop from "../component/Backdrop/Backdrop";
+import Footer from "../component/Footer/Footer";
 
 function SignIn() {
   const {updateSearchValue,updateSearchOption } = useSearch();
@@ -132,7 +133,7 @@ function SignIn() {
       </div>
       <br />
       <br />
-     
+       <Footer/>
     </>
   );
 }

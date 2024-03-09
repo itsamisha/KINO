@@ -10,12 +10,49 @@
     --background-900: #260d13;
   }
 
+  .product-name{
+    margin-bottom: 10px;
+    font-size: large;
+    font-family: 'Poppins';
+    font-weight: bold;
+    color:var(--background-700);
+  }
+
+  .rev-review-text{
+    font-size: medium;
+    font-family: 'Poppins';
+    font-weight: bold;
+    color:var(--text);
+    font-style: italic;
+  }
+
+  .author-cus{
+    font-size: medium;
+    font-family: 'Poppins';
+    color:var(--background-900);
+  }
+
+
+
   .review-item-seller {
+
+    display: flex;
+    flex-direction: row;
+  }
+
+
+  .big-cont{
+    width: 55%;
+    margin: 0 auto;
     border: 1px solid var(--accent);
-    padding: 50px;
-    margin-bottom: 15px;
-    margin-right: 1.05rem;
+    padding: 1rem;
+    height: 100%;
     background-color: var(--background-50);
+    margin: 0 auto;
+  }
+
+  .rev-cont-a{
+    text-align: right;
   }
   
   .review-text {
@@ -25,9 +62,11 @@
   }
   
   .reply-text {
-    color: var(--secondary);
+    text-align: right;
+    color: var(--background-700);
     font-size: 1.1rem;
     margin-top: 10px;
+    font-weight: bold;
   }
   
   .author {
@@ -42,8 +81,8 @@
     margin-top: 5px;
   }
   .product-photo {
-    width: 100px; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
+    width: 11rem;
+    height: 11rem; /* Maintain aspect ratio */
   }
   
   .change-password-button {
@@ -62,4 +101,18 @@
     border: 1px solid var(--secondary);
     font-size: large;
     font-weight: 400;
+  }
+
+  .button-sub{
+    background-color: var(--accent);
+    color: white;
+    font-size: 1rem;
+    padding: 0.35rem;
+    border: none;
+
+  }
+
+  .button-sub:hover{
+    background-color: var(--primary);
+    cursor: pointer;
   }

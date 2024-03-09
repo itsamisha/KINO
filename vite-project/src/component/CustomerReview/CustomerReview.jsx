@@ -7,6 +7,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import Title from "../Title/Title";
 import Loading from "../Loading/Loading";
 import ContinueShopping from "../ContinueShopping/ContinueShopping";
+import Footer from "../Footer/Footer";
 
 const CustomerReview = () => {
   const { isLoggedIn, authUser } = useAuth();
@@ -112,6 +113,7 @@ const CustomerReview = () => {
           </div>
         </>
       )}
+      <Footer/>
     </div>
   );
 };

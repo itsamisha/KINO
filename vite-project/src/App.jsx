@@ -68,7 +68,6 @@ function App() {
             </Route>
             <Route path="/admin" element={<AdminPage />} />
           </Routes>
-          <Footer />
         </BrowserRouter>
       </SearchProvider>
     </AuthProvider>

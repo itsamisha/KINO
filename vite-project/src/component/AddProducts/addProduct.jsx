@@ -2,49 +2,45 @@ import React, { useState } from "react";
 import "./addProduct.css"; // import CSS file for styling
 import { useSellerAuth } from "../../context/SellerAuthContext.jsx";
 import NavbarSeller from "../NavbarSeller/NavbarSeller.jsx";
-import AddDiscountForm from "../AddDiscountForm/AddDiscountForm.jsx"
+import AddDiscountForm from "../AddDiscountForm/AddDiscountForm.jsx";
+import "../../css/Registration.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Title from "../Title/Title.jsx";
+import photo from "../assets/add-product.png";
+import Footer from "../Footer/Footer.jsx";
 
 const ProductForm = () => {
-  // State variables to hold form data
   const { isLoggedIn, authUser, setIsLoggedIn, setAuthUser } = useSellerAuth();
-  // const [showDiscountForm, setShowDiscountForm] = useState(false);
- 
 
-  
-   
-  // const handleToggleDiscountForm = () => {
-  //   setShowDiscountForm(!showDiscountForm);
-  // };
-
+  if (!isLoggedIn) {
+    window.location.href = "/sellerside";
+  }
   const [formData, setFormData] = useState({
     userid: authUser.user_id,
     name: "",
     price: "",
     stockQuantity: "",
     description: "",
-    discountPercentage:"",
+    discountPercentage: "",
     categories: [],
     photoUrl: "", // Change: Store image as URL instead of file
     startDate: new Date(),
     endDate: new Date(),
- 
   });
 
   // Function to handle form input changes
   // Function to handle form input changes
-const handleChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     // If the changed input is either start date or end date, update them accordingly
     if (name === "startDate" || name === "endDate") {
       setFormData({ ...formData, [name]: new Date(value) });
-  } else {
+    } else {
       setFormData({ ...formData, [name]: value });
-  }
+    }
   };
-  
 
   // Function to add category to the list
   const handleAddCategory = () => {
@@ -56,19 +52,22 @@ const handleChange = (e) => {
       });
     }
   };
-  
-  console.log(formData. categories);
+
+  console.log(formData.categories);
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-     // Validate discount percentage
-    
-     if (formData.discountPercentage &&(formData.discountPercentage < 0 ||formData. discountPercentage > 100) ){
+    // Validate discount percentage
+
+    if (
+      formData.discountPercentage &&
+      (formData.discountPercentage < 0 || formData.discountPercentage > 100)
+    ) {
       alert("Please enter a valid discount percentage (0-100)");
       return;
     }
     // Validate start and end dates
-    if (formData.discountPercentage &&formData.startDate >= formData.endDate) {
+    if (formData.discountPercentage && formData.startDate >= formData.endDate) {
       alert("End date must be after start date");
       return;
     }
@@ -76,14 +75,12 @@ const handleChange = (e) => {
       // Prepare form data
       const formDataToSend = {
         ...formData,
-        
+
         categories: JSON.stringify(formData.categories), // Convert categories array to JSON string
         start_date: formData.startDate.toISOString(), // Convert start date to ISO string
-            end_date: formData.endDate.toISOString(), // Convert end date to ISO string
-        
-        
+        end_date: formData.endDate.toISOString(), // Convert end date to ISO string
       };
-        //console.log(formDataToSend.categories);
+      //console.log(formDataToSend.categories);
       // Make POST request to server to add product
       const response = await fetch("http://localhost:5000/seller/addproduct", {
         method: "POST",
@@ -92,7 +89,7 @@ const handleChange = (e) => {
         },
         body: JSON.stringify(formDataToSend),
       });
-      
+
       const data = await response.json();
       if (data.success) {
         alert("Product Added!\n ");
@@ -100,7 +97,7 @@ const handleChange = (e) => {
       } else {
         alert("Product not Added!");
       }
-      
+
       // Clear form data after successful submission
       setFormData({
         userid: authUser.user_id,
@@ -108,7 +105,7 @@ const handleChange = (e) => {
         price: "",
         stockQuantity: "",
         description: "",
-        discountPercentage:"",
+        discountPercentage: "",
         categories: [],
         photoUrl: "",
       });
@@ -119,114 +116,114 @@ const handleChange = (e) => {
 
   return (
     <div>
-      <NavbarSeller/>
-       
-    <div className="product-form-container">
-      <h2>Add a New Product</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
+      <NavbarSeller />
+      <Title title="Add a New Product" />
+      <div className="add-product-cont">
+        <img src={photo} className="man" alt="" />
+      </div>
+      <div className="product-form-container">
+        <form onSubmit={handleSubmit}>
+          <label className="signin-label">Name:</label>
           <input
+           placeholder="Enter name"
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             required
           />
-        </label>
-        <label>
-          Price:
+          <label className="signin-label">Price:</label>
           <input
+           placeholder="Enter price"
             type="number"
             name="price"
             value={formData.price}
             onChange={handleChange}
             required
           />
-        </label>
-        <label>
-          Stock Quantity:
+          <label className="signin-label">Stock Quantity:</label>
           <input
+            placeholder="Enter stock quantity"
             type="number"
             name="stockQuantity"
             value={formData.stockQuantity}
             onChange={handleChange}
             required
           />
-        </label>
-        <label>
-       <label>
-          Discount Percentage:
-          <input
-            type="number"
-            name="discountPercentage" 
-            value={formData.discountPercentage}
-            onChange={handleChange}
-           
-          />
-        </label>
-        <label>
-        Start Date:
-          <DatePicker 
-  selected={formData.startDate} 
-  onChange={(date) => handleChange({ target: { name: "startDate", value: date } })}
-/>
+            <label className="signin-label">Discount Percentage:</label>
+            <input
+            placeholder="Enter discount percentage"
+              type="number"
+              name="discountPercentage"
+              value={formData.discountPercentage}
+              onChange={handleChange}
+            />
+            <label className="signin-label">Start Date:</label>
+            <DatePicker
 
+              selected={formData.startDate}
+              onChange={(date) =>
+                handleChange({ target: { name: "startDate", value: date } })
+              }
+            />
+            <label className="signin-label">
+              End Date:
+              
+            </label>
+            <DatePicker
+                selected={formData.endDate}
+                onChange={(date) =>
+                  handleChange({ target: { name: "endDate", value: date } })
+                }
+              />
+          <label className="signin-label">
+            Description:
+            <textarea
+            placeholder="Enter description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        </label>
-        <label>
-          End Date:
-          <DatePicker 
-  selected={formData.endDate} 
-  onChange={(date) => handleChange({ target: { name: "endDate", value: date } })}
-/>
-        </label>
-        </label>
-        <label>
-          Description:
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        
-        <div>
-          <label>Categories:</label>
           <div>
-            {formData.categories.map((category, index) => (
-              <div key={index}>{category}</div>
-            ))}
+            <label className="signin-label">Categories:</label>
+            <div>
+              {formData.categories.map((category, index) => (
+                <div key={index}>{category}</div>
+              ))}
+            </div>
+            <input
+            placeholder="Enter category"
+              type="text"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+            />
+            <button type="button" onClick={handleAddCategory}>
+              Add Category
+            </button>
           </div>
-          <input
-            type="text"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-          />
-          <button type="button" onClick={handleAddCategory}>
-            Add Category
-          </button>
-         
+          <br />
 
-        </div>
-        <br/>
-        {/* Input for image URL */}
-        <label>
-          Image URL:
+          <label className="signin-label">
+            Image URL:
+           
+          </label>
           <input
-  type="text"
-  name="photoUrl" // Set the name attribute to "photoUrl"
-  value={formData.photoUrl}
-  onChange={handleChange}
-  required
-/>
-
-        </label>
-        <button type="submit">Add Product</button>
-      </form>
-    </div>
+             placeholder="https://example.com/product-image.jpg"
+              type="text"
+              name="photoUrl"
+              value={formData.photoUrl}
+              onChange={handleChange}
+              required
+            />
+            <br />
+          <button className="button-style" type="submit">Add Product</button>
+        </form>
+      </div>
+      <Footer/>
     </div>
   );
 };

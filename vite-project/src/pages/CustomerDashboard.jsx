@@ -8,6 +8,7 @@ import Sidebar from "../component/Sidebar/Sidebar";
 import ChangePasswordForm from "../component/ChangePasswordForm/ChangePasswordForm";
 import Title from "../component/Title/Title";
 import ProfileForm from "../component/ProfileForm/ProfileForm";
+import Footer from "../component/Footer/Footer";
 
 function CustomerDashboard() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function CustomerDashboard() {
   const [showChangePasswordForm, setShowChangePasswordForm] = useState(false);
 
   if (!isLoggedIn) {
-    return <Navigate to="/signin" />;
+    return <Navigate to="/signin" />; 
   }
 
   
@@ -98,6 +99,7 @@ function CustomerDashboard() {
         </div>
       </div>
       <div className="space"></div>
+      <Footer/>
     </>
   );
 }

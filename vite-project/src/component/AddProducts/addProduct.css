@@ -1,3 +1,12 @@
+:root {
+  --text: #120708;
+  --background: #fdf9fa;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+  --background-300: #d98c9f;
+}
+
 .product-form-container {
     width: 80%; /* Adjust width as needed */
     margin: 0 auto;
@@ -23,7 +32,6 @@
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
     font-size: 16px;
   }
   
@@ -33,15 +41,18 @@
   
   .product-form-container button {
     padding: 10px 20px;
-    background-color: #f4828a;
+    background-color:var(--accent);
     color: #ffffff;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
   }
   
+  .button-style{
+    margin: 0 auto;
+    width: 104%;
+  }
   .product-form-container button:hover {
-    background-color: #fc4e59;
+    background-color: var(--primary);
   }
   
   .product-form-container label,
@@ -69,5 +80,20 @@
   
   .product-form-container div.categories button {
     padding: 5px 10px;
+  }
+
+
+  .add-product-cont {
+    float: left;
+    width: 45%;
+    padding: 3rem;
+  }
+
+  .man{
+    
+
+  width: 100%;
+  margin: 0 auto;
+
   }
   

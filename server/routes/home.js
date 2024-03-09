@@ -308,9 +308,12 @@ router.get("/reviews/:product_id", async (req, res) => {
   try {
     const { product_id } = req.params;
     const products = await pool.query(
-      `SELECT *,(SELECT "name" AS author FROM users WHERE user_id = R.user_id) 
-      FROM review R
-      WHERE R.product_id = $1;`,
+      `SELECT *,
+      (SELECT U.name AS author FROM users U WHERE U.user_id = R.user_id),
+      (SELECT U.name AS shop FROM users U JOIN product P ON P.user_id = U.user_id WHERE P.product_id = $1)
+    FROM review R
+    WHERE R.product_id = $1;
+    `,
       [product_id]
     );
 

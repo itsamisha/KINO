@@ -7,7 +7,7 @@ export function useSellerAuth() {
   if (!context) {
     throw new Error("useSellerAuth must be used within a SellerAuthProvider");
   }
-  return context;
+  return context; 
 }
 
 export function SellerAuthProvider(props) {
@@ -18,7 +18,7 @@ export function SellerAuthProvider(props) {
     name: "Guest",
     phone_number: "",
     user_type: "",
-    registration_date: "",
+    registration_date: ""
   };
 
   const [authUser, setAuthUser] = useState(initialAuthUser);

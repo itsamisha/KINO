@@ -8,6 +8,7 @@ import Popular from "../component/Popular/Popular";
 import DescriptionBox from "../component/DescriptionBox/DescriptionBox";
 import Loading from "../component/Loading/Loading";
 import Review from "../component/Review/Review";
+import Footer from "../component/Footer/Footer";
 
 const Product = () => {
   const {isLoggedIn,authUser} = useAuth();
@@ -87,6 +88,7 @@ return (
       <br /><br />
       <Popular param={`similar-products/${productId}`} title='Related Picks'/>
     </div>
+    <Footer/>
   </div>
 );
 

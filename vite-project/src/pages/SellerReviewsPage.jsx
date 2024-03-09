@@ -1,107 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import SellerReviewItem from '../component/SellerReviewItem/SellerReviewItem'; // Import the SellerReviewItem component
-//import './SellerReviewsPage.css'; // Import your CSS file for styling
+import SellerReviewItem from '../component/SellerReviewItem/SellerReviewItem';
 import NavbarSeller from '../component/NavbarSeller/NavbarSeller';
 import Sidebar from '../component/SellerSidebar/SellerSidebar';
 import { useSellerAuth } from '../context/SellerAuthContext';
+import Title from '../component/Title/Title';
+import '../css/Orders.css';
+import Footer from '../component/Footer/Footer';
 
 const SellerReviewsPage = () => {
-  // State variables to store unreplied and replied reviews
-  const [unrepliedReviews, setUnrepliedReviews] = useState([]);
-  const [showMoreUnreplied, setShowMoreUnreplied] = useState(false);
-  const [showMoreReplied, setShowMoreReplied] = useState(false);
-  const { isLoggedIn, authUser } = useSellerAuth();
-  const [repliedReviews, setRepliedReviews] = useState([]);
-  const id = parseInt(authUser.user_id);
-   console.log(id);
-  // Function to fetch unreplied and replied reviews from the database
-  const fetchUnrepliedReviews = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/seller/${id}/unrepliedreviews`
-      );
-      const data = await response.json();
-      console.log(data);
-      setUnrepliedReviews(data); // Update state with fetched data
-    } catch (error) {
-      console.log(error.message);
-    }
+  const [reviews, setReviews] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("unrepliedreviews");
+  const { authUser } = useSellerAuth();
+  const [searchQuery, setSearchQuery] = useState("");
+  const id = parseInt(authUser.user_id)
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
   };
 
-  const fetchRepliedReviews = async () => {
-    try {
-      const repliedData = await fetch(
-        `http://localhost:5000/seller/${id}/repliedreviews`
-      );
-      const data = await repliedData.json();
-      console.log(data);
-      setRepliedReviews(data); // Update state with fetched data
-    } catch (error) {
-      console.log(error.message);
-    }
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
   };
 
-  const fetchReviews = async () => {
-    // Make API calls to fetch unreplied and replied reviews
-    await fetchUnrepliedReviews();
-    await fetchRepliedReviews();
-  };
 
-  // useEffect hook to fetch reviews when the component mounts or authUser.id changes
   useEffect(() => {
-    if (authUser.user_id) {
-      fetchReviews();
-    }
-  }, [authUser.user_id]);
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/seller/${id}/${selectedOption}`);
+        const data = await response.json();
+        setReviews(data);
+      } catch (error) {
+        console.error('Error fetching reviews:', error.message);
+      }
+    };
 
-  // Function to handle submitting a reply to a review
-  const handleReplySubmit = async (replyData) => {
-    try {
-      // Make API call to submit the reply to the database
-      // Example: await submitReply(replyData);
+    fetchReviews();
+  }, [authUser.user_id,selectedOption]);
 
-      // After successful submission, fetch updated reviews
-      fetchReviews();
-    } catch (error) {
-      console.error('Error submitting reply:', error.message);
-      // Handle error (e.g., display error message to the seller)
-    }
-  };
+  const filteredReviews = reviews.filter((order) =>
+  order.name.toLowerCase().includes(searchQuery.toLowerCase())
+);
+
 
   return (
-    <div className="seller-reviews-page">
+    <div>
       <NavbarSeller />
       <Sidebar />
-      <div className="unreplied-reviews-section">
-        <h2>Unreplied Reviews</h2>
-        {unrepliedReviews.slice(0, showMoreUnreplied ? undefined : 5).map((review) => (
-          <SellerReviewItem
-            key={review.id}
-            review={review}
-            onSubmitReply={handleReplySubmit}
-          />
-        ))}
-        {unrepliedReviews.length > 5 && (
-          <button className='show-more-button' onClick={() => setShowMoreUnreplied(!showMoreUnreplied)}>
-            {showMoreUnreplied ? 'Show Less' : 'Show More'}
-          </button>
-        )}
+      <Title title="REVIEWS AND REPLIES" />
+      <div className="orders-tab">
+
+        <label
+          className={`orders-option ${
+            selectedOption === "unrepliedreviews" ? "selected" : ""
+          }`}
+          onClick={() => handleOptionSelect("unrepliedreviews")}
+        >
+          Unreplied Reviews
+        </label>
+        <label
+          className={`orders-option ${
+            selectedOption === "repliedreviews" ? "selected" : ""
+          }`}
+          onClick={() => handleOptionSelect("repliedreviews")}
+        >
+          Replied Reviews
+        </label>
       </div>
-      <div className="replied-reviews-section">
-        <h2>Replied Reviews</h2>
-        {repliedReviews.slice(0, showMoreReplied ? undefined : 5).map((review) => (
-          <SellerReviewItem
-            key={review.id}
-            review={review}
-            onSubmitReply={handleReplySubmit}
-          />
+      <br /><br />
+      {reviews.length > 0 && (
+        <>
+        <br />
+        <br />
+         <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearch}
+          placeholder="Search Reviews By Product Name..."
+          className="searchWishlist"
+        />
+        <br />
+        <br />
+        </>
+       
+      )}
+      <div className="orders-list">
+     
+        {filteredReviews.map(review => (
+          <SellerReviewItem key={review.id} review={review} />
         ))}
-        {repliedReviews.length > 5 && (
-          <button className='show-more-button' onClick={() => setShowMoreReplied(!showMoreReplied)}>
-            {showMoreReplied ? 'Show Less' : 'Show More'}
-          </button>
-        )}
       </div>
+      <Footer/>
     </div>
   );
 };

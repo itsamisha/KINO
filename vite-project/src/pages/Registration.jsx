@@ -5,7 +5,8 @@ import Header from "../component/Header/Header";
 import Warning from "../component/Warning/Warning";
 import Backdrop from "../component/Backdrop/Backdrop";
 import Successful from "../component/Successful/Successful";
-
+import Footer from "../component/Footer/Footer";
+ 
 function Registration() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -217,6 +218,7 @@ function Registration() {
       <br />
       <br />
       <br />
+      <Footer/>
     </>
   );
 }

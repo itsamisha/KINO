@@ -2,11 +2,52 @@ const router = require('express').Router()
 const pool = require('../database')
 const multer = require("multer"); // for handling file uploads
 const upload = multer({ dest: "uploads/" }); // specify upload directory
+
+
+
+//get user info
+router.get("/:user_id", async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const shop = await pool.query("SELECT * FROM users WHERE user_id = $1", [user_id]);
+    if (shop.rows.length === 1) {
+      res.json(shop.rows);
+    } else {
+      res.status(404).json({ message: 'Shop not found' });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}) 
+
+//update profile info
+router.put("/update", async (req, res) => {
+  try {
+    const { user_id, name, email, phone_number, locations,bank_account_number } = req.body;
+
+    const update = await pool.query(`
+      UPDATE users 
+      SET name = $1, email = $2, phone_number = $3, locations = $4, bank_account_number = $5
+      WHERE user_id = $6
+      RETURNING *
+    `, [name, email, phone_number, locations, bank_account_number, user_id]);
+
+    if (update.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.status(200).json(update.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 // adding products
 router.post("/addproduct", upload.single("photo"), async (req, res) => {
     
     try {
- 
       const { userid,name, price, stockQuantity, description,discount_percentage, categories,photoUrl} = req.body;
       console.log(req.body);
       const count=0;
@@ -157,7 +198,7 @@ if (req.body.discountPercentage && req.body.discountPercentage >= 0 && req.body.
         await pool.query('DELETE FROM Product WHERE product_id = $1', [product_id]);
 
         console.log(product_id);
-        await client.query('COMMIT'); // Commit transaction
+        await client.query('COMMIT'); 
         res.json({ message: 'Inventory item deleted successfully' });
         //console.log(message);
     } catch (error) {
@@ -421,8 +462,6 @@ router.get('/:user_id/revenue-data', async (req, res) => {
 router.get('/:user_id/:status/orders', async (req, res) => {
   try {
     const { user_id,status } = req.params;
-    //console.log(user_id);
-    
     const orderData=await pool.query(`
     SELECT * FROM get_orders_for_user($1, $2)
   `, [user_id,status]);

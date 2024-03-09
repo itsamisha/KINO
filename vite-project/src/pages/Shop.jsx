@@ -30,6 +30,7 @@ function Shop(){
         <Popular param='popular' title='Popular'/>
         <Popular param='new-arrival' title='New Arrivals'/>
         <Popular param='discount-product' title='On Sale'/>
+        <Footer/>
     </div>
 }
 

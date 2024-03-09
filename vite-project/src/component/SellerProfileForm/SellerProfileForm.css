@@ -1,0 +1,34 @@
+:root {
+    --text: #120708;
+    --background: #fdf9fa;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-50: #f9ecef;
+    --background-200: #e6b3bf;
+  
+  --text-700: #6e2b30;
+  --primary-700: #86131b;
+  }
+
+.seller-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(1.5px);
+  }
+  
+  .seller-modal-content {
+    width: 45%;
+    height: 95vh;
+    background-color: var(--background);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: solid 1px var(--primary-700);
+  }
