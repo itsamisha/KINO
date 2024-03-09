@@ -1,10 +1,50 @@
-/* NotificationList.css */
+:root {
+  --text: #120708;
+  --background: #fdf9fa;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+  --background-50: #f9ecef;
+  --background-200: #e6b3bf;
+  
+  --text-700: #6e2b30;
+  --primary-700: #86131b;
+}
 
 .notification-list {
-    margin-top: 20px;
-  }
-  
-  .notification-list h2 {
-    margin-bottom: 10px;
-  }
-  
+  position: fixed;
+  top: 20%;
+  right: 0;
+  z-index: 1000; /* Ensure it's above other content */
+  background-color: var(--background);
+  padding: 20px;
+  border: solid 1px var(--accent);
+  overflow-y: auto;
+}
+
+.notification-list h2 {
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.notification-list p {
+  color: var(--text);
+}
+
+.notification-item {
+  border-bottom: 1px solid var(--background-50);
+  padding: 10px 0;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item .notification-text {
+  color: var(--text);
+}
+
+.notification-item .notification-time {
+  color: var(--text-700);
+  font-size: 0.8rem;
+}

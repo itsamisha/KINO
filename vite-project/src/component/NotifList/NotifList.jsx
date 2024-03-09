@@ -1,5 +1,3 @@
-// NotificationList.jsx
-
 import React, { useState, useEffect } from 'react';
 import Notification from "../Notifications/Notifications"; // Import the Notification component
 import './NotifList.css'; // Import the CSS file for styling
