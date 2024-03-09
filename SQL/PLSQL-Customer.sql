@@ -124,36 +124,35 @@ EXECUTE FUNCTION update_stock_quantity_after_order();
 
 
 -- Create a function to update revenue
-CREATE OR REPLACE FUNCTION update_revenue_on_payment()
+CREATE OR REPLACE FUNCTION update_user_revenue()
 RETURNS TRIGGER AS $$
+DECLARE
+    user_record RECORD;
 BEGIN
-    -- Calculate total revenue for the user
-		INSERT INTO ProcedureCallLog (ProcedureName, user_name, Parameters)
-    VALUES ('update_revenue_on_payment',USER,'no params');
-    UPDATE users
-    SET revenue = revenue + (SELECT SUM(price)
-                             FROM orders o
-                             JOIN order_items o1 ON o.order_id = o1.order_id
-                             JOIN product p ON p.product_id = o1.product_id
-                             WHERE o.order_id = NEW.order_id)
-    WHERE user_id IN (
-        SELECT DISTINCT(u.user_id)
-        FROM orders o 
+    -- Loop through each user
+    FOR user_record IN
+        SELECT DISTINCT u.user_id
+        FROM orders o
         JOIN order_items oi ON o.order_id = oi.order_id
-        JOIN users u ON u.user_id = (
-            SELECT user_id 
-            FROM product
-            WHERE product_id = oi.product_id
+        JOIN product p ON p.product_id = oi.product_id
+        JOIN users u ON u.user_id = p.user_id
+        WHERE o.order_id = NEW.order_id
+    LOOP
+        -- Calculate total revenue for the user
+        UPDATE users
+        SET revenue = (
+            SELECT COALESCE(SUM(p.price - COALESCE((SELECT discount_percentage * p.price FROM discount WHERE product_id = p.product_id), 0)), 0)
+            FROM orders o
+            JOIN order_items oi ON o.order_id = oi.order_id
+            JOIN product p ON p.product_id = oi.product_id
+            WHERE p.user_id = user_record.user_id AND o.order_id=NEW.order_id
         )
-    );
-
+        WHERE user_id = user_record.user_id;
+    END LOOP;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
--- Create a trigger to fire after insert on the payment table
-CREATE TRIGGER update_revenue_trigger
+CREATE TRIGGER update_user_revenue_trigger
 AFTER INSERT ON payment
 FOR EACH ROW
-EXECUTE FUNCTION update_revenue_on_payment();
-
+EXECUTE FUNCTION update_user_revenue();
