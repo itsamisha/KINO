@@ -408,13 +408,13 @@ router.get('/:user_id/revenue-data', async (req, res) => {
   try {
     const { user_id } = req.params;
     const revenueData = await pool.query(`
-      SELECT o1.product_id, order_date, SUM(price) AS total_revenue
-      FROM orders o 
-      JOIN order_items o1 ON o.order_id = o1.order_id
-      JOIN product p ON p.product_id = o1.product_id
-      WHERE p.user_id = $1
-      GROUP BY o1.product_id, order_date
-      ORDER BY order_date;
+    SELECT SUM(p.price) AS revenue, o.order_date
+FROM orders o
+JOIN order_items o1 ON o.order_id = o1.order_id
+JOIN product p ON p.product_id = o1.product_id
+WHERE p.user_id = $1
+GROUP BY o.order_date;
+
     `, [user_id]);
     res.json(revenueData.rows);
   } catch (error) {

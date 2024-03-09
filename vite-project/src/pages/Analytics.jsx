@@ -266,7 +266,7 @@ const AnalyticsPage = () => {
       <div>
         <h2>Revenue Data</h2>
         <Line data={{
-          labels: revenueData.map(data => data.date),
+          labels: revenueData.map(data => data.order_date),
           datasets: [{
             label: 'Revenue',
             data: revenueData.map(data => data.revenue),
