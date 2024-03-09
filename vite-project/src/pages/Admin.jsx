@@ -130,6 +130,28 @@ const Admin = () => {
         });
         return groupedProducts;
     }
+    const handleUpdateOrderStatus = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/admin/order-admin`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({}) // Include any necessary parameters
+            });
+            if (response.ok) {
+                // Handle success
+                console.log('Order status updated successfully');
+                window.location.reload();
+            } else {
+                // Handle error
+                console.error('Failed to update order status:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error updating order status:', error.message);
+        }
+    };
+
     
     
 
@@ -201,6 +223,7 @@ return (
                 )}
                 {activeTab === 'orders' && (
                     <section>
+                         <button className='side-tab button' onClick={handleUpdateOrderStatus}>Update Order Status</button>
                         <Order/>
                     </section>
                 )}
