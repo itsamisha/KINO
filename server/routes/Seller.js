@@ -395,6 +395,7 @@ router.get('/:user_id/order-status-distribution', async (req, res) => {
     GROUP BY p.product_id, name,o.order_status
     HAVING p.user_id=$1;
     `,[user_id]);
+    console.log(orderStatusDistribution.rows);
     res.json(orderStatusDistribution.rows);
   } catch (error) {
     console.error('Error fetching order status distribution:', error);
