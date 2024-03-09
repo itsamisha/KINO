@@ -15,7 +15,8 @@ const OrderItem = ({ order }) => {
 
       if (response.ok) {
         console.log("Order confirmed:", order.order_id);
-        // Optionally, you can perform additional actions after confirming the order
+        // Refresh the page after order confirmation
+        window.location.reload();
       } else {
         console.error("Failed to confirm order:", response.statusText);
       }
@@ -36,7 +37,8 @@ const OrderItem = ({ order }) => {
 
       if (response.ok) {
         console.log("Order cancelled:", order.order_id);
-        // Optionally, you can perform additional actions after cancelling the order
+        // Refresh the page after order cancellation
+        window.location.reload();
       } else {
         console.error("Failed to cancel order:", response.statusText);
       }
@@ -55,7 +57,7 @@ const OrderItem = ({ order }) => {
       </div>
       <div className="order-actions">
         {/* Render FaCheck icon if order_status is neither 'confirmed' nor 'cancelled' */}
-        {order.order_status !== 'confirmed' && order.order_status !== 'cancelled' && (
+        {order.order_status !== 'confirmed' && order.order_status !== 'cancelled' && order.order_status !== 'to receive' && (
           <FaCheck onClick={handleConfirmOrder} />
         )}
         

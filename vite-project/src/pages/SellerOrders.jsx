@@ -49,6 +49,14 @@ const Orders = () => {
         </button>
         <button
           className={`orders-option ${
+            selectedOption === "to receive" ? "selected" : ""
+          }`}
+          onClick={() => handleOptionSelect("to receive")}
+        >
+         On the way
+        </button>
+        <button
+          className={`orders-option ${
             selectedOption === "cancelled" ? "selected" : ""
           }`}
           onClick={() => handleOptionSelect("cancelled")}

@@ -101,7 +101,7 @@ if (req.body.discountPercentage && req.body.discountPercentage >= 0 && req.body.
 
     const client = await pool.connect();
     try {
-        const { product_id, name, price, stock_quantity, description, category, photo_url, startDate, endDate, discountPercentage } = req.body;
+        const { product_id, name, price, stock_quantity, description, category, photo_url, startDate, end_date, discountPercentage } = req.body;
         console.log(req.body);
 
         await client.query('BEGIN');
@@ -116,19 +116,39 @@ if (req.body.discountPercentage && req.body.discountPercentage >= 0 && req.body.
 
         // Update categories
         if (category) {
-            // Split the categories string into an array
-            const categoriesArray = category.split(',');
+          // Split the categories string into an array
+          const categoriesArray = category.split(',');
+      
+          // Delete existing categories for the product
+          await pool.query(
+              `DELETE FROM category
+              WHERE product_id = $1`,
+              [product_id]
+          );
+      
+          // Insert new categories for the product
+          for (const categoryName of categoriesArray) {
+              await pool.query(
+                  `INSERT INTO category (category_name, product_id) 
+                  VALUES ($1, $2)`,
+                  [categoryName.trim(), product_id]
+              );
+          }
+      }
+      
+        else{
+           // Split the categories string into an array
+           const categoriesArray = category.split(',');
 
-            // Iterate over the categories array
-            for (const categoryName of categoriesArray) {
-                // Perform the update query for each category
-                await pool.query(
-                    `UPDATE category 
-                    SET category_name = $1
-                    WHERE product_id = $2`,
-                    [categoryName.trim(), product_id] // Trim the category name to remove any leading or trailing whitespace
-                );
-            }
+           // Iterate over the categories array
+           for (const categoryName of categoriesArray) {
+               // Perform the update query for each category
+               await pool.query(
+                   `INSERT INTO category (category_name, product_id) 
+                   VALUES ($1, $2)`,
+                   [categoryName.trim(), product_id] // Trim the category name to remove any leading or trailing whitespace
+               );
+           }
         }
 
         // Check if a discount exists for the product
@@ -142,7 +162,7 @@ if (req.body.discountPercentage && req.body.discountPercentage >= 0 && req.body.
             await pool.query(
                 `INSERT INTO discount (product_id, start_date, end_date, discount_percentage) 
                 VALUES ($1, $2, $3, $4)`,
-                [product_id, startDate, endDate, discountPercentage/100 ]
+                [product_id, startDate, end_date, discountPercentage/100 ]
             );
         } else {
             // If a discount already exists, update the existing discount information
@@ -150,7 +170,7 @@ if (req.body.discountPercentage && req.body.discountPercentage >= 0 && req.body.
                 `UPDATE discount 
                 SET start_date = $1, end_date = $2, discount_percentage = $3
                 WHERE product_id = $4`,
-                [startDate, endDate, discountPercentage/100, product_id]
+                [startDate, end_date, discountPercentage/100, product_id]
             );
         }
 
@@ -195,6 +215,10 @@ if (req.body.discountPercentage && req.body.discountPercentage >= 0 && req.body.
         await client.query('BEGIN'); // Start transaction
 
         // Delete from Product table
+        await pool.query('DELETE FROM Discount WHERE product_id = $1', [product_id]);
+        await pool.query('DELETE FROM Category WHERE product_id = $1', [product_id]);
+
+
         await pool.query('DELETE FROM Product WHERE product_id = $1', [product_id]);
 
         console.log(product_id);
@@ -432,6 +456,7 @@ router.get('/:user_id/order-status-distribution', async (req, res) => {
     GROUP BY p.product_id, name,o.order_status
     HAVING p.user_id=$1;
     `,[user_id]);
+    console.log(orderStatusDistribution.rows);
     res.json(orderStatusDistribution.rows);
   } catch (error) {
     console.error('Error fetching order status distribution:', error);
@@ -444,13 +469,13 @@ router.get('/:user_id/revenue-data', async (req, res) => {
   try {
     const { user_id } = req.params;
     const revenueData = await pool.query(`
-      SELECT o1.product_id, order_date, SUM(price) AS total_revenue
-      FROM orders o 
-      JOIN order_items o1 ON o.order_id = o1.order_id
-      JOIN product p ON p.product_id = o1.product_id
-      WHERE p.user_id = $1
-      GROUP BY o1.product_id, order_date
-      ORDER BY order_date;
+    SELECT SUM(p.price) AS revenue, o.order_date
+FROM orders o
+JOIN order_items o1 ON o.order_id = o1.order_id
+JOIN product p ON p.product_id = o1.product_id
+WHERE p.user_id = $1
+GROUP BY o.order_date;
+
     `, [user_id]);
     res.json(revenueData.rows);
   } catch (error) {

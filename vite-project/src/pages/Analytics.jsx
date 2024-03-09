@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Pie, Line } from 'react-chartjs-2';
 import {ArcElement} from 'chart.js';
-import OrderStatusPieChart from '../component/OrderStatusPieChart/OrderStatusPieChart';
+
+import OrderStatusPieChart from '../component/OrderStatusPieChartSeller/OrderStatusPieChartSeller';
 import ProductDisplay from '../component/SellerProductDisplay/SellerProductDisplay';
 import DescriptionBox from "../component/DescriptionBox/DescriptionBox";
 import Loading from "../component/Loading/Loading";
@@ -97,7 +98,7 @@ const AnalyticsPage = () => {
         }
         const orderStatusData = await orderStatusResponse.json();
         setOrderStatusDistribution(orderStatusData);
-        console.log(orderStatusData);
+        
 
         // Fetch revenue data
         const revenueResponse = await fetch(`http://localhost:5000/seller/${id}/revenue-data`);
@@ -113,7 +114,7 @@ const AnalyticsPage = () => {
 
     fetchData();
   }, []);
-
+  console.log(orderStatusDistribution);
   return (
     <div className='product-grid-analytics'>
         <NavbarSeller/>
@@ -252,7 +253,7 @@ const AnalyticsPage = () => {
 
       <div>
         <h2>Order Status Distribution</h2>
-        <OrderStatusPieChart  orderData={orderStatusDistribution} />
+        <OrderStatusPieChart  uniqueOrderData={orderStatusDistribution} />
 
         {/* <Pie data={{
           labels: orderStatusDistribution.map(status => status.status),
@@ -266,7 +267,7 @@ const AnalyticsPage = () => {
       <div>
         <h2>Revenue Data</h2>
         <Line data={{
-          labels: revenueData.map(data => data.date),
+          labels: revenueData.map(data => data.order_date),
           datasets: [{
             label: 'Revenue',
             data: revenueData.map(data => data.revenue),
