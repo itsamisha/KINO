@@ -17,7 +17,9 @@
     margin-bottom: 10px;
     width: 45%;
     position: fixed;
-    top: 30%; 
+    top: 50%; /* Adjusted to center vertically */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center horizontally */
     font-style: bold;
     display: flex;
     align-items: center;

@@ -25,6 +25,8 @@ import GiftCardPurchase from "./component/GiftCardPurchase/GiftCardPurchase";
 import GiftCardCustomer from "./pages/GiftCardCustomer";
 import AnalyticsPage from "./pages/Analytics";
 import AdminPage from "./pages/Admin";
+import CustomerReview from "./component/CustomerReview/CustomerReview";
+import CustomerReviewItemWithErrorBoundary from "./component/CustomerReview/CustomerReview";
 
 function App() {
   return (
@@ -43,6 +45,7 @@ function App() {
             <Route path="/gift-cards" element={<GiftCard/>} />
             <Route path="/gift-card-purchase" element={<GiftCardPurchase/>} />
             <Route path="/giftcard" element={<GiftCardCustomer/>} />
+            <Route path="/reviews" element={<CustomerReviewItemWithErrorBoundary/>} />
             {/* <Route
               path="/customer/change_password" 
               element={<ChangePassword />}

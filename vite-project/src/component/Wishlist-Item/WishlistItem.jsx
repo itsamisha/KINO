@@ -11,7 +11,7 @@ const WishlistItem = (props) => {
       return truncatedString + " ...";
     }
     return truncatedString;
-  }
+  } 
 
   const product_id = props.id;
   const {authUser} = useAuth()

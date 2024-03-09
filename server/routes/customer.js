@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const pool = require('../database')
+const bcrpyt = require('bcrypt')
 
 router.get("/:user_id", async (req, res) => {
     try {
@@ -17,23 +18,45 @@ router.get("/:user_id", async (req, res) => {
   }) 
  
  //Update Profile Info
+  // router.put("/update", async (req, res) => {
+  //   try {
+  //     const { user_id, name, email, phone_number, preferred_payment_method } = req.body;
+  //     const update = await pool.query(`UPDATE users SET
+  //     name = $1,
+  //     email = $2,
+  //     phone_number = $3,
+  //     preferred_payment_method = $4
+  //     WHERE user_id = $5
+  //     RETURNING *`, [name, email, phone_number, preferred_payment_method,user_id]);
+  //     res.status(200).json(update.rows[0])
+  //     console.log(update.rows[0])
+  //   } catch (error) {
+  //     console.error(error.message);
+  //     res.status(500).json({ error: 'Internal Server Error' });
+  //   }
+  // });
   router.put("/update", async (req, res) => {
     try {
       const { user_id, name, email, phone_number, preferred_payment_method } = req.body;
-      const update = await pool.query(`UPDATE users SET
-      name = $1,
-      email = $2,
-      phone_number = $3,
-      preferred_payment_method = $4
-      WHERE user_id = $5
-      RETURNING *`, [name, email, phone_number, preferred_payment_method,user_id]);
-      res.status(200).json(update.rows[0])
-      console.log(update.rows[0])
+  
+      const update = await pool.query(`
+        UPDATE users 
+        SET name = $1, email = $2, phone_number = $3, preferred_payment_method = $4
+        WHERE user_id = $5
+        RETURNING *
+      `, [name, email, phone_number, preferred_payment_method, user_id]);
+  
+      if (update.rows.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.status(200).json(update.rows[0]);
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+  
+  
 
   //Get Product Details
   router.post("/:user_id/:product_id", async (req, res) => {
@@ -273,23 +296,6 @@ router.get("/:user_id", async (req, res) => {
 });
 
 
-
-
-  //Delete Order History
-  router.delete("/remove-order", async (req, res) => {
-    try {
-      const {order_items_id} = req.body
-        await pool.query(`
-            DELETE FROM order_items
-            WHERE order_item_id = $1;
-        `, [order_items_id]);
-        res.json({ message: 'Order deleted successfully' });
-    } catch (error) {
-        console.error(`Error deleting wishlist: ${error.message}`);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
-
   //Get Wishlist 
   router.get("/:user_id/wishlist", async (req, res) => {
     try {
@@ -373,7 +379,7 @@ router.get("/:user_id", async (req, res) => {
   })
   
   //To be reviewed products
-  router.get("/:user_id/to-be-reviewed", async (req,res) => {
+  router.get("/:user_id/", async (req,res) => {
     try {
       const {user_id} = req.params;
       const products = await pool.query(`SELECT P.product_id, P."name", P.photo_url, O.order_date, R.rating
@@ -399,6 +405,7 @@ router.get("/:user_id", async (req, res) => {
   //Add Review
   router.post("/add-review", async (req,res) => {
     try {
+        console.log(req.body)
         const {user_id, product_id, review_text, rating} = req.body;
         const review = await pool.query(`INSERT INTO review (user_id,product_id,review_text,rating,created_at) VALUES($1,$2,$3,$4,CURRENT_DATE) 
         RETURNING *`,[user_id,product_id,review_text,rating])
@@ -425,8 +432,70 @@ router.get("/:user_id", async (req, res) => {
     }
   })
 
-  //Previous reviews
-  router.get("/:user_id/reviews", async (req,res) => {
+  router.put("/edit-review", async (req, res) => {
+    try {
+      const { user_id, product_id, new_rating, new_review_text } = req.body;
+      await pool.query(`
+        UPDATE review
+        SET rating = $1,
+            review_text = $2
+        WHERE user_id = $3
+        AND product_id = $4
+      `, [new_rating, new_review_text, user_id, product_id]);
+  
+      res.json({ message: 'Review updated successfully' });
+    } catch (error) {
+      console.error(`Error updating review: ${error.message}`);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
+
+  router.post("/reviews", async (req, res) => {
+    try {
+      const { userId, selectedOption } = req.body;
+      if(selectedOption === 'previous'){
+        const products = await pool.query(`
+        SELECT R.review_text, R.reply_text, R.created_at, R.rating, P.photo_url, P.name, P.product_id AS PID FROM review R JOIN users U ON R.user_id = U.user_id
+        JOIN product P ON P.product_id = R.product_id
+        WHERE U.user_id = $1;`,[userId])
+  
+        if(products.rows.length===0){
+          return res.json({message:'No products left to be reviewed'})
+        } else {
+          return res.json(products.rows)
+        }
+      }
+
+      else{
+        const products = await pool.query(`SELECT DISTINCT P.photo_url, P.name, P.product_id AS pid FROM users U 
+          JOIN orders O ON U.user_id = O.user_id
+          JOIN order_items OI 
+          ON OI.order_id = O.order_id
+          JOIN product P
+          ON P.product_id = OI.product_id
+          LEFT JOIN review R 
+          ON R.product_id = P.product_id AND R.user_id = U.user_id
+          WHERE U.user_id = $1
+          AND R.rating IS NULL
+          AND OI.order_status = 'history'`,[userId])
+
+        if(products.rows.length===0){
+          return res.json({message:'No products left to be reviewed'})
+        } else {
+          return res.json(products.rows)
+        }
+      }
+  
+    } catch (error) {
+      console.error(`Error fetching reviews: ${error.message}`);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+  
+  
+  router.get("/:user_id/to-review", async (req,res) => {
     try {
       const {user_id} = req.params;
       const products = await pool.query(`SELECT P.product_id AS p_id, P."name", P.photo_url, O.order_date, R.*, S."name" AS shop
@@ -451,25 +520,40 @@ router.get("/:user_id", async (req, res) => {
     }
   })
 
-
-  router.put("/change_password", async (req, res) => {
+  router.put('/change-password', async (req, res) => {
+    const { user_id, current_password, new_password } = req.body;
+    // Fetch user from database using user_id
     try {
-      
-      console.log("here")
-      
-      const { id,newPassword } = req.body;
-      
-      // Update the password
-      const update = await pool.query("UPDATE users SET password = $1 WHERE user_id = $2", [newPassword, id]);
+      // Query to fetch user's password from the database
+      const query = 'SELECT password FROM users WHERE user_id = $1';
+      const result = await pool.query(query, [user_id]);
   
-      if (update.rowCount > 0) {
-        res.json({ message: 'Password changed successfully' });
-      } else {
-        res.status(500).json({ message: 'Failed to change password' });
+      // Check if user exists
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: 'User not found' });
       }
+  
+      // Retrieve the hashed password from the query result
+      const hashedPasswordFromDB = result.rows[0].password;
+  
+      // Compare current password with hashed password stored in the database
+      const isPasswordMatch = await bcrpyt.compare(current_password, hashedPasswordFromDB);
+  
+      if (!isPasswordMatch) {
+        return res.status(400).json({ message: 'Current password is incorrect' });
+      }
+  
+      // Hash the new password
+      const hashedPassword = await bcrpyt.hash(new_password, 10);
+  
+      // Update user's password in the database
+      const updateQuery = 'UPDATE users SET password = $1 WHERE user_id = $2';
+      await pool.query(updateQuery, [hashedPassword, user_id]);
+  
+      res.status(200).json({ message: 'Password updated successfully' });
     } catch (error) {
-      console.error(error.message);
-      res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Error updating password:', error.message);
+      res.status(500).json({ message: 'Failed to update password' });
     }
   });
 

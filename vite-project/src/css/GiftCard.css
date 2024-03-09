@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --text: #120708;
     --background: #fdf9fa;
     --primary: #e2323f;
@@ -24,4 +24,73 @@
 .buy-now-button:hover {
     background-color: var(--accent);
 }
+ */
 
+ /* Global variables */
+:root {
+    --text: #120708;
+    --background: #fdf9fa;
+    --primary: #e2323f;
+    --secondary: #f4828a;
+    --accent: #fc4e59;
+    --background-300: #d98c9f;
+  }
+  
+  /* Buy Now Button */
+  .buy-now-container {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .buy-now-button {
+    background-color: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 2rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden; /* Hide overflowing animation */
+  }
+  
+  .buy-now-button::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--accent);
+    opacity: 0;
+    animation: pulse 1s linear infinite;
+    font-weight: bold;
+  }
+  
+  /* Animation */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
+  }
+  
+  .buy-now-button:hover::after {
+    opacity: 1;
+  }
+  
+  .buy-now-button:hover {
+    background-color: var(--accent);
+    transform: translateY(-2px);
+    font-weight: bold;
+  }
+  

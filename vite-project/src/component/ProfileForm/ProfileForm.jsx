@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import './ProfileForm.css'
 import Title from "../Title/Title";
+import Successful from "../Successful/Successful";
+import Backdrop from "../Backdrop/Backdrop";
+
 
 function ProfileForm({ onCancel}) {
   const { authUser, setAuthUser} = useAuth();
@@ -9,21 +12,12 @@ function ProfileForm({ onCancel}) {
   const [email, setEmail] = useState(authUser.email);
   const [phoneNumber, setPhoneNumber] = useState(authUser.phone_number);
   const [payment, setPayment] = useState(authUser.preferred_payment_method);
-  const [showWarning, setShowWarning] = useState(false);
-  const [warning, setWarning] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const userId = authUser.user_id;
-
-  const validatePhoneNumber = (number) => {
-    return /^\d{11}$/.test(number);
-  };
+  const handleShowSucces = () => {
+    window.location.reload();
+  }
   
-  const validateEmail = (email) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
-  
-
   const updateUserProfile = async () => {
     try {
       const userData = {
@@ -31,7 +25,7 @@ function ProfileForm({ onCancel}) {
         email: email,
         phone_number: phoneNumber,
         preferred_payment_method: payment,
-        user_id: userId
+        user_id: authUser.user_id
       };  
       const response = await fetch("http://localhost:5000/customer/update", {
         method: 'PUT',
@@ -45,8 +39,10 @@ function ProfileForm({ onCancel}) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const updatedUser = await response.json();
+      console.log(updatedUser)
       return updatedUser;
     } catch (error) {
+      console.log(error.message)
       throw new Error('Failed to update profile. Please try again.');
     }
   };
@@ -56,7 +52,7 @@ function ProfileForm({ onCancel}) {
     try {
       const updatedUser = await updateUserProfile();
       setAuthUser(updatedUser);
-
+      setShowSuccess(true);
     } catch (error) {
       console.error('Error updating profile:', error.message);
       alert('Failed to update profile. Please try again.');
@@ -117,9 +113,9 @@ function ProfileForm({ onCancel}) {
                 required
               >
                 <option value="">Select Payment Method</option>
-                <option value="bKash">bKash</option>
-                <option value="bank">bank payment</option>
-                <option value="COD">Cash on delivery</option>
+                <option value="bkash">bKash</option>
+                <option value="bank">Bank Payment</option>
+                <option value="COD">Cash On Delivery</option>
                 
               </select>
           </div>
@@ -131,6 +127,12 @@ function ProfileForm({ onCancel}) {
           </div>
         </form>
       </div>
+      {showSuccess && (
+          <>
+            <Backdrop />{" "}
+            <Successful message={`Account updated successfully!`} onClose={handleShowSucces} />
+          </>
+        )}
     </div>
   );
 }

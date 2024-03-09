@@ -3,29 +3,24 @@ import { useAuth } from "../context/AuthContext";
 import "../css/CustomerDashboard.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FaUserEdit } from "react-icons/fa";
-import { useState} from "react";
+import { useState } from "react";
 import Sidebar from "../component/Sidebar/Sidebar";
-import continueShopping from "../component/assets/continue-shopping.png";
-import continueShopping2 from "../component/assets/continue-shopping-2.png"
+import ChangePasswordForm from "../component/ChangePasswordForm/ChangePasswordForm";
 import Title from "../component/Title/Title";
 import ProfileForm from "../component/ProfileForm/ProfileForm";
 
 function CustomerDashboard() {
-
   const navigate = useNavigate();
   const { isLoggedIn, authUser } = useAuth();
-  console.log(isLoggedIn)
-  const [photo,setPhoto] = useState(continueShopping)
-  const [showSuccess, setShowSuccess] = useState(false);
+  console.log(isLoggedIn);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [showChangePasswordForm, setShowChangePasswordForm] = useState(false);
 
   if (!isLoggedIn) {
-    return <Navigate to="/signin"/>
+    return <Navigate to="/signin" />;
   }
 
-  function handleChangePassword() {
-    navigate("/customer/change_password");
-  }
-
+  
   function formatDate(dateString) {
     const date = new Date(dateString);
     const day = ("0" + date.getDate()).slice(-2);
@@ -39,12 +34,18 @@ function CustomerDashboard() {
     setShowEditForm(true);
   }
 
+  function handleChangePassword() {
+    setShowChangePasswordForm(true); 
+  }
 
   return (
     <>
       <Navbar />
       <Sidebar />
-      <Title title='PROFILE'/>
+      <Title title="PROFILE" />
+      {showChangePasswordForm && (
+        <ChangePasswordForm onCancel={() => setShowChangePasswordForm(false)} /> 
+      )}
       {showEditForm && (
         <ProfileForm
           authUser={authUser}
@@ -53,7 +54,7 @@ function CustomerDashboard() {
       )}
       <div className="customer-dashboard-container">
         <div className="edit-wrap">
-        <FaUserEdit className="edit-icon" onClick={editProfile} />
+          <FaUserEdit className="edit-icon" onClick={editProfile} />
         </div>
         <div className="customer-info">
           <div className="info-row">
@@ -71,9 +72,13 @@ function CustomerDashboard() {
           <div className="info-row">
             <p className="info-label">Preferred Payment Type</p>
             <p className="info-value">
-              {authUser.preferred_payment_method
-                ? authUser.preferred_payment_method
-                : "---"}
+              {authUser.preferred_payment_method === "COD"
+                ? "Cash On Delivery"
+                : authUser.preferred_payment_method === "bank"
+                ? "Bank Payment"
+                : authUser.preferred_payment_method === "bkash"
+                ? "bKash"
+                : authUser.preferred_payment_method || "---"}
             </p>
           </div>
           <div className="info-row">

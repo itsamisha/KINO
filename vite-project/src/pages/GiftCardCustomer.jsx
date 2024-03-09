@@ -31,9 +31,8 @@ const GiftCardCustomer = () => {
         `http://localhost:5000/giftcard/${selectedOption}/${userId}`
       );
       const data = await response.json();
-
+      console.log(giftcards.length)
       setGiftcards(data);
-      console.log(giftcards);
       setIsLoading(false);
     } catch (error) {
       console.log(error.message);
@@ -88,6 +87,8 @@ const GiftCardCustomer = () => {
                     photo={item.design}
                     amount={item.amount}
                     initial={item.initial_amount}
+                    gift_card_code = {item.gift_card_code}
+                    date = {item.purchase_date}
                     selection = {selectedOption}
                   />
                   <br />

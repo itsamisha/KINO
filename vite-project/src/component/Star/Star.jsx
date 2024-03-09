@@ -35,4 +35,3 @@ export default function Star({ rating ,size}) {
 
   return <div style={wrapper}>{renderStars()}</div>;
 }
-

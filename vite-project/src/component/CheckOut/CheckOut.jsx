@@ -10,7 +10,6 @@ import OrderConfirmation from "../OrderConfirmation/OrderConfirmation";
 const CheckOut = ({ onClose }) => {
 
   const { isLoggedIn, authUser } = useAuth();
-  console.log(authUser.phone_number)
   const userId = authUser.user_id;
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -19,7 +18,7 @@ const CheckOut = ({ onClose }) => {
   const [house, setHouse] = useState("");
   const [road, setRoad] = useState("");
   const [shippingCharge, setShippingCharge] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [paymentMethod, setPaymentMethod] = useState(authUser.preferred_payment_method);
   const [phoneNumber, setPhoneNumber] = useState(authUser.phone_number);
   const [cardNumber, setCardNumber] = useState("");
   const [giftCardCode, setGiftCardCode] = useState("");
@@ -28,7 +27,7 @@ const CheckOut = ({ onClose }) => {
   const [giftCardAmount, setGiftCardAmount] = useState(totalPrice - total);
   const [rapid, setRapid] = useState(0);
   const [prevTotalPrice,setPrevTotalPrice] = useState(total);
-  const [showWarning, setShowWarning] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   
@@ -57,9 +56,6 @@ const CheckOut = ({ onClose }) => {
   {
     if(total<totalPrice){
       setGiftCardApplied(true)
-    }
-    if(total===0){
-      setPaymentMethod("COD")
     }
 
   },[total])
@@ -119,20 +115,28 @@ const CheckOut = ({ onClose }) => {
   };
 
   const validateForm = () => {
+    console.log("House:", house);
+    console.log("Road:", road);
+    console.log("Post Code:", postCode);
+    console.log("Selected Delivery Mode:", selectedDeliveryMode);
+     if (!house || !road || !postCode || !selectedDeliveryMode) {
+      setWarningMessage('Please fill out all the mandatory fields')
+      setShowWarning(true); 
+      return false;
+
+    }
 
     if (paymentMethod === "bank" && cardNumber.length < 16) {
       setWarningMessage('Invalid Card Number')
+      setShowWarning(true)
       return false;
     }
     if (paymentMethod === "bkash" && phoneNumber.length < 11) {
       setWarningMessage('Invalid Phone Number')
+      setShowWarning(true); 
       return false;
     }
-    // Check if all required fields are filled
-    if (!house || !road || !postCode || !selectedDeliveryMode) {
-      setWarningMessage('Please fill out all the mandatory fields')
-      return false;
-    }
+   
     return true;
   };
 

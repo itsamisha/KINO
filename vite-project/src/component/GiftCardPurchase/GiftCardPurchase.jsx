@@ -26,7 +26,7 @@ const defaultSelectedDesign = `/src/component/assets/${
 const GiftCardPurchase = () => {
   const { isLoggedIn, authUser } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [paymentMethod, setPaymentMethod] = useState(authUser.preferred_payment_method);
+  const [paymentMethod, setPaymentMethod] = useState("bkash");
   const [phoneNumber, setPhoneNumber] = useState(authUser.phone_number);
   const [cardNumber, setCardNumber] = useState("");
   const [email, setEmail] = useState("");

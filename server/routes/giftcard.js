@@ -11,13 +11,14 @@ router.post("/purchase", async (req,res) => {
         res.status(500).send({success: false, error: error.message})
     }
   })
-  //Received gift cards
+  //Received gift cards 
 router.get("/received/:user_id", async (req, res) => {
     try {
         const { user_id } = req.params;
         const giftcards = await pool.query(
             `SELECT amount,initial_amount, message, (SELECT name FROM users WHERE user_id = from_user_id) AS name, gift_card_code, design, purchase_date
-            FROM gift_card WHERE user_id = $1;`, [user_id] 
+            FROM gift_card WHERE user_id = $1
+            ORDER BY amount DESC;`, [user_id] 
         );
         if (giftcards.rows.length !== 0) {
             res.json(giftcards.rows); 

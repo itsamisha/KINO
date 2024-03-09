@@ -14,17 +14,66 @@
 
 .giftcard-text{
     font-family: 'Nunito Sans', sans-serif;
-    padding-bottom: 0.5rem;
     text-align: right;
     font-size:medium;
+    color: var(--text);
   }
 
+  
+.giftcard-text-money{
+  font-family: 'Poppins';
+  text-align: right;
+  font-size:medium;
+  color: var(--text);
+}
+
+
+  .giftcard-text-large{
+    font-family: 'Nunito Sans', sans-serif;
+    text-align: right;
+    font-size: 22px;
+    color: var(--text);
+  }
+  
+
+  .giftcardcode-text{
+    font-family: 'Poppins';
+    text-align: right;
+    font-size: large;
+    color: var(--primary);
+  }
+  .giftcardsent-text{
+    font-family: 'Poppins';
+    text-align: right;
+    font-size: large;
+    color: var(--accent);
+  }
+  
   .amount-container {
     display: flex;
     flex-direction: column;
   }
-  
+  .giftcard-image{
+    cursor: pointer;
+    text-align: left;
+    height: 10.5rem;
+    width: 10.5rem;
+    object-fit: cover;
+    margin-right: auto;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
   .amount-container .giftcard-text {
     margin-bottom: 5px;
+  }
+  .copy-button{
+    font-size: 15px;
+    color: white;
+    background-color: var(--secondary);
+    padding: 0.35rem;
+    border: none;
+  }
+
+  .copy-button:hover{
+    background-color: var(--primary);
   }
   

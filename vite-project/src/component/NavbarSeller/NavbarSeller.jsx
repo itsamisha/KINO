@@ -69,7 +69,6 @@ const NavbarSeller = () => {
         setAuthUser(userInfo);
         setIsLoggedIn(true);
         console.log(userInfo);
-        alert(`Sign-in successful!\nWelcome back ${userInfo.name}`);
         navigate("/seller");
       } else {
         setWarningMessage("Invalid email or password, please try again");
@@ -112,7 +111,7 @@ const NavbarSeller = () => {
         </ul>
       </div>
       <div className="line"></div>
-      {showWarning && <><Backdrop/><Warning message={warningMessage} onClose={() => setShowWarning(false)} /></>}
+      {showWarning && <><Warning message={warningMessage} onClose={() => setShowWarning(false)} /></>}
     </>
   );
 };

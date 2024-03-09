@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import photo from "../component/assets/SignIn.png";
 import Header from "../component/Header/Header";
 import Warning from "../component/Warning/Warning";
-import Successful from "../component/Successful/Successful";
 import Backdrop from "../component/Backdrop/Backdrop";
 
 function SignIn() {
@@ -25,11 +24,7 @@ function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [warning, setWarning] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
 
-  const handleShowSucces = () => {
-    window.location.href = "/"
-  }
 
   const handleShowWarning = () => {
     setShowWarning(false);

@@ -2,8 +2,8 @@ import React from 'react';
 import './ReviewItem.css'; // Import your CSS file for styling
 import Star from '../Star/Star';
 
-const ReviewItem = ({ review }) => {
-  const { review_text, reply_text, created_at, rating, author } = review;
+const ReviewItem = (props) => {
+  const { review_text, reply_text, created_at, rating, author } = props;
 
   return (
     <div className="review-item">
