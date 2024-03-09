@@ -27,6 +27,7 @@ import AnalyticsPage from "./pages/Analytics";
 import AdminPage from "./pages/Admin";
 import CustomerReview from "./component/CustomerReview/CustomerReview";
 import CustomerReviewItemWithErrorBoundary from "./component/CustomerReview/CustomerReview";
+import AdminLogin from "./pages/AdminLogin";
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
             
             </Route>
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
           </Routes>
         </BrowserRouter>
       </SearchProvider>
