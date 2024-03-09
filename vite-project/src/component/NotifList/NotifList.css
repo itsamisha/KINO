@@ -20,6 +20,7 @@
   padding: 20px;
   border: solid 1px var(--accent);
   overflow-y: auto;
+  width: 25%;
 }
 
 .notification-list h2 {

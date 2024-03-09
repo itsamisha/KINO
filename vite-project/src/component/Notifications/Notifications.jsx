@@ -21,7 +21,7 @@ function Notification({ message, notification_id }) {
 
   return (
     <div className="notification">
-      <p>{message}</p>
+      <div className='notif-msg'>{message}</div>
       <button className="delete-btn" onClick={handleDelete}>
         <FaTimes />
       </button>

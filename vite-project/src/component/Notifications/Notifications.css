@@ -18,4 +18,7 @@
   .delete-btn:focus {
     outline: none;
   }
+  .notif-msg{
+    font-family: 'Nunito Sans';
+  }
   
