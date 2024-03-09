@@ -11,6 +11,7 @@ import Order from '../component/AdminOrder/AdminOrder';
 import ShippingPieChart from '../component/ShippingPieChart/ShippingPieChart'; 
 import AdminChart from '../component/AdminCharts/AdminCharts';
 import Footer from '../component/Footer/Footer';
+import Searchbar from '../component/Searchbar/Searchbar';
 const Admin = () => {
     const [activeTab, setActiveTab] = useState('users');
     const handleTabChange = (tab) => {
@@ -135,7 +136,8 @@ const Admin = () => {
 
 return (
     <div>
-        <Navbar />
+       <br/>
+      <h2>WELCOME ADMIN</h2>
         <div className="admin-container">
             <div className="side-tab">
                 <button onClick={() => handleTabChange('users')}>All Users</button>
