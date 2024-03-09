@@ -1,30 +1,36 @@
+:root {
+  --text: #120708;
+  --background: #fdf9fa;
+  --primary: #e2323f;
+  --secondary: #f4828a;
+  --accent: #fc4e59;
+  --background-50: #f9ecef;
+  --background-200: #e6b3bf;
+
+--text-700: #6e2b30;
+--primary-700: #86131b;
+}
+
+.search-result-info{
+  font-size: x-large;
+  color: var(--text);
+}
 .grid {
     display: grid;
     grid-template-rows: repeat(2); /* Two rows with equal height */
     gap: 16px;
 }
-  .nav-bar-hah{
-    position: fixed;
-    top: 0;
-    width: 100%;
-  }
+
   .search-results {
     display: flex;
     justify-content: space-between; /* Ensure the filter and results are spaced apart */
   }
   
-  .filter-section {
-    background-color: aqua;
-    width: 20%;
-    height: calc(100vh - 190px); 
-    position: fixed;
-    top: 20%; /* Adjust as needed */
-    left: 20px; /* Adjust as needed */
-  }
+
   
   .results-of-products {
-    width: 75%; /* Adjust the width of the results section */
-    margin-left: 25%; /* Add a margin to ensure results don't overlap with the filter */
+    width: 100%; /* Adjust the width of the results section */
+  
   }
   
   
