@@ -67,7 +67,8 @@ function ProductForm({ product, onCancel }) {
             description: product.description,
             discountPercentage:product.discount_percentage,
             startDate:product.start_date,
-            end_date:product.end_date,
+            end_date: product.end_date ,
+            
             photo_url: product.photo_url,
         });
       } catch (error) {
@@ -155,8 +156,8 @@ function ProductForm({ product, onCancel }) {
           <div className="info-row">
             <label className="info-label"> End Date:</label>
             <DatePicker 
-  selected={formData.endDate} 
-  onChange={(date) => handleChange({ target: { name: "endDate", value: date } })}
+  selected={formData.end_date} 
+  onChange={(date) => handleChange({ target: { name: "end_date", value: date } })}
 />
 
           </div>

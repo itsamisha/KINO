@@ -156,3 +156,4 @@ CREATE TRIGGER update_revenue_trigger
 AFTER INSERT ON payment
 FOR EACH ROW
 EXECUTE FUNCTION update_revenue_on_payment();
+
