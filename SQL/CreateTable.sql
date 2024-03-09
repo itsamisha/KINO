@@ -134,3 +134,8 @@ CREATE TABLE ProcedureCallLog (
     Parameters TEXT
 );
 ALTER TABLE ProcedureCallLog ADD COLUMN User_name VARCHAR(10);
+CREATE TABLE notifications (
+    notification_id SERIAL PRIMARY KEY,
+    notification_text TEXT,
+    user_id INTEGER REFERENCES users(user_id)
+);
