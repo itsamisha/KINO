@@ -1,14 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import "../css/admin.css"
+import { Link, Navigate } from "react-router-dom";
 import Navbar from '../component/Navbar/Navbar';
+import SellerProductDisplay from '../component/SellerProductDisplay/SellerProductDisplay';
+import InventoryItem from "../component/InventoryItem/InventoryItem";
+import OrderStatusPieChart from '../component/OrderStatusPieChart/OrderStatusPieChart';
+import ShopAdmin from '../component/AdminShop/AdminShop';
+import GiftCardGraph from '../component/GiftCardGraph/GiftCardGraph';
+import Order from '../component/AdminOrder/AdminOrder';
+import ShippingPieChart from '../component/ShippingPieChart/ShippingPieChart'; 
+import AdminChart from '../component/AdminCharts/AdminCharts';
 const Admin = () => {
+    const [activeTab, setActiveTab] = useState('users');
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+    };
+
     const [users, setUsers] = useState([]);
+    const [shops, setShops] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [giftCards, setGiftCards] = useState([]);
     const [showGiftCards, setShowGiftCards] = useState(false);
     const [customerCount, setCustomerCount] = useState(0);
     const [sellerCount, setSellerCount] = useState(0);
     const [products, setProducts] = useState([]);
+    const [lowStockProducts, setlowStockProducts] = useState([]);
+    const [showAllProducts, setShowAllProducts] = useState(false);
+    const [topUsers, setTopUsers] = useState([]);
+    const [topSellers, setTopSellers] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,12 +40,30 @@ const Admin = () => {
                 const userData = await userResponse.json();
                 setUsers(userData);
                 setFilteredUsers(userData); // Initialize filtered users with all users
-
+                
                 // Count customers and sellers
                 const customers = userData.filter(user => user.user_type === 'customer');
                 const sellers = userData.filter(user => user.user_type === 'seller');
                 setCustomerCount(customers.length);
                 setSellerCount(sellers.length);
+                //getshops
+                
+            setShops(sellers);
+            // Fetch top users
+            const topUsersResponse = await fetch(`http://localhost:5000/admin/top-users`);
+            if (!topUsersResponse.ok) {
+                throw new Error('Failed to fetch top users');
+            }
+            const topUsersData = await topUsersResponse.json();
+            setTopUsers(topUsersData);
+
+            // Fetch top sellers
+            const topSellersResponse = await fetch(`http://localhost:5000/admin/top-sellers`);
+            if (!topSellersResponse.ok) {
+                throw new Error('Failed to fetch top sellers');
+            }
+            const topSellersData = await topSellersResponse.json();
+            setTopSellers(topSellersData);
 
                 // Fetch gift cards
                 const giftCardResponse = await fetch(`http://localhost:5000/admin/giftcards`);
@@ -36,17 +73,26 @@ const Admin = () => {
                 const cardData = await giftCardResponse.json();
                 setGiftCards(cardData);
 
-                //fetch all products with all details
                 const response = await fetch(`http://localhost:5000/admin/products`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-                const data = await response.json();
-                setProducts(data);
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            const data = await response.json();
+            setProducts(data);
+            
+            // Fetch low stock products with all details
+            const lowStockResponse = await fetch(`http://localhost:5000/admin/low-stock-products`);
+            if (!lowStockResponse.ok) {
+                throw new Error('Failed to fetch low stock products');
+            }
+            const lowStockData = await lowStockResponse.json();
+            setlowStockProducts(lowStockData);
+            
             } catch (error) {
                 console.error('Error fetching data:', error.message);
             }
         };
+        
         fetchData();
     }, []);
 
@@ -56,6 +102,7 @@ const Admin = () => {
         setFilteredUsers(filtered);
         setShowGiftCards(false); // Reset showGiftCards state
     };
+    console.log(lowStockProducts);
 
     // Function to handle showing only gift cards
     const handleShowGiftCards = () => {
@@ -63,97 +110,116 @@ const Admin = () => {
         setShowGiftCards(true);
     };
 
-    return (
-        <div>
-             <Navbar/>
-        <div className="admin-dashboard">
-           
-            <h1>Admin Dashboard</h1>
+    // Function to handle showing all products
+    const handleShowAllProducts = () => {
+        setShowAllProducts(true);
+    };
 
-            {/* Filter buttons */}
-            <div>
-                <button onClick={() => filterUsers('customer')}>Show Customers ({customerCount})</button>
-                <button onClick={() => filterUsers('seller')}>Show Sellers ({sellerCount})</button>
-                <button onClick={() => setFilteredUsers(users)}>Show All Users ({users.length})</button>
-                <button onClick={handleShowGiftCards}>Show Gift Cards</button>
+    const filteredProducts = Array.from(new Set(products.map(product => product.product_id))).map(product_id => {
+        return products.find(product => product.product_id === product_id);
+    });
+    function groupProductsByShop(products) {
+        const groupedProducts = {};
+        products.forEach(product => {
+            if (!groupedProducts[product.shop_name]) {
+                groupedProducts[product.shop_name] = [];
+            }
+            groupedProducts[product.shop_name].push(product);
+        });
+        return groupedProducts;
+    }
+    
+    
+
+
+return (
+    <div>
+        <Navbar />
+        <div className="admin-container">
+            <div className="side-tab">
+                <button onClick={() => handleTabChange('users')}>All Users</button>
+                <button onClick={() => handleTabChange('giftCards')}>Gift Cards</button>
+                <button onClick={() => handleTabChange('products')}>Products</button>
+                <button onClick={() => handleTabChange('orders')}>All Orders</button>
+                <button onClick={() => handleTabChange('orderStats')}>Order Stats</button>
+                <button onClick={() => handleTabChange('RevenueStats')}>Shipping Revenue Stats</button>
+                {/* Add more buttons for other options */}
             </div>
-
-            {/* Display Users */}
-            {!showGiftCards && (
-                <section>
-                    <h2>Users</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>User ID</th>
-                                <th>Email</th>
-                                <th>Name</th>
-                                <th>User Type</th>
-                                <th>Phone Number</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredUsers.map(user => (
-                                <tr key={user.user_id}>
-                                    <td>{user.user_id}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.name}</td>
-                                    <td>{user.user_type}</td>
-                                    <td>{user.phone_number}</td>
+            <div className="admin-dashboard">
+                {activeTab === 'users' && (
+                    <section>
+                        <h2>Users</h2>
+                        <div className="filtered-buttons">
+                            <button onClick={() => filterUsers('customer')}>Show Customers ({customerCount})</button>                    
+                            <button onClick={() => filterUsers('seller')}>Show Sellers ({sellerCount})</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Email</th>
+                                    <th>Name</th>
+                                    <th>User Type</th>
+                                    <th>Phone Number</th>
                                 </tr>
+                            </thead>
+                            <tbody>
+                                {filteredUsers.map(user => (
+                                    <tr key={user.user_id}>
+                                        <td>{user.user_id}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.name}</td>
+                                        <td>{user.user_type}</td>
+                                        <td>{user.phone_number}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </section>
+                )}
+                
+                {activeTab === 'giftCards' && (
+                    <section>
+                        <h2>Gift Cards</h2>
+                        <ul>
+                            {giftCards.map(giftCard => (
+                                <li key={giftCard.gift_card_id}>Amount: ${giftCard.amount}, User ID: {giftCard.user_id},Purchase Date:{giftCard.purchase_date}</li>
                             ))}
-                        </tbody>
-                    </table>
-                </section>
-            )}
-
-            {/* Display Gift Cards */}
-            {showGiftCards && (
-                <section>
-                    <h2>Gift Cards</h2>
-                    <ul>
-                        {giftCards.map(giftCard => (
-                            <li key={giftCard.gift_card_id}>Amount: ${giftCard.amount}, User ID: {giftCard.user_id}</li>
-                        ))}
-                    </ul>
-                </section>
-            )}
-             <section>
-                <h2>Products</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product ID</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Stock Quantity</th>
-                            <th>Description</th>
-                            <th>Photo URL</th>
-                            <th>Discount</th>
-                            <th>Review</th>
-                            <th>Order Items</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products.map(product => (
-                            <tr key={product.product_id}>
-                                <td>{product.product_id}</td>
-                                <td>{product.name}</td>
-                                <td>{product.price}</td>
-                                <td>{product.stock_quantity}</td>
-                                <td>{product.description}</td>
-                                <td>{product.photo_url}</td>
-                                <td>{product.discount_id ? `Discount ID: ${product.discount_id}, Percentage: ${product.discount_percentage}%` : 'No Discount'}</td>
-                                <td>{product.review_id ? `User ID: ${product.user_id}, Review Text: ${product.review_text}, Rating: ${product.rating}` : 'No Reviews'}</td>
-                                <td>{product.order_item_id ? `Order ID: ${product.order_id}, Quantity: ${product.quantity}` : 'No Order Items'}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </ul>
+                        <GiftCardGraph giftCards={giftCards}/>
+                    </section>
+                )}
+                {activeTab === 'products' && (
+                    <section>
+                        <ShopAdmin products={products} shops={shops} />
+                    </section>
+                )}
+                {activeTab === 'orders' && (
+                    <section>
+                        <Order/>
+                    </section>
+                )}
+                {activeTab === 'orderStats' && (
+            <section>
+              <h1>Order Statistics</h1>
+              <h2>Order Location Pie Chart</h2>
+              <ShippingPieChart />
+              <OrderStatusPieChart orderData={products} />
             </section>
+          )}
+          {activeTab === 'RevenueStats' && (
+            <section>
+              <h1>Order Statistics</h1>
+              <h2>Order Location Pie Chart</h2>
+             <AdminChart/>
+            </section>
+          )}
+                {/* Add more sections for other tabs */}
+            </div>
         </div>
-        </div>
-    );
-};
+    </div>
+);
+
+                };
 
 export default Admin;

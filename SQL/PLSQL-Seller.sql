@@ -113,3 +113,98 @@ EXCEPTION
         RETURN 'Error: ' || SQLERRM;
 END;
 $$ LANGUAGE plpgsql;
+
+--all orders
+CREATE OR REPLACE FUNCTION get_orders_for_all_user(
+   
+    p_order_status VARCHAR(15)
+) RETURNS TABLE(
+    order_id INT,
+    product_id INT,
+    name VARCHAR(255),
+    price DECIMAL(10, 2),
+    stock_quantity INT,
+    description TEXT,
+    photo_url TEXT,
+    order_status VARCHAR(255),
+    order_date TIMESTAMP,
+    estimated_delivery_date TIMESTAMP
+) AS $$
+BEGIN
+    RETURN QUERY 
+    SELECT oi.order_id, 
+           p.product_id, 
+           p.name, 
+           p.price, 
+           p.stock_quantity, 
+           p.description, 
+           p.photo_url, 
+           oi.order_status, 
+           o.order_date,
+           o.estimated_delivery_date
+    FROM order_items oi
+    JOIN product p ON oi.product_id = p.product_id
+    JOIN orders o ON oi.order_id = o.order_id
+    WHERE( oi.order_status = p_order_status);
+END;
+$$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION get_revenue(p_interval VARCHAR) RETURNS TABLE (period VARCHAR, total_revenue NUMERIC) AS $$
+BEGIN
+    IF p_interval = 'monthly' THEN
+        RETURN QUERY
+        SELECT 
+            TO_CHAR(purchase_date, 'YYYY-MM') AS period,
+            SUM(initial_amount) AS total_revenue
+        FROM 
+            gift_card
+        GROUP BY 
+            TO_CHAR(purchase_date, 'YYYY-MM')
+        ORDER BY 
+            TO_CHAR(purchase_date, 'YYYY-MM');
+    ELSIF p_interval = 'weekly' THEN
+        RETURN QUERY
+        SELECT 
+            TO_CHAR(purchase_date, 'IYYY-IW') AS period,
+            SUM(initial_amount) AS total_revenue
+        FROM 
+            gift_card
+        GROUP BY 
+            TO_CHAR(purchase_date, 'IYYY-IW')
+        ORDER BY 
+            TO_CHAR(purchase_date, 'IYYY-IW');
+    ELSE
+        -- Handle invalid interval
+        RAISE EXCEPTION 'Invalid interval: %', p_interval;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION get_shipping_revenue(p_interval VARCHAR) RETURNS TABLE (period VARCHAR, total_shipping_revenue NUMERIC) AS $$
+BEGIN
+    IF p_interval = 'monthly' THEN
+        RETURN QUERY
+        SELECT 
+            TO_CHAR(shipping_date, 'YYYY-MM') AS period,
+            SUM(shipping_charge) AS total_shipping_revenue
+        FROM 
+            orders
+        GROUP BY 
+            TO_CHAR(shipping_date, 'YYYY-MM')
+        ORDER BY 
+            TO_CHAR(shipping_date, 'YYYY-MM');
+    ELSIF p_interval = 'weekly' THEN
+        RETURN QUERY
+        SELECT 
+            TO_CHAR(shipping_date, 'IYYY-IW') AS period,
+            SUM(shipping_charge) AS total_shipping_revenue
+        FROM 
+            orders
+        GROUP BY 
+            TO_CHAR(shipping_date, 'IYYY-IW')
+        ORDER BY 
+            TO_CHAR(shipping_date, 'IYYY-IW');
+    ELSE
+        -- Handle invalid interval
+        RAISE EXCEPTION 'Invalid interval: %', p_interval;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;

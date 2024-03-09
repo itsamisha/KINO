@@ -1,0 +1,19 @@
+/* ShopAdmin.css */
+.shop-admin-container {
+    display: flex;
+  }
+  
+  .shop-list {
+    flex: 1;
+  }
+  
+  .product-list {
+    flex: 2;
+  }
+  
+  .product-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  

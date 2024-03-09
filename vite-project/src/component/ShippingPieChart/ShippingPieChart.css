@@ -1,0 +1,51 @@
+/* styles.css */
+
+/* Styling for the container of the chart */
+.chart-container {
+    width: 100%;
+    max-width: 600px; /* Adjust the maximum width as needed */
+    margin: auto;
+  }
+  
+  /* Styling for the title of the chart */
+  .chart-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  /* Styling for the legend of the chart */
+  .chart-legend {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Styling for each legend item */
+  .chart-legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  /* Styling for the color box in the legend */
+  .legend-color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+  
+  /* Styling for the label text in the legend */
+  .legend-label {
+    font-size: 1rem;
+  }
+  
+  /* Styling for the chart canvas */
+  .chart-canvas {
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  

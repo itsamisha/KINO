@@ -28,6 +28,7 @@ const AnalyticsPage = () => {
   }
 
   const [topRatedProducts, setTopRatedProducts] = useState([]);
+  const [lowStockProducts, setLowStockProducts] = useState([]);
   const [topSoldProducts, setTopSoldProducts] = useState([]);
   const [worstRatedProducts, setWorstRatedProducts] = useState([]);
   const [leastSoldProducts, setLeastSoldProducts] = useState([]);
@@ -78,6 +79,15 @@ const AnalyticsPage = () => {
         }
         const leastSoldData = await leastSoldResponse.json();
         setLeastSoldProducts(leastSoldData);
+
+        //lowstock
+        const lowstockResponse = await fetch(`http://localhost:5000/seller/${id}/low-stock-products`);
+        if (!lowstockResponse.ok) {
+          throw new Error('Failed to fetch stock nai products');
+        }
+        const lowstockData = await lowstockResponse.json();
+        setLowStockProducts(lowstockData);
+
 
         // Fetch order status distribution
         const orderStatusResponse = await fetch(`http://localhost:5000/seller/${id}/order-status-distribution`);
@@ -214,10 +224,34 @@ const AnalyticsPage = () => {
   </ul>
 </div>
 
+<div>
+  <h2>Low Stock Products</h2>
+  <ul >
+    {lowStockProducts.length > 0 ? (
+      lowStockProducts.map(product => (
+        <li key={product.product_id}>
+          <InventoryItem
+            id={product.product_id}
+            name={product.name}
+            photo={product.photo_url}
+            purchase_count={product.purchase_count}
+            stock_quantity={product.stock_quantity}
+            discount={product.discount}
+          />
+        </li>
+      ))
+    ) : (
+      <div>
+        <h1>No lowStockProducts found</h1>
+      </div>
+    )}
+  </ul>
+</div>
+
 
       <div>
         <h2>Order Status Distribution</h2>
-        <OrderStatusPieChart products={orderStatusDistribution} />
+        <OrderStatusPieChart  orderData={orderStatusDistribution} />
 
         {/* <Pie data={{
           labels: orderStatusDistribution.map(status => status.status),
