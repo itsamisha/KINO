@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useSearch } from "../../context/SearchContext.jsx";
 import Loading from "../Loading/Loading";
+import NotificationList from "../NotifList/NotifList.jsx";
 import { useEffect } from "react";
 
 const Navbar = () => {
@@ -150,6 +151,8 @@ const Navbar = () => {
             <div className="nav-cart-count">{cartItems}</div>
           </div>
         </ul>
+        {/* Add NotificationList here */}
+          {isLoggedIn && <NotificationList userId={authUser.user_id} />}
       </div>
       <div className="gradient-line"></div>
     </>

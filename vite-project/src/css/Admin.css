@@ -1,4 +1,4 @@
-/* admin.css */
+/* admin.css
 
 .admin-dashboard {
     max-width: 1200px;
@@ -27,4 +27,41 @@
 
 .admin-dashboard li {
     margin-bottom: 5px;
-}
+} */
+.side-tab {
+    background-color:  white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-right: 20px;
+  }
+  
+  .side-tab button {
+   
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    background-color: #f2d9df;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+ 
+  .side-tab button:hover {
+    background-color: #f4828a;
+  }
+  
+  .admin-dashboard {
+    flex: 1;
+  }
+  
+  .admin-container {
+    display: flex;
+  }
+  
+  .filtered-buttons button {
+    margin-right: 10px;
+  }
+  
