@@ -154,6 +154,10 @@ if (req.body.discountPercentage && req.body.discountPercentage >= 0 && req.body.
         await client.query('BEGIN'); // Start transaction
 
         // Delete from Product table
+        await pool.query('DELETE FROM Discount WHERE product_id = $1', [product_id]);
+        await pool.query('DELETE FROM Category WHERE product_id = $1', [product_id]);
+
+
         await pool.query('DELETE FROM Product WHERE product_id = $1', [product_id]);
 
         console.log(product_id);
