@@ -204,5 +204,23 @@ router.get('/monthly-shipping-revenue', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+  //all order confirms
+  router.put('/order-admin', async (req, res) => {
+    try {
+      
+      const result = await pool.query('SELECT update_order_status_job()');
   
+     
+      if (result) {
+        
+        res.status(200).json({ message: 'Order status updated successfully' });
+      } else {
+        
+        res.status(500).json({ error: 'Failed to update order status' });
+      }
+    } catch (error) {
+      console.error('Error updating order status:', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
   module.exports = router;
